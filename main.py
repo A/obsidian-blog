@@ -1,6 +1,5 @@
 import os
 import dotenv
-import markdown
 
 from lib.blog import get_posts, get_pages, get_layouts, render
 from lib.helpers import make_dir, rm_dir, copy_dir
@@ -19,6 +18,8 @@ ASSETS_DIR = os.path.join(SOURCE_DIR, '_assets')
 rm_dir(DEST_DIR)
 make_dir(DEST_DIR)
 copy_dir(ASSETS_DIR, os.path.join(DEST_DIR, 'assets'))
+
+print('Start a build')
 
 # Parse layouts, pages, and posts
 layouts = get_layouts(LAYOUTS_DIR)
@@ -44,7 +45,11 @@ for page in pages:
 
     layout = layouts['main']
 
-    rendered_page = layout({ 'content': content })
+    rendered_page = layout({
+        'content': content,
+        'title': BLOG_TITLE,
+        'pages': pages,
+    })
 
     with open(dest_file, 'a') as f:
         print(rendered_page, file=f)
@@ -68,7 +73,10 @@ for post in posts:
     rendered_post = layout({
         'title': meta['title'][0],
         'content': html,
+        'pages': pages,
     })
 
     with open(dest_file, 'a') as f:
         print(rendered_post, file=f)
+
+print('Done\n')

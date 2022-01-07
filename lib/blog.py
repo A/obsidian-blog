@@ -32,6 +32,11 @@ def get_posts(source_dir: str):
         if os.path.isfile(os.path.join(source_dir, f))
     ]
 
+    file_names = filter(
+        lambda f: not f.startswith('_', 0, -1),
+        file_names,
+    )
+
     posts = []
 
     for file_name in file_names:
@@ -41,7 +46,16 @@ def get_posts(source_dir: str):
         with open(post['file']) as f: md_content = f.read()
 
         md_content = unwrap_includes(md_content)
-        md_parser = markdown.Markdown(extensions = ['meta', 'fenced_code'])
+        md_parser = markdown.Markdown(
+            extensions = ['meta', 'fenced_code', 'markdown_link_attr_modifier'],
+            extension_configs = {
+                'markdown_link_attr_modifier': {
+                    'new_tab': 'on',
+                    'no_referrer': 'external_only',
+                    'auto_title': 'on',
+                },
+            }
+        )
 
         post['html'] = md_parser.convert(md_content)
         post['meta'] = md_parser.Meta
@@ -68,7 +82,7 @@ def get_pages(pages_dir: str):
 
     for file_name in file_names:
         page = {}
-        page['name'] = change_ext('', file_name)
+        page['name'] = re.sub(r'\.hbs$', '', file_name)
         page['file'] = os.path.join(pages_dir, file_name)
         page['slug'] = build_slug(page['name'])
 
