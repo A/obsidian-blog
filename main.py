@@ -1,19 +1,9 @@
 import os
-import dotenv
 from datetime import datetime
 
 from lib.blog import get_posts, get_pages, get_layouts, render
 from lib.helpers import make_dir, rm_dir, copy_dir
-
-config = dotenv.dotenv_values('.env')
-
-BLOG_TITLE = config['BLOG_TITLE']
-DEST_DIR = config['DEST_DIR']
-SOURCE_DIR = config['SOURCE_DIR']
-
-LAYOUTS_DIR = os.path.join(SOURCE_DIR, '_layouts')
-PAGES_DIR = os.path.join(SOURCE_DIR, '_pages')
-ASSETS_DIR = os.path.join(SOURCE_DIR, '_assets')
+from lib.config import SOURCE_DIR, DEST_DIR, LAYOUTS_DIR, PAGES_DIR, ASSETS_DIR, BLOG_TITLE
 
 # Clear prev build artefacts
 rm_dir(DEST_DIR)
