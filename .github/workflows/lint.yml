@@ -20,4 +20,5 @@ jobs:
           pip install pipenv
           pipenv sync --dev --python ${PYTHON_VERSION}
           pipenv install
+          pipenv shell
       - uses: jakebailey/pyright-action@v1
