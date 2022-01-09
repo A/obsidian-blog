@@ -16,9 +16,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - run: |
-          pip install pipenv
-          pipenv sync --dev --python ${PYTHON_VERSION}
-          pipenv install
-          pipenv shell
+      - name: install dependencies
+      - run: pip3 install -r requirements.txt
       - uses: jakebailey/pyright-action@v1
