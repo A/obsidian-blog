@@ -4,12 +4,20 @@ on:
   push:
     branches:
       - "*"
+
+env:
+  PYTHON_VERSION: 3.9.9
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-      - run: pip install --user pipenv
-      - run: pipenv install
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+        run: |
+          pip install pipenv
+          pipenv sync --dev --python ${PYTHON_VERSION}
+          pipenv install
       - uses: jakebailey/pyright-action@v1
