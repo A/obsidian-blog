@@ -2,6 +2,9 @@
 
 Experiments around static site generation for obsidian markdown
 
+The idea is to create a simple blog generated from obsidian [Map Of Content][moc]
+notes, that's I believe based on the [original zettelkasten benefit][zettelkasten].
+
 ### Env
 
 `obsidian-blog` expects you have an `.env` file, contains given variables:
@@ -47,3 +50,6 @@ Pages are handlebars templates, rendered with a context contains `title` and `po
 All the files from `${SOURCE_DIR}/_assets` directory are copied automatically to the `${DEST_DIR}/assets` during the build,
 so this files are accessible via `/assets/<file>` urls
 
+
+[moc]: https://www.youtube.com/watch?v=7GqQKCT0PZ4
+[zettelkasten]: https://en.wikipedia.org/wiki/Niklas_Luhmann#Note-taking_system_(Zettelkasten)
