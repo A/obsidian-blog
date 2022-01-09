@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1160a20e1e237204972e4fcc044dd29ff390cd58bb4fa76d212185fc6cb597a0"
+            "sha256": "a974d1235e84d48c2165ea4868e783a0efa324c2e059ac4ff60d9813d660daf5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,14 @@
             ],
             "index": "pypi",
             "version": "==3.3.6"
+        },
+        "markdown-link-attr-modifier": {
+            "hashes": [
+                "sha256:01b07d7a466ff7c721f97d66b08ec60a54e8d46c287695b649507ae57a42ff4b",
+                "sha256:94eacc4b7cfda9b5c883fb8c9f218b0602889c64d12977b31994d10b7b720a59"
+            ],
+            "index": "pypi",
+            "version": "==0.2.0"
         },
         "pybars3": {
             "hashes": [
