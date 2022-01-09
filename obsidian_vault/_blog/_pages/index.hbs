@@ -1,0 +1,12 @@
+---
+title: Posts
+---
+
+<ul>
+  {{#each posts}}
+      <li>
+        <span>[{{ this.meta.date }}]: </span>
+        <a href={{this.slug}}>{{ this.meta.title }}</a>
+      </li>
+  {{/each}}
+</ul>
