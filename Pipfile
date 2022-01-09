@@ -9,6 +9,7 @@ python-frontmatter = "*"
 python-dotenv = "*"
 markdown-link-attr-modifier = "*"
 markdown = "*"
+slugify = "*"
 
 [dev-packages]
 
