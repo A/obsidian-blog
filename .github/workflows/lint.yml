@@ -17,5 +17,5 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: install dependencies
-      - run: pip3 install -r requirements.txt
+        run: pip3 install -r requirements.txt
       - uses: jakebailey/pyright-action@v1
