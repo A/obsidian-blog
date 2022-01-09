@@ -1,5 +1,6 @@
 import os
 import dotenv
+from datetime import datetime
 
 from lib.blog import get_posts, get_pages, get_layouts, render
 from lib.helpers import make_dir, rm_dir, copy_dir
@@ -19,11 +20,11 @@ rm_dir(DEST_DIR)
 make_dir(DEST_DIR)
 copy_dir(ASSETS_DIR, os.path.join(DEST_DIR, 'assets'))
 
-print('Start a build')
+print('Start a build', datetime.now())
 
 # Parse layouts, pages, and posts
 layouts = get_layouts(LAYOUTS_DIR)
-posts = get_posts(SOURCE_DIR)
+posts = get_posts(SOURCE_DIR, ASSETS_DIR)
 pages = get_pages(PAGES_DIR)
 
 # Render pages
@@ -47,6 +48,7 @@ for page in pages:
 
     rendered_page = layout({
         'content': content,
+        'blog_title': BLOG_TITLE,
         'title': BLOG_TITLE,
         'pages': pages,
     })
@@ -72,6 +74,7 @@ for post in posts:
 
     rendered_post = layout({
         'title': meta['title'][0],
+        'blog_title': BLOG_TITLE,
         'content': html,
         'pages': pages,
     })

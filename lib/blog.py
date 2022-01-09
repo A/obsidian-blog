@@ -3,6 +3,7 @@ import re
 import glob
 import markdown
 import pybars
+from shutil import copyfile
 
 from lib.helpers import change_ext, build_slug
 
@@ -11,6 +12,7 @@ from lib.helpers import change_ext, build_slug
 #
 
 INCLUDE_REGEXP = r'\[\[(.*)\]\]'
+IMG_REGEXP = r'\!\[\[(.*)\]\]'
 
 pybars_compiler = pybars.Compiler()
 
@@ -25,7 +27,7 @@ def make_dest_dir(dest_dir: str):
     os.mkdir(dest_dir)
 
 
-def get_posts(source_dir: str):
+def get_posts(source_dir: str, assets_dir: str):
     """Returns all posts in the given directory"""
     file_names = [
         f for f in os.listdir(source_dir)
@@ -46,8 +48,15 @@ def get_posts(source_dir: str):
         with open(post['file']) as f: md_content = f.read()
 
         md_content = unwrap_includes(md_content)
+        md_content = unwrap_images(md_content, assets_dir)
+
         md_parser = markdown.Markdown(
-            extensions = ['meta', 'fenced_code', 'markdown_link_attr_modifier'],
+            extensions = [
+                'meta',
+                'fenced_code',
+                'markdown_link_attr_modifier',
+                'attr_list',
+            ],
             extension_configs = {
                 'markdown_link_attr_modifier': {
                     'new_tab': 'on',
@@ -120,6 +129,29 @@ def get_include(name: str):
         'content':  content
     }
 
+
+def get_all_images(content: str):
+    matches = re.findall(IMG_REGEXP, content)
+    return list(filter(
+        lambda include: include is not None,
+        map(get_image, matches)
+    ))
+    
+def get_image(file: str):
+    """Returns a parsed include meta and content"""
+
+    matches = glob.glob('**/' + file, recursive=True)
+    file_path = matches[0] if len(matches) > 0 else None
+
+    if file_path == None: return None
+
+    return {
+        'slug': build_slug(file),
+        'name': os. path. splitext(file)[0],
+        'file_name': file,
+        'file': file_path,
+    }
+
 def unwrap_includes(content: str):
     result = content
 
@@ -129,10 +161,30 @@ def unwrap_includes(content: str):
         content = include['content']
 
         placeholder = '[[' + name + ']]'
-
         result = result.replace(placeholder, content)
 
     return result
+
+
+def unwrap_images(content: str, assets_dir: str):
+    result = content
+
+    for image in get_all_images(result):
+        name = image['name']
+        file_name = image['file_name']
+        file = image['file']
+        slug = image['slug']
+
+        placeholder = '![[' + file_name + ']]'
+        img_str = '![' + name + '](/assets/' + slug + '){: width="100%"}'
+
+        print('  Copy image:', file)
+
+        copyfile(file, os.path.join(assets_dir, slug))
+        result = result.replace(placeholder, img_str)
+
+    return result
+
 
 def get_layouts(layouts_dir: str):
     """return dict by name of all hbs layouts from a given dir"""
