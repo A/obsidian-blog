@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 markdown = "*"
+pybars3 = "*"
+python-frontmatter = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

@@ -1,17 +1,13 @@
 import os
 import shutil
-from slugify import slugify
 from distutils.dir_util import copy_tree
+from shutil import copyfile
+
 
 def change_ext(ext: str, file_path: str):
     """Changes extension in path"""
-
     pre, _ = os.path.splitext(file_path)
     return pre + '.' + ext
-
-def build_slug(file_path: str):
-    url = change_ext('', file_path)
-    return slugify(url) + '.html'
 
 def rm_dir(directory: str):
     """Removes a given dir if exists"""
@@ -25,3 +21,26 @@ def make_dir(directory: str):
 def copy_dir(source: str, dest: str):
     """copies given directory content into another one"""
     copy_tree(source, dest)
+
+def get_files_in_dir(dir: str, filter_partials=False):
+  """returns files from given dir with optional partials filtering"""
+  file_names = [
+      f for f in os.listdir(dir)
+      if os.path.isfile(os.path.join(dir, f))
+  ]
+
+  if filter_partials:
+    file_names = filter(
+        lambda f: not f.startswith('_', 0, -1),
+        file_names,
+    )
+
+  return file_names
+
+def basename(path: str):
+  """returns a file basename"""
+  return os.path.basename(path)
+
+def copy_file(src: str, dest: str):
+  copyfile(src, dest)
+
