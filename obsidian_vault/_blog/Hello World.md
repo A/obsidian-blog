@@ -11,6 +11,8 @@ layout: main
 [[Installation]]
 
 ## Usage
+[[Usage Example]]
+[[Live Updates]]
 [[Directory Structure]]
 [[Environment variables]]
 
@@ -19,11 +21,12 @@ layout: main
 [[Pages]]
 [[Pages Context]]
 [[Posts]]
+[[Posts Context]]
 [[Images]]
+[[Image Context]]
 [[Global Context]]
 
 ## Advanced Tricks
 [[GitHub Pages Deployment with Actions]]
-[[Live Updates]]
 
 

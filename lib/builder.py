@@ -1,5 +1,6 @@
 import os.path
 from lib import blog, config, fs
+from lib.logger import log
 from lib.models.BuilderContext import BuilderContext
 from lib.models.Image import Image
 from lib.models.Page import Page
@@ -20,6 +21,7 @@ _global_context = BuilderContext(
 def build():
   _prepare_context()
   _make_build_dir()
+  _copy_assets_to_build_dir()
 
   for page in _global_context.get("pages"): _build_page(page)
   for post in _global_context.get("posts"): _build_post(post)
@@ -35,13 +37,18 @@ def _prepare_context():
 def _make_build_dir():
   """Purge old build artefacts and make an empty destination dir"""
   fs.rm_dir(config.DEST_DIR)
+  log("Remove build dir")
   fs.make_dir(config.DEST_DIR)
+  log("Create a new build dir")
+
+def _copy_assets_to_build_dir():
   fs.copy_dir(config.ASSETS_DIR, os.path.join(config.DEST_DIR, config.ASSETS_DEST_DIR))
+  log("Copy assets to the build dir")
 
 
 def _build_page(page: Page):
   template = page.get("template")
-  context = dict(_global_context) | dict(page)
+  context = dict(_global_context) | dict(page=page)
   html = template(context)
 
   slug = page.get("slug")
@@ -52,7 +59,7 @@ def _build_page(page: Page):
   if layout is not None:
     html = layout.get("template")(context | { "content": html })
 
-  print("Build a page:", page.get("meta").get("title"))
+  log("Build a page:", page.get("meta").get("title"))
   with open(dest, 'a') as f: print(html, file=f)
 
 
@@ -67,7 +74,8 @@ def _build_post(post: Post):
   if layout is not None:
     html = layout.get("template")(context | { "content": html })
 
-  print("Build a post:", post.get("meta").get("title"))
+  log("Build a post:", post.get("meta").get("title"))
+  os.makedirs(os.path.dirname(dest), exist_ok=True)
   with open(dest, 'a') as f: print(html, file=f)
 
   _copy_images(post.get("imgs", []))
@@ -78,6 +86,6 @@ def _copy_images(imgs: list[Image]):
     slug = img.get("slug")
     src = img.get("file")
     dest = os.path.join(config.DEST_DIR, config.ASSETS_DEST_DIR, slug)
-    print("  Copy image", src)
+    log("  Copy image", src)
     fs.copy_file(src, dest)
 

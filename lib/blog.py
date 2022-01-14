@@ -5,8 +5,9 @@ import frontmatter
 from slugify import slugify
 
 from lib import fs, config, handlebars, markdown
+from lib.logger import log
 from lib.models.Image import Image
-from lib.models.Include import Include
+from lib.models.Include import Include, IncludeMeta
 from lib.models.Layout import Layout
 from lib.models.Meta import Meta
 from lib.models.Post import Post
@@ -33,12 +34,12 @@ def replace_image_urls(md: str, imgs: list[Image], url_prefix: str = "/"):
 
 def get_post(file: str):
   post = frontmatter.load(file)
-  print("Prepare a post:", post.metadata.get("title"))
+  log("Prepare a post:", post.metadata.get("title"))
   md = unwrap_markdown(post.content)
   imgs = get_all_images(md)
   md = replace_image_urls(md, imgs, "/" + config.ASSETS_DEST_DIR)
 
-  slug = slugify(fs.change_ext("", fs.basename(file))) + ".html"
+  slug = (post.metadata.get("slug") or slugify(fs.change_ext("", fs.basename(file)))) + ".html"
   html = markdown.parse_markdown(md)
 
   return Post(
@@ -65,7 +66,13 @@ def get_page(file: str):
   page = frontmatter.load(file)
   slug = slugify(fs.change_ext("", fs.basename(file))) + ".html"
 
-  page =  Page(
+  _, ext = os.path.splitext(file)
+  if ext == ".md":
+    print("MARKDOWN")
+    page.content = markdown.parse_markdown(page.content)
+
+
+  page = Page(
     meta = Meta(**page.metadata),
     slug = slug,
     template = handlebars.create_template_fn(page.content),
@@ -102,15 +109,17 @@ def get_include(name: str) -> Include:
     """Returns a parsed include meta and content"""
     matches = glob.glob('**/' + name + '.md', recursive=True)
     file = matches[0] if len(matches) > 0 else None
+    placeholder = "[[" + name + "]]"
 
     if file == None: return None
-
-    with open(file) as f: content = f.read()
+    include = frontmatter.load(file)
 
     return Include(
       file = file,
       name = name,
-      content = content
+      meta = IncludeMeta(**include.metadata),
+      content = include.content,
+      placeholder = placeholder
     )
 
 
@@ -143,13 +152,18 @@ def get_image(file: str):
 def unwrap_includes(content: str):
     result = content
     for include in get_all_includes(result):
-      name = include.get("name")
-      content = include.get("content")
-      placeholder = '[[' + name + ']]'
-      print("  Unwrapping an include:", name)
-      result = result.replace(placeholder, content)
+      log("  Unwrapping an include:", include.get("name"))
+      html = render_include(include)
+      result = result.replace(include.get("placeholder"), html)
     return result
 
+def render_include(include: Include):
+  title = include.get("meta").get("title") or None
+  content = include.get("content")
+  header = ""
+  if title:
+    header = "<h3 class='subheader' id='" + title + "'><a href='#" + title +"'>" + title  +"</a></h3>\n"
+  return header + content + "\n"
 
 def get_layout(file: str) -> Layout:
   name, _ = os.path.splitext(fs.basename(file))

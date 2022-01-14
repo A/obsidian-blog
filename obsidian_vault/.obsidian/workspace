@@ -10,7 +10,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "Posts.md",
+            "file": "Usage Example.md",
             "mode": "source"
           }
         }
@@ -81,7 +81,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Posts.md",
+                "file": "Usage Example.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -101,15 +101,15 @@
   },
   "active": "5186b5e49fcab318",
   "lastOpenFiles": [
-    "Posts.md",
+    "Usage Example.md",
     "_blog/Hello World.md",
-    "Pages.md",
+    "Live Updates.md",
+    "Global Context.md",
+    "Image Context.md",
+    "Images.md",
+    "Posts Context.md",
+    "Posts.md",
     "Pages Context.md",
-    "Layouts.md",
-    "Intro.md",
-    "Directory Structure.md",
-    "Lets Go.jpg",
-    "Usage.md",
-    "Installation.md"
+    "Pages.md"
   ]
 }
