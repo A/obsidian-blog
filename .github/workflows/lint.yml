@@ -1,0 +1,21 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - "*"
+
+env:
+  PYTHON_VERSION: 3.9.9
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: install dependencies
+        run: pip3 install -r requirements.txt
+      - uses: jakebailey/pyright-action@v1

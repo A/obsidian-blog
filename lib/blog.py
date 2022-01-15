@@ -1,206 +1,191 @@
 import os
 import re
 import glob
-import markdown
-import pybars
-from shutil import copyfile
+import frontmatter
+from slugify import slugify
 
-from lib.helpers import change_ext, build_slug
-
-#
-# Bunch of helpers to make a blog from obsidian notes
-#
-
-INCLUDE_REGEXP = r'\[\[(.*)\]\]'
-IMG_REGEXP = r'\!\[\[(.*)\]\]'
-
-pybars_compiler = pybars.Compiler()
+from lib import fs, config, handlebars, markdown
+from lib.logger import log
+from lib.models.Image import Image
+from lib.models.Include import Include, IncludeMeta
+from lib.models.Layout import Layout
+from lib.models.Meta import Meta
+from lib.models.Post import Post
+from lib.models.Page import Page
 
 
-def make_dest_dir(dest_dir: str):
-    """Purge old build artefacts and make an empty destination dir"""
-
-    if os.path.exists(dest_dir) and os.path.isdir(dest_dir):
-        print('Clear previous build')
-        shutil.rmtree(dest_dir)
-
-    os.mkdir(dest_dir)
+def unwrap_markdown(md_str: str):
+  """unwrap images and includes in the given markdown string"""
+  res = md_str
+  res = unwrap_includes(res)
+  return res
 
 
-def get_posts(source_dir: str, assets_dir: str):
-    """Returns all posts in the given directory"""
-    file_names = [
-        f for f in os.listdir(source_dir)
-        if os.path.isfile(os.path.join(source_dir, f))
-    ]
-
-    file_names = filter(
-        lambda f: not f.startswith('_', 0, -1),
-        file_names,
-    )
-
-    posts = []
-
-    for file_name in file_names:
-        post = {}
-        post['file'] = os.path.join(source_dir, file_name)
-
-        with open(post['file']) as f: md_content = f.read()
-
-        md_content = unwrap_includes(md_content)
-        md_content = unwrap_images(md_content, assets_dir)
-
-        md_parser = markdown.Markdown(
-            extensions = [
-                'meta',
-                'fenced_code',
-                'markdown_link_attr_modifier',
-                'attr_list',
-            ],
-            extension_configs = {
-                'markdown_link_attr_modifier': {
-                    'new_tab': 'on',
-                    'no_referrer': 'external_only',
-                    'auto_title': 'on',
-                },
-            }
-        )
-
-        post['html'] = md_parser.convert(md_content)
-        post['meta'] = md_parser.Meta
-        post['slug'] = build_slug(post['file'])
-        
-        posts.append(post)
+def replace_image_urls(md: str, imgs: list[Image], url_prefix: str = "/"):
+  res = md
+  for img in imgs:
+    placeholder = img.get("placeholder")
+    name = img.get("name")
+    slug = img.get("slug")
+    img_str = "![" + name + "]("+ url_prefix + "/" + slug +"){: width='100%'}"
+    res = res.replace(placeholder, img_str)
+  return res
 
 
+def get_post(file: str):
+  post = frontmatter.load(file)
+  log("Prepare a post:", post.metadata.get("title"))
+  includes = get_all_includes(post.content)
+  md = unwrap_markdown(post.content)
+  imgs = get_all_images(md)
+  md = replace_image_urls(md, imgs, "/" + config.ASSETS_DEST_DIR)
 
-    return sorted(
-        posts,
-        key=lambda post: post['meta']['date'],
-        reverse=True
-    )
+  slug = (post.metadata.get("slug") or slugify(fs.change_ext("", fs.basename(file)))) + ".html"
+  html = markdown.parse_markdown(md)
 
-def get_pages(pages_dir: str):
+  return Post(
+    file = file,
+    html = html,
+    meta = Meta(**post.metadata),
+    slug = slug,
+    imgs = imgs,
+    includes = includes,
+  )
+
+
+def get_posts():
+  """Returns all posts in the given directory"""
+  posts = []
+  files = fs.get_files_in_dir(config.SOURCE_DIR, filter_partials=True)
+
+  for file in files:
+    post = get_post(os.path.join(config.SOURCE_DIR, file))
+    posts.append(post)
+
+  return sorted(posts, key=lambda p: p.get("meta").get("date"),  reverse=True)
+
+def get_page(file: str):
+  page = frontmatter.load(file)
+  slug = slugify(fs.change_ext("", fs.basename(file))) + ".html"
+
+  _, ext = os.path.splitext(file)
+  if ext == ".md":
+    print("MARKDOWN")
+    page.content = markdown.parse_markdown(page.content)
+
+
+  page = Page(
+    meta = Meta(**page.metadata),
+    slug = slug,
+    template = handlebars.create_template_fn(page.content),
+    file = file,
+  )
+
+  return page
+
+
+def get_pages():
     """returns all hbs pages in the given dir"""
-    pages = []
+    pages: list[Page] = []
 
-    file_names = [
-        f for f in os.listdir(pages_dir)
-        if os.path.isfile(os.path.join(pages_dir, f))
-    ]
+    files = fs.get_files_in_dir(config.PAGES_DIR, filter_partials=True)
 
-    for file_name in file_names:
-        page = {}
-        page['name'] = re.sub(r'\.hbs$', '', file_name)
-        page['file'] = os.path.join(pages_dir, file_name)
-        page['slug'] = build_slug(page['name'])
-
-        with open(page['file']) as f: raw = f.read()
-        page['raw_content'] = raw
-
-        pages.append(page)
+    for file in files:
+      page = get_page(os.path.join(config.PAGES_DIR, file))
+      pages.append(page)
     
     return pages
 
 
-def get_all_includes(content: str):
+def get_all_includes(content: str) -> list[Include]:
     """Returns a list of all obsidian includes"""
 
-    matches = re.findall(INCLUDE_REGEXP, content)
+    matches = re.findall(config.MEDIAWIKI_INCLUDE_REGEXP, content)
     return list(filter(
         lambda include: include is not None,
         map(get_include, matches)
     ))
 
 
-def get_include(name: str):
+def get_include(name: str) -> Include:
     """Returns a parsed include meta and content"""
-
     matches = glob.glob('**/' + name + '.md', recursive=True)
     file = matches[0] if len(matches) > 0 else None
+    placeholder = "[[" + name + "]]"
 
     if file == None: return None
 
-    with open(file) as f: content = f.read()
+    include = frontmatter.load(file)
+    meta = IncludeMeta(**include.metadata)
 
-    return {
-        'name': name,
-        'file': file,
-        'content':  content
-    }
+    if not meta.get("published"): return None
+
+    return Include(
+      file = file,
+      name = name,
+      meta = meta,
+      content = include.content,
+      placeholder = placeholder
+    )
 
 
-def get_all_images(content: str):
-    matches = re.findall(IMG_REGEXP, content)
-    return list(filter(
-        lambda include: include is not None,
-        map(get_image, matches)
-    ))
-    
+def get_all_images(content: str) -> list[Image]:
+  matches = re.findall(config.MEDIAWIKI_IMG_REGEXP, content)
+  return list(filter(
+    lambda img: img is not None,
+    map(get_image, matches)
+  ))
+
+
 def get_image(file: str):
-    """Returns a parsed include meta and content"""
+  """Returns a parsed include meta and content"""
 
-    matches = glob.glob('**/' + file, recursive=True)
-    file_path = matches[0] if len(matches) > 0 else None
+  matches = glob.glob('**/' + file, recursive=True)
+  if len(matches) == 0: return None
+  match = matches[0]
 
-    if file_path == None: return None
+  name, ext = os.path.splitext(fs.basename(match))
+  slug = slugify(name) + ext
 
-    return {
-        'slug': build_slug(file),
-        'name': os. path. splitext(file)[0],
-        'file_name': file,
-        'file': file_path,
-    }
+
+  return Image(
+    slug = slug,
+    name = name,
+    file = match,
+    placeholder = "![[" + file + "]]",
+  )
 
 def unwrap_includes(content: str):
     result = content
-
     for include in get_all_includes(result):
-        name = include['name']
-        file = include['file']
-        content = include['content']
-
-        placeholder = '[[' + name + ']]'
-        result = result.replace(placeholder, content)
-
+      log("  Unwrapping an include:", include.get("name"))
+      html = render_include(include)
+      result = result.replace(include.get("placeholder"), html)
     return result
 
+def render_include(include: Include):
+  title = include.get("meta").get("title") or None
+  content = include.get("content")
+  header = ""
+  if title:
+    header = "<h3 class='subheader' id='" + title + "'><a href='#" + title +"'>" + title  +"</a></h3>\n"
+  return header + content + "\n"
 
-def unwrap_images(content: str, assets_dir: str):
-    result = content
+def get_layout(file: str) -> Layout:
+  name, _ = os.path.splitext(fs.basename(file))
+  with open(file) as f: hbs_str = f.read()
+  return Layout(
+    name = name,
+    template = handlebars.create_template_fn(hbs_str)
+  )
 
-    for image in get_all_images(result):
-        name = image['name']
-        file_name = image['file_name']
-        file = image['file']
-        slug = image['slug']
-
-        placeholder = '![[' + file_name + ']]'
-        img_str = '![' + name + '](/assets/' + slug + '){: width="100%"}'
-
-        print('  Copy image:', file)
-
-        copyfile(file, os.path.join(assets_dir, slug))
-        result = result.replace(placeholder, img_str)
-
-    return result
-
-
-def get_layouts(layouts_dir: str):
+def get_layouts() -> dict[str, Layout]:
     """return dict by name of all hbs layouts from a given dir"""
-    layouts = {}
+    layouts: dict[str, Layout] = {}
 
-    for file_name in os.listdir(layouts_dir):
-        rel_path = os.path.join(layouts_dir, file_name)
-        name, _ = os.path.splitext(file_name)
-
-        with open(rel_path) as f: raw = f.read()
-
-        layouts[name] = pybars_compiler.compile(raw)
+    files = fs.get_files_in_dir(config.LAYOUTS_DIR, filter_partials=True)
+    for file in files:
+      layout = get_layout(os.path.join(config.LAYOUTS_DIR, file))
+      layouts[layout.get("name")] = layout
 
     return layouts
-
-def render(hbs_str: str, ctx: dict):
-    template = pybars_compiler.compile(hbs_str)
-    return template(ctx)
-

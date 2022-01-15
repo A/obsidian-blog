@@ -4,7 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+pybars3 = "*"
+python-frontmatter = "*"
+python-dotenv = "*"
+markdown-link-attr-modifier = "*"
 markdown = "*"
+slugify = "*"
 
 [dev-packages]
 

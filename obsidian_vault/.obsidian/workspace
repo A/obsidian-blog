@@ -1,0 +1,115 @@
+{
+  "main": {
+    "id": "32138ae8009d4e13",
+    "type": "split",
+    "children": [
+      {
+        "id": "5186b5e49fcab318",
+        "type": "leaf",
+        "dimension": 50.19230769230769,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Usage Example.md",
+            "mode": "source"
+          }
+        }
+      },
+      {
+        "id": "66d2fa6b42696d9f",
+        "type": "leaf",
+        "dimension": 49.80769230769231,
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "Pages Context.md",
+            "mode": "source"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "630fc53bd6bead34",
+    "type": "split",
+    "children": [
+      {
+        "id": "d3de7a8113b2c059",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "71f0679fc1e3ba14",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "de8ab5dfcf0a6ddf",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bc889e06f702653d",
+    "type": "split",
+    "children": [
+      {
+        "id": "e54c13610bc65f36",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1f3aae00729c9300",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Usage Example.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "5186b5e49fcab318",
+  "lastOpenFiles": [
+    "Usage Example.md",
+    "_blog/Hello World.md",
+    "Live Updates.md",
+    "Global Context.md",
+    "Image Context.md",
+    "Images.md",
+    "Posts Context.md",
+    "Posts.md",
+    "Pages Context.md",
+    "Pages.md"
+  ]
+}
