@@ -35,6 +35,7 @@ def replace_image_urls(md: str, imgs: list[Image], url_prefix: str = "/"):
 def get_post(file: str):
   post = frontmatter.load(file)
   log("Prepare a post:", post.metadata.get("title"))
+  includes = get_all_includes(post.content)
   md = unwrap_markdown(post.content)
   imgs = get_all_images(md)
   md = replace_image_urls(md, imgs, "/" + config.ASSETS_DEST_DIR)
@@ -48,6 +49,7 @@ def get_post(file: str):
     meta = Meta(**post.metadata),
     slug = slug,
     imgs = imgs,
+    includes = includes,
   )
 
 
@@ -112,12 +114,16 @@ def get_include(name: str) -> Include:
     placeholder = "[[" + name + "]]"
 
     if file == None: return None
+
     include = frontmatter.load(file)
+    meta = IncludeMeta(**include.metadata)
+
+    if not meta.get("published"): return None
 
     return Include(
       file = file,
       name = name,
-      meta = IncludeMeta(**include.metadata),
+      meta = meta,
       content = include.content,
       placeholder = placeholder
     )

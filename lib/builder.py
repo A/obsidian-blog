@@ -67,7 +67,7 @@ def _build_post(post: Post):
   slug = post.get("slug")
   dest = os.path.join(config.DEST_DIR, slug)
   html = post.get("html", "")
-  context = dict(_global_context) | { "post": post }
+  context = dict(_global_context) | dict(post=post)
 
   layout_name = post.get("layout") or "main"
   layout = _global_context.get("layouts").get(layout_name)
