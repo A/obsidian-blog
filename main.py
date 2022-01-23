@@ -1,10 +1,6 @@
 import time
-from datetime import datetime
 from lib import builder
 from lib.logger import log
-
-# TODO: Add partials support
-# TODO: Recursive unwrapping support
 
 log('Start a build')
 

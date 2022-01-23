@@ -70,7 +70,6 @@ def get_page(file: str):
 
   _, ext = os.path.splitext(file)
   if ext == ".md":
-    print("MARKDOWN")
     page.content = markdown.parse_markdown(page.content)
 
 
