@@ -1,4 +1,4 @@
-from lib.config import VERBOSE
+from obsidian_blog.config import VERBOSE
 
 def log(*args):
     if not VERBOSE:

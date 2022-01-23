@@ -44,3 +44,6 @@ def basename(path: str):
 def copy_file(src: str, dest: str):
   copyfile(src, dest)
 
+def write_file(dest, content):
+  os.makedirs(os.path.dirname(dest), exist_ok=True)
+  with open(dest, 'a') as f: print(content, file=f)

@@ -5,7 +5,7 @@ import re
 from slugify.slugify import slugify
 
 from obsidian_blog import markdown
-from lib.logger import log
+from obsidian_blog.logger import log
 from obsidian_blog.helpers import normalize_path
 
 IMG_REF_PREFIX = "__image__"
@@ -103,7 +103,7 @@ class Image:
 
   @staticmethod
   def cleanup_unused_ref_id(id, content):
-    link_re = re.compile("\\!\\[.*\\]\\[" + id + "\\]")
+    link_re = re.compile("\\[.*\\]\\[" + id + "\\]")
     matches = re.findall(link_re, content)
     if not len(matches):
       ref_re = re.compile("(\\[" + id + "\\]:\\s.*)")
@@ -120,10 +120,10 @@ class Image:
     return False
 
   def render(self, parent, parent_content):
-    prefix = slugify(parent.meta.get("title"))
+    id = slugify(f"{parent.slug}.{self.alt}")
     content = parent_content.replace(
       self.placeholder,
-      f"![{self.alt}][{prefix}.{self.alt}]",
+      f"![{self.alt}][{id}]" + "{: width='100%'}",
     )
-    content = f"{content}\n[{prefix}.{self.alt}]: {self.filename}"
+    content = f"{content}\n\n[{id}]: {self.filename}"
     return content

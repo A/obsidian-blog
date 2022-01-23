@@ -5,8 +5,10 @@ import glob
 import os
 import re
 import frontmatter
+from obsidian_blog.helpers import get_slug
 
 from obsidian_blog.image import Image
+from obsidian_blog.logger import log
 
 
 MW_INCLUDE_REGEXP = r'(\[\[(.*)\]\])'
@@ -14,10 +16,11 @@ MW_INCLUDE_REGEXP = r'(\[\[(.*)\]\])'
 class Include:
   def __init__(self, placeholder, meta, content, includes, images):
     self.meta = meta
-    self.content = content
+    self.content = content if meta.get("published") else ""
     self.includes = includes
     self.placeholder = placeholder
     self.images = images
+    self.slug = get_slug(self)
 
   @staticmethod
   def get_all(content):
@@ -44,8 +47,9 @@ class Include:
 
         )
         includes.append(include)
+        log(f"- [PARSED]: {placeholder}")
       except:
-        print(f"Include \"{placeholder}\" not found")
+        print(f"- [NOT FOUND] \"{placeholder}\"")
 
     return includes
 
@@ -55,8 +59,18 @@ class Include:
       parent_content = include.render(parent, parent_content)
     return parent_content
 
+
   def render(self, parent, parent_content):
     self_content = self.content
     self_content = Include.render_all(self, self_content)
     self_content = Image.render_all(self, self_content)
+    self_content = self.render_header(self_content)
     return parent_content.replace(self.placeholder, self_content)
+
+  def render_header(self, self_content):
+    title = self.meta.get("title")
+    if title:
+      header = "<h3 class='subheader' id='" + title + "'><a href='#" + title +"'>" + title  +"</a></h3>\n"
+      self_content = f"{header}\n{self_content}"
+    return self_content
+
