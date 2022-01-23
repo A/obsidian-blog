@@ -37,9 +37,10 @@ class Builder():
     fs.make_dir(dest_dir)
 
   def copy_assets(self):
+    dest_dir = self.blog.config.DEST_DIR
     assets_dir = self.blog.config.ASSETS_DIR
     assets_dest_dir = self.blog.config.ASSETS_DEST_DIR
-    log(f"Copy assets from {assets_dir} to {assets_dest_dir}")
+    log(f"Copy assets from {assets_dir} to {dest_dir}/{assets_dest_dir}")
     dest_dir = self.blog.config.DEST_DIR
     fs.copy_dir(assets_dir, os.path.join(dest_dir, assets_dest_dir))
 
