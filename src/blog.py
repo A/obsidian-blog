@@ -39,7 +39,7 @@ class Blog():
     pages_dir = self.config.PAGES_DIR
     files = fs.get_files_in_dir(pages_dir, filter_partials=True)
     for file in files:
-      page = Page(os.path.join(pages_dir, file))
+      page = Page.load(os.path.join(pages_dir, file))
       pages.append(page)
     return pages
 

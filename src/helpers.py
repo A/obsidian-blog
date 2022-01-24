@@ -20,7 +20,5 @@ def traverseBy(key, head, cb):
 def get_slug(node) -> str:
   if node.meta.get("slug"):
     return node.meta.get("slug")
-  if node.meta.get("title"):
-    return slugify(node.meta.get("title"))
   file, _ = os.path.splitext(node.filename)
   return slugify(fs.basename(file))

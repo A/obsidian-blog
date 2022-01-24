@@ -58,9 +58,9 @@ class Builder():
       log("- [SKIPPED]:", post.meta.get("title"))
       return
     dest = os.path.join(self.blog.config.DEST_DIR, post.slug) + ".html"
-    html = markdown.parse(post.render())
+    html = markdown.render(post.render())
     layout = self.get_layout(post)
-    context = self.get_context({ "post": post, "content": html })
+    context = self.get_context({ "self": post, "content": html })
 
     if layout is not None:
       html = layout.render(context)
@@ -90,7 +90,9 @@ class Builder():
   def render_pages(self):
     log("\nRender pages:\n")
     tic = time.perf_counter()
-    for page in self.blog.pages: self.render_page(page)
+    for page in self.blog.pages:
+      traverseBy("includes", page, lambda node: self.process_images(node))
+      self.render_page(page)
     toc = time.perf_counter()
     self.timings["pages"] = toc - tic
 
@@ -98,7 +100,7 @@ class Builder():
     log("- [RENDERED]:", page.meta.get("title"))
     dest_dir = self.blog.config.DEST_DIR
     dest = os.path.join(dest_dir, page.slug) + ".html"
-    context = self.get_context({ "page": page })
+    context = self.get_context({ "self": page })
     html = page.render(context)
     layout = self.get_layout(page)
 

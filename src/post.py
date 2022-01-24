@@ -3,7 +3,6 @@ from src.helpers import get_slug
 from src.image import Image
 from src.include import Include
 
-
 class Post():
   @staticmethod
   def load(filename):
@@ -16,10 +15,10 @@ class Post():
         images=Image.get_all(f.content),
         includes=Include.get_all(f.content),
       )
-    return Post.get_private_post(filename=filename, meta=f.metadata)
+    return Post.get_empty_post(filename=filename, meta=f.metadata)
   
   @staticmethod
-  def get_private_post(filename, meta):
+  def get_empty_post(filename, meta):
     return Post(
       filename=filename,
       meta=meta,
