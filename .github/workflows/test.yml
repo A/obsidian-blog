@@ -1,4 +1,4 @@
-name: Deploy GitHub Pages
+name: Test
 
 on:
   push:
@@ -9,7 +9,7 @@ env:
   PYTHON_VERSION: 3.9.9
 
 jobs:
-  build-and-deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
