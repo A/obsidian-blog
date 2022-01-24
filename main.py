@@ -1,15 +1,11 @@
 import time
-from datetime import datetime
-from lib import builder
-from lib.logger import log
-
-# TODO: Add partials support
-# TODO: Recursive unwrapping support
-
-log('Start a build')
+from src.builder import Builder
 
 tic = time.perf_counter()
-builder.build()
+timings = {}
+Builder().build(timings)
 toc = time.perf_counter()
 
-log(f"The build has been finished in {toc - tic:0.4f} seconds")
+print(f"\nAll posts have been rendered in {timings['posts']:0.4f} seconds")
+print(f"All pages have been rendered in {timings['pages']:0.4f} seconds")
+print(f"The build has been finished in {toc - tic:0.4f} seconds\n")
