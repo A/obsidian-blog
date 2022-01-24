@@ -1,6 +1,6 @@
 import frontmatter
-from obsidian_blog.tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
-from obsidian_blog.post import Post
+from src.tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
+from src.post import Post
 
 def test_post_render():
   fakefs_setup()

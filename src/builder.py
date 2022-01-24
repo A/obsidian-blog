@@ -2,10 +2,10 @@ import os
 import time
 
 from slugify.slugify import slugify
-from obsidian_blog import markdown, fs
-from obsidian_blog.logger import log
-from obsidian_blog.blog import Blog
-from obsidian_blog.helpers import traverseBy
+from src import markdown, fs
+from src.logger import log
+from src.blog import Blog
+from src.helpers import traverseBy
 
 
 class Builder():

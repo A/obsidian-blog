@@ -5,17 +5,18 @@ import glob
 import os
 import re
 import frontmatter
-from obsidian_blog.helpers import get_slug
+from src.helpers import get_slug
 
-from obsidian_blog.image import Image
-from obsidian_blog.logger import log
+from src.image import Image
+from src.logger import log
 
 
 MW_INCLUDE_REGEXP = r'(\[\[(.*)\]\])'
 
 class Include:
-  def __init__(self, placeholder, meta, content, includes, images):
+  def __init__(self, placeholder, meta, content, includes, images, filename):
     self.meta = meta
+    self.filename = filename
     self.content = content if meta.get("published") else ""
     self.includes = includes
     self.placeholder = placeholder
@@ -36,9 +37,12 @@ class Include:
       # TODO: wmd has different syntax for images, shouldn't be here
       if Image.is_image(filename): continue
       try:
-        filenames = glob.glob('**/' + filename + '.md', recursive=True)
-        f = frontmatter.load(filenames[0])
+        g = f"**/{filename}.md"
+        filenames = glob.glob(g, recursive=True)
+        filename = filenames[0]
+        f = frontmatter.load(filename)
         include = Include(
+          filename=filename,
           placeholder=placeholder,
           content=f.content,
           meta=f.metadata,
@@ -48,8 +52,8 @@ class Include:
         )
         includes.append(include)
         log(f"- [PARSED]: {placeholder}")
-      except:
-        print(f"- [NOT FOUND] \"{placeholder}\"")
+      except Exception as e:
+        print(f"- [NOT FOUND] \"{placeholder}\" {e}")
 
     return includes
 

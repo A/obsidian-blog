@@ -1,5 +1,5 @@
-from obsidian_blog.tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
-from obsidian_blog.image import Image
+from src.tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
+from src.image import Image
 
 def test_inline_image():
   fakefs_setup()

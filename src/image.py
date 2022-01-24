@@ -4,15 +4,15 @@ import re
 
 from slugify.slugify import slugify
 
-from obsidian_blog import markdown
-from obsidian_blog.logger import log
-from obsidian_blog.helpers import normalize_path
+from src import markdown
+from src.logger import log
+from src.helpers import normalize_path
 
 IMG_REF_PREFIX = "__image__"
 MW_IMG_REGEXP = r'(\!\[\[(.*)\]\])'
 MD_INLINE_IMG_REGEXP = r'(\!\[(.*)\]\((.*)\))'
 MD_REFERENCE_IMAGE = r'(\!\[(.*)]\[(.*)\])'
-IMAGE_EXTENSIONS = ['.png']
+IMAGE_EXTENSIONS = ['.png', '.jpg', '.jpeg']
 
 class Image:
 

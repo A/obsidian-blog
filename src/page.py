@@ -1,7 +1,7 @@
 import os
 import frontmatter
-from obsidian_blog import markdown, handlebars
-from obsidian_blog.helpers import get_slug
+from src import markdown, handlebars
+from src.helpers import get_slug
 
 
 class Page:

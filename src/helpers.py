@@ -3,7 +3,7 @@ from distutils.dir_util import copy_tree
 import shutil
 
 from slugify.slugify import slugify
-from obsidian_blog import fs
+from src import fs
 
 def normalize_path(path: str):
   if path[0] == '/':

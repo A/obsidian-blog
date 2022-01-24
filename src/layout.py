@@ -1,5 +1,5 @@
 import os
-from obsidian_blog import handlebars, fs
+from src import handlebars, fs
 
 class Layout:
   def __init__(self, filename):

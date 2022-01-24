@@ -1,9 +1,9 @@
 import os
-from obsidian_blog import config, fs
-from obsidian_blog.layout import Layout
-from obsidian_blog.logger import log
-from obsidian_blog.page import Page
-from obsidian_blog.post import Post
+from src import config, fs
+from src.layout import Layout
+from src.logger import log
+from src.page import Page
+from src.post import Post
 
 class Blog():
 
@@ -17,10 +17,10 @@ class Blog():
   def load_posts(self):
     """Returns all posts in the given directory"""
     posts = []
-    source_dir = self.config.SOURCE_DIR
-    files = fs.get_files_in_dir(source_dir, filter_partials=True)
+    posts_dir = self.config.POSTS_DIR
+    files = fs.get_files_in_dir(posts_dir, filter_partials=True)
     for file in files:
-      post = Post.load(os.path.join(source_dir, file))
+      post = Post.load(os.path.join(posts_dir, file))
       posts.append(post)
     return sorted(posts, key=lambda post: post.meta.get("date"),  reverse=True)
 

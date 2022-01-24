@@ -1,7 +1,7 @@
 import frontmatter
-from obsidian_blog.helpers import get_slug
-from obsidian_blog.image import Image
-from obsidian_blog.include import Include
+from src.helpers import get_slug
+from src.image import Image
+from src.include import Include
 
 
 class Post():
