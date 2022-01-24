@@ -6,7 +6,9 @@ markdown-link-attr-modifier==0.2.0
 packaging==21.3
 pluggy==1.0.0
 py==1.11.0
+pybars4==0.9.13
 pyfakefs==4.5.4
+PyMeta3==0.5.1
 pyparsing==3.0.6
 pytest==6.2.5
 python-dotenv==0.19.2
