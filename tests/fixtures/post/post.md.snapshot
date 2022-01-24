@@ -1,0 +1,35 @@
+![mw-image.png][post-title-mw-image-png]{: width='100%'}
+![ref-image][post-title-ref-image]{: width='100%'}
+![inline-image][post-title-inline-image]{: width='100%'}
+![ref-dupl-image][post-title-ref-dupl-image]{: width='100%'}
+![ref-dupl-image][post-title-ref-dupl-image]{: width='100%'}
+![assets-image.png][post-title-assets-image-png]{: width='100%'}
+
+<h3 class='subheader' id='Nested Include'><a href='#Nested Include'>Nested Include</a></h3>
+
+nested include content
+
+![assets-image.png][nested-include-assets-image-png]{: width='100%'}
+
+[nested-include-assets-image-png]: assets/assets-image.png
+
+<h3 class='subheader' id='Deep Include'><a href='#Deep Include'>Deep Include</a></h3>
+
+deep include content
+
+<h3 class='subheader' id='Deeper Include'><a href='#Deeper Include'>Deeper Include</a></h3>
+
+deeper include content
+
+
+
+
+[post-title-inline-image]: image.png
+
+[post-title-ref-image]: ref-image.png
+
+[post-title-ref-dupl-image]: ref-dupl-image.png
+
+[post-title-mw-image-png]: mw-image.png
+
+[post-title-assets-image-png]: assets/assets-image.png

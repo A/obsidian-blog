@@ -1,4 +1,4 @@
-from src.tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
+from tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
 from src.image import Image
 
 def test_inline_image():

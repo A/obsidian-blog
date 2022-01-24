@@ -1,5 +1,6 @@
 ---
 title: Post Title
+published: True
 ---
 
 ![[mw-image.png]]

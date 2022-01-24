@@ -1,6 +1,5 @@
 import time
 from src.builder import Builder
-from src.logger import log
 
 tic = time.perf_counter()
 timings = {}
