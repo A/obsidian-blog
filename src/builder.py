@@ -57,7 +57,7 @@ class Builder():
     if post.meta.get("published") == False:
       log("- [SKIPPED]:", post.meta.get("title"))
       return
-    dest = os.path.join(self.blog.config.DEST_DIR, post.slug) + ".html"
+    dest = os.path.join(self.blog.config.DEST_DIR, post.slug)
     html = markdown.render(post.render())
     layout = self.get_layout(post)
     context = self.get_context({ "self": post, "content": html })
@@ -99,7 +99,7 @@ class Builder():
   def render_page(self, page):
     log("- [RENDERED]:", page.meta.get("title"))
     dest_dir = self.blog.config.DEST_DIR
-    dest = os.path.join(dest_dir, page.slug) + ".html"
+    dest = os.path.join(dest_dir, page.slug)
     context = self.get_context({ "self": page })
     html = page.render(context)
     layout = self.get_layout(page)
