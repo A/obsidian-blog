@@ -60,13 +60,28 @@ class Builder():
     dest = os.path.join(self.blog.config.DEST_DIR, post.slug)
     html = markdown.render(post.render())
     layout = self.get_layout(post)
-    context = self.get_context({ "self": post, "content": html })
+    context = self.get_context({ "self": self.create_entry_context(post), "content": html })
 
     if layout is not None:
       html = layout.render(context)
 
     fs.write_file(dest, html)
     log("- [RENDERED]:", post.meta.get("title"))
+
+  def create_entry_context(self, entry):
+    context = {}
+    context["meta"] = entry.meta
+    context["content"] = entry.content
+
+    includes = []
+    traverseBy("includes", entry, lambda node: includes.extend(node.includes))
+    context["includes"] = list(filter(lambda include: include.is_published, includes))
+
+    images = [*entry.images]
+    traverseBy("images", entry, lambda node: includes.extend(node.images))
+    context["images"] = images
+
+    return context
 
   def get_layout(self, node):
     layout_name = node.meta.get("layout") or "main"
@@ -100,7 +115,7 @@ class Builder():
     log("- [RENDERED]:", page.meta.get("title"))
     dest_dir = self.blog.config.DEST_DIR
     dest = os.path.join(dest_dir, page.slug)
-    context = self.get_context({ "self": page })
+    context = self.get_context({ "self": self.create_entry_context(page) })
     html = page.render(context)
     layout = self.get_layout(page)
 

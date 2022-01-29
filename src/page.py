@@ -3,48 +3,41 @@ import frontmatter
 from src.image import Image
 from src.include import Include
 from src import markdown, handlebars
-from src.helpers import get_slug
+from src.helpers import get_slug, is_md
+from src.logger import log
 
 
 class Page:
+  included_files = []
+
   @staticmethod
   def load(filename):
-    page = frontmatter.load(filename)
+    f = frontmatter.load(filename)
+    return Page(filename, f.metadata, content = f.content)
 
-    includes = []
-    images = []
-
-    if Page.is_md(filename):
-      includes = Include.get_all(page.content)
-      images = Image.get_all(page.content)
-
-    return Page(
-      filename = filename,
-      meta = page.metadata,
-      content = page.content,
-      includes = includes,
-      images = images,
-    )
-
-  def __init__(self, filename, meta, content, includes, images):
+  def __init__(self, filename, meta, content):
     self.filename = filename
     self.meta = meta
-    self.content = content
-    self.includes = includes
-    self.images = images
+    self.content = ""
+    self.images = []
+    self.includes = []
     self.slug = get_slug(self)
+    self.is_published = self.meta.get("published")
+    self.is_md = is_md(filename)
 
-  def get_content(self, content):
-    return content
+    log(f"[PARSE]: {self.filename}")
+    if not self.is_published:
+      log(f"[SKIP]: Page {self.slug} is not published yet")
+      return
 
-  @staticmethod
-  def is_md(filename):
-    _, ext = os.path.splitext(filename)
-    return ext == ".md"
+    self.content = content
+    if self.is_md:
+      self.images = Image.get_all(content)
+      self.includes = Include.get_all(content, self.included_files)
 
   def render(self, context):
     content = self.content
-    if Page.is_md(self.filename):
+    if is_md(self.filename):
       content = Image.render_all(self, content)
       content = Include.render_all(self, content)
       content = markdown.render(content)

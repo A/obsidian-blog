@@ -1,10 +1,7 @@
-# TODO: parse all includes in given markdown.
-# If they contains another include, return children array
-
-import glob
 import os
 import re
 import frontmatter
+from src.fs import find_one_by_glob
 from src.helpers import get_slug
 
 from src.image import Image
@@ -14,21 +11,40 @@ from src.logger import log
 MW_INCLUDE_REGEXP = r'(\[\[(.*)\]\])'
 
 class Include:
-  def __init__(self, placeholder, meta, content, includes, images, filename):
-    self.meta = meta
+  def __init__(self, filename, placeholder, meta, content, included_files):
     self.filename = filename
-    self.content = content if meta.get("published") else ""
-    self.includes = includes
     self.placeholder = placeholder
-    self.images = images
+    self.meta = meta
+    self.content = ""
+    self.includes = []
+    self.images = []
     self.slug = get_slug(self)
+    self.is_included = filename in included_files
+    self.is_published = self.meta.get("published")
+
+    included_files.append(filename)
+
+    log(f"[PARSE]: {self.placeholder}")
+    if self.is_included:
+      log(f"[SKIP]: Include {self.placeholder} has been included already")
+      self.content = self.generate_link()
+      return
+    
+    if not self.is_published:
+      log(f"[SKIP] Include {self.placeholder} is not published yet")
+      return
+
+    self.content = content
+    self.includes = Include.get_all(self.content, included_files)
+    self.images = Image.get_all(self.content)
+
+  def generate_link(self):
+    title = self.meta.get('title')
+    return f"[{title}](#{title})"
+
 
   @staticmethod
-  def get_all(content):
-    return Include.get_includes(content)
-
-  @staticmethod
-  def get_includes(content: str):
+  def get_includes(content: str, included_files):
     includes = []
     matches = re.findall(MW_INCLUDE_REGEXP, content)
 
@@ -37,25 +53,23 @@ class Include:
       # TODO: wmd has different syntax for images, shouldn't be here
       if Image.is_image(filename): continue
       try:
-        g = f"**/{filename}.md"
-        filenames = glob.glob(g, recursive=True)
-        filename = filenames[0]
-        f = frontmatter.load(filename)
-        include = Include(
-          filename=filename,
-          placeholder=placeholder,
-          content=f.content,
-          meta=f.metadata,
-          includes=Include.get_all(f.content),
-          images=Image.get_all(f.content),
-
-        )
+        filename = find_one_by_glob(f"**/{filename}.md")
+        include = Include.load(filename, placeholder, included_files)
         includes.append(include)
         log(f"- [PARSED]: {placeholder}")
       except Exception as e:
         print(f"- [NOT FOUND] \"{placeholder}\" {e}")
 
     return includes
+
+  @staticmethod
+  def load(filename, placeholder, included_files):
+    f = frontmatter.load(filename)
+    return Include(filename, placeholder, f.metadata, f.content, included_files)
+
+  @staticmethod
+  def get_all(content, included_files):
+    return Include.get_includes(content, included_files)
 
   @staticmethod
   def render_all(parent, parent_content):

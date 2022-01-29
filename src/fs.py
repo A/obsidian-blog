@@ -1,3 +1,4 @@
+import glob
 import os
 import shutil
 from distutils.dir_util import copy_tree
@@ -47,3 +48,7 @@ def copy_file(src: str, dest: str):
 def write_file(dest, content):
   os.makedirs(os.path.dirname(dest), exist_ok=True)
   with open(dest, 'a') as f: print(content, file=f)
+
+def find_one_by_glob(g):
+  filenames = glob.glob(g, recursive=True)
+  return filenames[0]
