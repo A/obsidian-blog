@@ -23,3 +23,7 @@ def get_slug(node) -> str:
   if node.meta.get("slug"):
     slug = node.meta.get("slug")
   return f"{slug}.html"
+
+def is_md(path):
+  _, ext = os.path.splitext(path)
+  return ext == ".md"

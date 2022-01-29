@@ -4,7 +4,7 @@
 - [ ] TODO: Add partials support
 - [ ] TODO: Dev Mode, when `public false` posts/pages are shown
 - [ ] TODO: Link to another post instead of unwrapping if it exists in the blog
-- [ ] TODO: In case note was already imported, put a link to this note
 
+- [x] TODO: In case note was already imported, put a link to this note
 - [x] TODO: Recursive unwrapping support
 - [x] TODO: Recursive unwrapping for markdown pages

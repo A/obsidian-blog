@@ -20,7 +20,6 @@ def test_page_md_render():
   post_path = f"{path}/page.md"
   page = Page.load(post_path)
   snapshot = frontmatter.load(f"{post_path}.snapshot")
-  print(page.render({}))
   assert page.render({}) == snapshot.content
   fakefs_teardown()
 
