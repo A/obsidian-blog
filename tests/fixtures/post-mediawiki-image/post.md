@@ -2,4 +2,4 @@
 published: True
 ---
 
-[[include]]
+![[image.png]]

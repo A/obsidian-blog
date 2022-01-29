@@ -1,9 +1,5 @@
 import os
-from distutils.dir_util import copy_tree
-import shutil
-
 from slugify.slugify import slugify
-from src import fs
 
 def normalize_path(path: str):
   if path[0] == '/':
@@ -19,7 +15,7 @@ def traverseBy(key, head, cb):
 
 def get_slug(node) -> str:
   file, _ = os.path.splitext(node.filename)
-  slug = slugify(fs.basename(file))
+  slug = slugify(os.path.basename(file))
   if node.meta.get("slug"):
     slug = node.meta.get("slug")
   return f"{slug}.html"

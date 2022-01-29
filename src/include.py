@@ -1,14 +1,15 @@
 import os
 import re
 import frontmatter
-from src.fs import find_one_by_glob
+from slugify import slugify
+from src.fs import basename, find_one_by_glob
 from src.helpers import get_slug
 
 from src.image import Image
 from src.logger import log
 
 
-MW_INCLUDE_REGEXP = r'(\[\[(.*)\]\])'
+MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])'
 
 class Include:
   def __init__(self, filename, placeholder, meta, content, included_files):
@@ -27,7 +28,7 @@ class Include:
     log(f"[PARSE]: {self.placeholder}")
     if self.is_included:
       log(f"[SKIP]: Include {self.placeholder} has been included already")
-      self.content = self.generate_link()
+      self.content = f"[{self.title}](#{self.id})"
       return
     
     if not self.is_published:
@@ -38,15 +39,10 @@ class Include:
     self.includes = Include.get_all(self.content, included_files)
     self.images = Image.get_all(self.content)
 
-  def generate_link(self):
-    title = self.meta.get('title')
-    return f"[{title}](#{title})"
-
-
   @staticmethod
   def get_includes(content: str, included_files):
     includes = []
-    matches = re.findall(MW_INCLUDE_REGEXP, content)
+    matches = re.findall(MW_INCLUDE_REGEXP, content, flags=re.MULTILINE)
 
     for match in matches:
       placeholder, filename = match
@@ -76,7 +72,20 @@ class Include:
     for include in parent.includes:
       parent_content = include.render(parent, parent_content)
     return parent_content
+  
+  @property
+  def id(self):
+    return slugify(self.title)
 
+  @property
+  def title(self):
+    if self.meta.get("title"):
+      return self.meta.get("title")
+    filename, _ = os.path.splitext(basename(self.filename))
+    if " - " in filename:
+      matches = re.findall(r"-(.*)\.\w+$", self.filename)
+      return matches[0]
+    return filename
 
   def render(self, parent, parent_content):
     self_content = self.content
@@ -86,9 +95,7 @@ class Include:
     return parent_content.replace(self.placeholder, self_content)
 
   def render_header(self, self_content):
-    title = self.meta.get("title")
-    if title:
-      header = "<h3 class='subheader' id='" + title + "'><a href='#" + title +"'>" + title  +"</a></h3>\n"
-      self_content = f"{header}\n{self_content}"
+    header = "<h3 class='subheader' id='" + self.id + "'><a href='#" + self.id +"'>" + self.title  +"</a></h3>\n"
+    self_content = f"{header}\n{self_content}"
     return self_content
 

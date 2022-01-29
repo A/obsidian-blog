@@ -1,38 +1,18 @@
-import frontmatter
-from tests.helpers import fakefs_setup, fakefs_teardown, mount_fixture
+import pytest
+from tests.helpers import get_fixture_path
 from src.post import Post
 
-def test_private_post_render():
-  fakefs_setup()
-  path = mount_fixture("post-unpublished")
-  post_path = f"{path}/post.md"
+@pytest.mark.parametrize("fixture_name", [
+  "post",
+  "post-image-inline",
+  "post-mediawiki-image",
+  "post-reference-image",
+  "post-unpublished",
+  "recursive-post",
+])
+def test_post_render(snapshot, fixture_name):
+  fixture_path = get_fixture_path(fixture_name)
+  post_path = f"{fixture_path}/post.md"
 
   post = Post.load(post_path)
-  assert post.render() == ""
-  assert len(post.includes) == 0
-  assert len(post.images) == 0
-
-  fakefs_teardown()
-
-
-def test_post_render():
-  fakefs_setup()
-  path = mount_fixture("post")
-  post_path = f"{path}/post.md"
-  snapshot = frontmatter.load(f"{post_path}.snapshot")
-
-  post = Post.load(post_path)
-  assert post.render() == snapshot.content
-
-  fakefs_teardown()
-
-def test_recursive_post_render():
-  fakefs_setup()
-  path = mount_fixture("recursive-post")
-  post_path = f"{path}/post.md"
-  snapshot = frontmatter.load(f"{post_path}.snapshot")
-
-  post = Post.load(post_path)
-  assert post.render() == snapshot.content
-  fakefs_teardown()
-
+  snapshot.assert_match(post.render(), fixture_name)

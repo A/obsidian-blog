@@ -5,19 +5,19 @@
 ![ref-dupl-image][post-html-ref-dupl-image]{: width='100%'}
 ![assets-image.png][post-html-assets-image-png]{: width='100%'}
 
-<h3 class='subheader' id='Nested Include'><a href='#Nested Include'>Nested Include</a></h3>
+<h3 class='subheader' id='nested-include'><a href='#nested-include'>Nested Include</a></h3>
 
 nested include content
 
 ![assets-image.png][nested-include-html-assets-image-png]{: width='100%'}
 
-[nested-include-html-assets-image-png]: assets/assets-image.png
+[nested-include-html-assets-image-png]: tests/fixtures/post/assets/assets-image.png
 
-<h3 class='subheader' id='Deep Include'><a href='#Deep Include'>Deep Include</a></h3>
+<h3 class='subheader' id='deep-include'><a href='#deep-include'>Deep Include</a></h3>
 
 deep include content
 
-<h3 class='subheader' id='Deeper Include'><a href='#Deeper Include'>Deeper Include</a></h3>
+<h3 class='subheader' id='deeper-include'><a href='#deeper-include'>Deeper Include</a></h3>
 
 deeper include content
 
@@ -30,6 +30,6 @@ deeper include content
 
 [post-html-ref-dupl-image]: ref-dupl-image.png
 
-[post-html-mw-image-png]: mw-image.png
+[post-html-mw-image-png]: tests/fixtures/post/mw-image.png
 
-[post-html-assets-image-png]: assets/assets-image.png
+[post-html-assets-image-png]: tests/fixtures/post/assets/assets-image.png

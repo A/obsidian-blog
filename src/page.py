@@ -35,7 +35,7 @@ class Page:
       self.images = Image.get_all(content)
       self.includes = Include.get_all(content, self.included_files)
 
-  def render(self, context):
+  def render(self, context = {}):
     content = self.content
     if is_md(self.filename):
       content = Image.render_all(self, content)
