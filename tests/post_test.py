@@ -9,6 +9,7 @@ def test_post_render():
   post_path = f"{path}/post.md"
   post = Post.load(post_path)
   snapshot = frontmatter.load(f"{post_path}.snapshot")
+  print(post.render())
   assert post.render() == snapshot.content
   fakefs_teardown()
 
