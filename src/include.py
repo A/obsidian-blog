@@ -9,7 +9,7 @@ from src.image import Image
 from src.logger import log
 
 
-MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])'
+MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
 
 class Include:
   def __init__(self, filename, placeholder, meta, content, included_files):
