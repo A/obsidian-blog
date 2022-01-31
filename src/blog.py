@@ -1,8 +1,8 @@
 import os
+from src.builder.page_builder import PageBuilder
 from src import config, fs
 from src.layout import Layout
 from src.logger import log
-from src.page import Page
 from src.post import Post
 
 class Blog():
@@ -11,7 +11,7 @@ class Blog():
     log("\nParsing the blog content:")
     self.config = config
     self.layouts = self.load_layouts()
-    self.posts = self.load_posts()
+    # self.posts = self.load_posts()
     self.pages = self.load_pages()
 
   def load_posts(self):
@@ -35,11 +35,11 @@ class Blog():
       return layouts
 
   def load_pages(self):
-    pages: list[Page] = []
+    pages = []
     pages_dir = self.config.PAGES_DIR
     files = fs.get_files_in_dir(pages_dir, filter_partials=True)
     for file in files:
-      page = Page.load(os.path.join(pages_dir, file))
-      pages.append(page)
+      data = fs.load(os.path.join(pages_dir, file))
+      pages.append(PageBuilder(data))
     return pages
 

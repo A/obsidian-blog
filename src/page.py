@@ -1,11 +1,9 @@
-import os
 import frontmatter
 from src.image import Image
 from src.include import Include
 from src import markdown, handlebars
 from src.helpers import get_slug, is_md
 from src.logger import log
-
 
 class Page:
   included_files = []

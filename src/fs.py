@@ -1,8 +1,10 @@
+import frontmatter
 import glob
 import os
 import shutil
 from distutils.dir_util import copy_tree
 from shutil import copyfile
+
 
 
 def change_ext(ext: str, file_path: str):
@@ -52,3 +54,7 @@ def write_file(dest, content):
 def find_one_by_glob(g):
   filenames = glob.glob(g, recursive=True)
   return filenames[0]
+
+def load(filename):
+  f = frontmatter.load(filename)
+  return (filename, f.metadata, f.content)
