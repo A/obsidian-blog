@@ -1,11 +1,11 @@
-from src.parser.inline_image_parser import InlineImageEntry
-from src.renderer.inline_image_renderer import InlineImageRenderer
+from src.processors.inline_image.entity import InlineImageEntity
+from src.processors.inline_image.renderer import InlineImageRenderer
 
 def test_inline_image_renderer():
   placeholder = "[Link](http://example.com)"
   content = f"text\n{placeholder}"
 
-  entity = InlineImageEntry(
+  entity = InlineImageEntity(
     placeholder=placeholder, 
     alt="New Link",
     filename="http://new-link.com",
