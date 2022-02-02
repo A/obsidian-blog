@@ -12,11 +12,11 @@ class TreeNode:
   def append(self, node):
     self.children.append(node)
 
-  def flat(self):
-    nodes = [self]
-    if not self.children: return nodes
+  def flat(self, visited=None):
+    if visited == None: visited = []
+    if self in visited: return visited
 
-    for child in self.children:
-      nodes = [*nodes, * child.flat()]
+    visited.append(self)
+    for child in self.children: child.flat(visited)
 
-    return nodes
+    return visited

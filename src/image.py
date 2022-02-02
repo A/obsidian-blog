@@ -1,11 +1,7 @@
 import glob
 import os
 import re
-
 from slugify.slugify import slugify
-
-from src import markdown
-from src.logger import log
 from src.helpers import normalize_path
 
 IMG_REF_PREFIX = "__image__"
@@ -71,10 +67,6 @@ class Image:
         print(f"Image \"{alt}\" not found ")
 
     return map(lambda img: Image.create(*img), mw_images)
-
-  @staticmethod
-  def get_mw_image(content):
-    matches = glob.glob('**/' + name + '.md', recursive=True)
 
   @staticmethod
   def render_all(parent, parent_content):
