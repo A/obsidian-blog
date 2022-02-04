@@ -1,5 +1,3 @@
-
-
 from src.dataclasses.content_data import ContentData
 
 

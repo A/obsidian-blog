@@ -5,6 +5,8 @@ from typing import Optional
 from src.fs import basename
 from slugify.slugify import slugify
 
+TITLE_DELIMETER = " - "
+
 @dataclass
 class ContentData:
   filename: str = ""
@@ -17,10 +19,9 @@ class ContentData:
   def title(self):
     if self.meta.get("title"):
       return self.meta.get("title")
-    delimeter = " - "
     title, _ = os.path.splitext(basename(self.filename))
-    if delimeter in title:
-      *_, title = title.split(delimeter)
+    if TITLE_DELIMETER in title:
+      *_, title = title.split(TITLE_DELIMETER)
       return title
     return title
 
