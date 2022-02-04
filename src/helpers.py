@@ -7,6 +7,7 @@ def normalize_path(path: str):
   return path
 
 def traverseBy(key, head, cb):
+  # DEPRECATED: Should be redundant after switch to flat list
   if not head: return
   cb(head)
   if type(getattr(head, key)) is list:
@@ -14,6 +15,7 @@ def traverseBy(key, head, cb):
       traverseBy(key, child, cb)
 
 def get_slug(node) -> str:
+  # DEPRECATED
   file, _ = os.path.splitext(node.filename)
   slug = slugify(os.path.basename(file))
   if node.meta.get("slug"):
@@ -21,5 +23,6 @@ def get_slug(node) -> str:
   return f"{slug}.html"
 
 def is_md(path):
+  # DEPRECATED
   _, ext = os.path.splitext(path)
   return ext == ".md"

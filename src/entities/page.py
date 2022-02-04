@@ -1,21 +1,29 @@
 import itertools
-from src import handlebars, markdown
+from src.converters import handlebars, markdown
+from src.dataclasses.content_data import ContentData
+from src.entities.content_entity import ContentEntityInterface
 from src.entities.inline_image import InlineImage
-from src.entities.page_data import PageData
+from src.entities.mediawiki_include import MediawikiInclude
 from src.entities.reference_image import ReferenceImage
 from src.tree.node import TreeNode
 
 
 class Page:
-  Entities = [InlineImage, ReferenceImage]
 
-  def __init__(self, data: PageData):
+  """
+  Page is a high-level entity handles building and rendering
+  notes graph
+  """
+
+  Entities = [InlineImage, ReferenceImage, MediawikiInclude]
+
+  def __init__(self, data: ContentData):
     self.data = data
     self.head = self.build_tree()
     self.data.entities = self.head.flat()
 
   def build_tree(self):
-    head = TreeNode(self.data)
+    head = TreeNode(self)
     head.walk(self.parse_children)
     return head
 
@@ -23,8 +31,7 @@ class Page:
     data = node.data
     entities = map(lambda Entity: Entity.get_all(data), self.Entities)
     flat_entities = list(itertools.chain(*entities))
-    nodes = map(TreeNode, flat_entities)
-    node.children = nodes
+    node.children = map(TreeNode, flat_entities)
 
   def render(self, context):
     content = self.data.content
@@ -34,8 +41,8 @@ class Page:
     return handlebars.render_template(content, context)
 
   def render_entities(self):
-    content = self.data.content
     for entity in self.data.entities:
       if hasattr(entity.data, "render"):
-        content = entity.data.render(self.data)
-    return content
+        # TODO: Broken idempotence
+        self.data.content = entity.data.render(self.data)
+    return self.data.content

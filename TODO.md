@@ -1,3 +1,4 @@
+- [ ] FIXME: Link collision, if 2 notes has ref-link with same id, it works incorrect
 - [ ] FIXME: Autodetect title from filenames like "Prometheus - Enums"
 - [ ] FIXME: Add footnotes: if include starts not from ^ render it as a footnote
 

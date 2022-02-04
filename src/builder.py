@@ -2,7 +2,8 @@ import os
 import time
 
 from slugify.slugify import slugify
-from src import markdown, fs
+from src.converters import markdown
+from src import fs
 from src.logger import log
 from src.blog import Blog
 from src.helpers import traverseBy

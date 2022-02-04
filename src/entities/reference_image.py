@@ -1,38 +1,41 @@
 import re
-from src.entities.page_data import PageData
+from src.dataclasses.content_data import ContentData
+from src.dataclasses.image_data import ImageData
+from src.entities.content_entity import ContentEntityInterface
+from src.entities.entity import EntityInterface
+from src.entities.image import Image
 from src.helpers import normalize_path
 
 REFERENCE_IMG_RE = r'(\!\[(.*)]\[(.*)\])'
 
-class ReferenceImage:
-
-  def __init__(self, placeholder, alt, filename, key):
-    self.placeholder = placeholder
-    self.alt = alt
-    self.key = key
-    self.filename = filename
+class ReferenceImage(Image):
 
   @staticmethod
-  def get_all(data: PageData):
+  def get_all(entity):
     """parse all reference image entities from a given page model"""
-    if not hasattr(data, "content"): return []
+    print("entity", entity.data)
+    print("isinstance", isinstance(entity.data, ContentData))
 
-    reference_images = []
-    content = data.content
+    if not isinstance(entity.data, ContentData):
+      return []
+
+    print(entity.data.content)
+
+    imgs = []
+    content = entity.data.content
     matches = re.findall(REFERENCE_IMG_RE, content)
 
     for match in matches:
       placeholder, alt, key = match
       link_re = re.compile("\\[" + key + "\\]:\\s(.*)")
-      filenames = re.findall(link_re, content)
-      refimg = ReferenceImage(
-        placeholder, alt, normalize_path(filenames[0]), key, 
-      )
-      reference_images.append(refimg)
+      filename = re.findall(link_re, content)[0]
 
-    return reference_images
-  
-  def render(self, data: PageData):
-    content = data.content
-    rendered_image = f"![{self.alt}]({self.filename})"
-    return content.replace(self.placeholder, rendered_image)
+      data = ImageData(
+        placeholder=placeholder,
+        alt=alt,
+        filename=normalize_path(filename),
+        key=key, 
+      )
+      imgs.append(ReferenceImage(data=data))
+
+    return imgs

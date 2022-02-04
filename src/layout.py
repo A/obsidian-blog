@@ -1,5 +1,5 @@
 import os
-from src import handlebars
+from src.converters import handlebars
 
 class Layout:
   def __init__(self, filename):
