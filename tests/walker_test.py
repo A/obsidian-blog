@@ -1,4 +1,4 @@
-from src.walker.node import TreeNode
+from src.tree.node import TreeNode
 
 def test_tree_node():
   data = "head node"

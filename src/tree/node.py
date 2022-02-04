@@ -1,3 +1,4 @@
+
 class TreeNode:
   def __init__(self, data):
     self.data = data
@@ -5,6 +6,7 @@ class TreeNode:
 
   def walk(self, callback):
     callback(self)
+    print(self.children)
     if not self.children: return
     for child in self.children:
       child.walk(callback)
