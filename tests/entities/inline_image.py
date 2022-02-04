@@ -1,5 +1,5 @@
 from src.models.page import PageModel
-from src.processors.inline_image import InlineImage
+from src.entities.inline_image import InlineImage
 
 
 def test_inline_image_parsing():

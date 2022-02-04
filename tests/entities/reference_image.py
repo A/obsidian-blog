@@ -1,5 +1,5 @@
 from src.models.page import PageModel
-from src.processors.reference_image import ReferenceImage
+from src.entities.reference_image import ReferenceImage
 
 
 def test_reference_image_parsing():

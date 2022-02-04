@@ -1,6 +1,6 @@
 import itertools
-from src.processors.inline_image import InlineImage
-from src.processors.reference_image import ReferenceImage
+from src.entities.inline_image import InlineImage
+from src.entities.reference_image import ReferenceImage
 from src.tree.node import TreeNode
 
 class Page():

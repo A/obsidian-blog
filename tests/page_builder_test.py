@@ -1,7 +1,5 @@
-from src.parser.parser_composer import ParserComposer
 from src.builder.page import Page
 from src.models.page import PageModel
-
 
 def test_page_creation():
   data = PageModel(
