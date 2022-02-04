@@ -15,7 +15,7 @@ class Builder():
     self.blog = Blog()
     self.make_build_dir()
     self.copy_assets()
-    self.render_posts()
+    # self.render_posts()
     self.render_pages()
 
   def get_context(self, local_ctx):
@@ -26,7 +26,7 @@ class Builder():
       },
       "layouts": self.blog.layouts,
       "pages": self.blog.pages,
-      "posts": self.blog.posts,
+      # "posts": self.blog.posts,
     }
     return global_ctx | local_ctx
 
@@ -60,7 +60,7 @@ class Builder():
     dest = os.path.join(self.blog.config.DEST_DIR, post.slug)
     html = markdown.render(post.render())
     layout = self.get_layout(post)
-    context = self.get_context({ "self": self.create_entry_context(post), "content": html })
+    context = self.get_context({ "self": post.data, "content": html })
 
     if layout is not None:
       html = layout.render(context)
@@ -68,23 +68,8 @@ class Builder():
     fs.write_file(dest, html)
     log("- [RENDERED]:", post.meta.get("title"))
 
-  def create_entry_context(self, entry):
-    context = {}
-    context["meta"] = entry.meta
-    context["content"] = entry.content
-
-    includes = []
-    traverseBy("includes", entry, lambda node: includes.extend(node.includes))
-    context["includes"] = list(filter(lambda include: include.is_published, includes))
-
-    images = [*entry.images]
-    traverseBy("images", entry, lambda node: includes.extend(node.images))
-    context["images"] = images
-
-    return context
-
   def get_layout(self, node):
-    layout_name = node.meta.get("layout") or "main"
+    layout_name = node.data.meta.get("layout") or "main"
     return self.blog.layouts[layout_name]
   
   def process_images(self, node):
@@ -106,16 +91,15 @@ class Builder():
     log("\nRender pages:\n")
     tic = time.perf_counter()
     for page in self.blog.pages:
-      traverseBy("includes", page, lambda node: self.process_images(node))
+    #  traverseBy("includes", page, lambda node: self.process_images(node))
       self.render_page(page)
     toc = time.perf_counter()
     self.timings["pages"] = toc - tic
 
   def render_page(self, page):
-    log("- [RENDERED]:", page.meta.get("title"))
     dest_dir = self.blog.config.DEST_DIR
-    dest = os.path.join(dest_dir, page.slug)
-    context = self.get_context({ "self": self.create_entry_context(page) })
+    dest = os.path.join(dest_dir, page.data.slug)
+    context = self.get_context({ "self": page.data })
     html = page.render(context)
     layout = self.get_layout(page)
 
@@ -123,6 +107,7 @@ class Builder():
       html = layout.render(context | { "content": html })
 
     fs.write_file(dest, html)
+    log("- [RENDERED]:", page.data.title)
 
 
 

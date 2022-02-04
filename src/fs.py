@@ -57,4 +57,4 @@ def find_one_by_glob(g):
 
 def load(filename):
   f = frontmatter.load(filename)
-  return (filename, f.metadata, f.content)
+  return [filename, f.metadata, f.content]

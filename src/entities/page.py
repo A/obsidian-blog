@@ -1,4 +1,5 @@
 import itertools
+from src import handlebars, markdown
 from src.entities.inline_image import InlineImage
 from src.entities.page_data import PageData
 from src.entities.reference_image import ReferenceImage
@@ -24,3 +25,17 @@ class Page:
     flat_entities = list(itertools.chain(*entities))
     nodes = map(TreeNode, flat_entities)
     node.children = nodes
+
+  def render(self, context):
+    content = self.data.content
+    if self.data.is_md:
+      content = self.render_entities()
+      content = markdown.render(content)
+    return handlebars.render_template(content, context)
+
+  def render_entities(self):
+    content = self.data.content
+    for entity in self.data.entities:
+      if hasattr(entity.data, "render"):
+        content = entity.data.render(self.data)
+    return content

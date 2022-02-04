@@ -32,8 +32,7 @@ class ReferenceImage:
 
     return reference_images
   
-  @staticmethod
-  def render_one(data: PageData, entity: "ReferenceImage"):
-    if not isinstance(entity, ReferenceImage): return
-    rendered_image = f"![{entity.alt}]({entity.filename})"
-    return data.content.replace(entity.placeholder, rendered_image)
+  def render(self, data: PageData):
+    content = data.content
+    rendered_image = f"![{self.alt}]({self.filename})"
+    return content.replace(self.placeholder, rendered_image)

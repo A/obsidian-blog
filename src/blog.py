@@ -1,6 +1,8 @@
 import os
-from src.builder.page_builder import PageBuilder
+
 from src import config, fs
+from src.entities.page import Page
+from src.entities.page_data import PageData
 from src.layout import Layout
 from src.logger import log
 from src.post import Post
@@ -13,6 +15,7 @@ class Blog():
     self.layouts = self.load_layouts()
     # self.posts = self.load_posts()
     self.pages = self.load_pages()
+    print(self.pages)
 
   def load_posts(self):
     """Returns all posts in the given directory"""
@@ -38,8 +41,9 @@ class Blog():
     pages = []
     pages_dir = self.config.PAGES_DIR
     files = fs.get_files_in_dir(pages_dir, filter_partials=True)
-    for file in files:
-      data = fs.load(os.path.join(pages_dir, file))
-      pages.append(PageBuilder(data))
+    for filename in files:
+      data = fs.load(os.path.join(pages_dir, filename))
+      data = PageData(*data)
+      pages.append(Page(data))
     return pages
 
