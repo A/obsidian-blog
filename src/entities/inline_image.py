@@ -1,4 +1,5 @@
 import re
+from src.dataclasses.content_data import ContentData
 from src.dataclasses.image_data import ImageData
 from src.entities.image import Image
 
@@ -8,8 +9,10 @@ class InlineImage(Image):
 
   @staticmethod
   def get_all(entity):
+    if not isinstance(entity.data, ContentData):
+      return []
+
     data = entity.data
-    if not hasattr(data, "content"): return []
 
     imgs = []
     parent_content = data.content

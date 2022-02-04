@@ -6,7 +6,7 @@ from tests.helpers import create_page
 def test_reference_image_parsing():
   placeholder = "![alt][image_id]"
   reference = "[image_id]: http://example.com"
-  page = create_page(f"{placeholder}\n{reference}")
+  page = create_page(content=f"{placeholder}\n{reference}")
 
   entity = ReferenceImage.get_all(page)[0]
 
@@ -19,7 +19,7 @@ def test_reference_image_parsing():
 def test_reference_image_rendering():
   placeholder = "![alt][image_id]"
   reference = "![image_id]: http://example.com"
-  page = create_page(f"{placeholder}\n{reference}")
+  page = create_page(content=f"{placeholder}\n{reference}")
 
   image_data = ImageData(
     placeholder=placeholder, 

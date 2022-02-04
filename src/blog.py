@@ -15,7 +15,6 @@ class Blog():
     self.layouts = self.load_layouts()
     # self.posts = self.load_posts()
     self.pages = self.load_pages()
-    print(self.pages)
 
   def load_posts(self):
     """Returns all posts in the given directory"""

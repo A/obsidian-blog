@@ -1,11 +1,13 @@
 import re
 import os
 from dataclasses import dataclass, field
+from typing import Optional
 from src.fs import basename
 from slugify.slugify import slugify
 
 @dataclass
 class ContentData:
+  placeholder: Optional[str] = None
   filename: str = ""
   meta: dict = field(default_factory=dict)
   content: str = ""

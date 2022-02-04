@@ -13,13 +13,8 @@ class ReferenceImage(Image):
   @staticmethod
   def get_all(entity):
     """parse all reference image entities from a given page model"""
-    print("entity", entity.data)
-    print("isinstance", isinstance(entity.data, ContentData))
-
     if not isinstance(entity.data, ContentData):
       return []
-
-    print(entity.data.content)
 
     imgs = []
     content = entity.data.content

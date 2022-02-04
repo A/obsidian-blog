@@ -5,7 +5,7 @@ from tests.helpers import create_page
 
 def test_inline_image_parsing():
   placeholder = "![a](b)"
-  page = create_page(placeholder)
+  page = create_page(content=placeholder)
 
   entity = InlineImage.get_all(page)[0]
 

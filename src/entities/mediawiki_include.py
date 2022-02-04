@@ -2,8 +2,7 @@ import os
 import re
 from slugify import slugify
 from src import fs
-from src.entities.content_entity import ContentEntityInterface
-from src.entities.include_data import IncludeData
+from src.dataclasses.content_data import ContentData
 from src.fs import basename, find_one_by_glob
 from src.logger import log
 
@@ -12,12 +11,12 @@ MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
 
 
 class MediawikiInclude:
-  def __init__(self, data: IncludeData):
+  def __init__(self, data: ContentData):
     self.data = data
 
   @staticmethod
-  def get_all(entity: ContentEntityInterface):
-    if not isinstance(entity, ContentEntityInterface):
+  def get_all(entity):
+    if not isinstance(entity.data, ContentData):
       return []
 
     includes = []
@@ -29,7 +28,7 @@ class MediawikiInclude:
         filename = find_one_by_glob(f"**/{filename}.md")
         _, meta, content = fs.load(filename)
 
-        data = IncludeData(
+        data = ContentData(
           placeholder=placeholder,
           filename=filename,
           meta=meta,

@@ -31,9 +31,12 @@ class Page:
     data = node.data
     entities = map(lambda Entity: Entity.get_all(data), self.Entities)
     flat_entities = list(itertools.chain(*entities))
-    node.children = map(TreeNode, flat_entities)
+    nodes = list(map(TreeNode, flat_entities))
+    node.children = nodes
 
-  def render(self, context):
+  # FIXME: if page has render, recursion happens bcz head == page
+  def render_self(self, context=None):
+    if context == None: context = {}
     content = self.data.content
     if self.data.is_md:
       content = self.render_entities()
@@ -43,6 +46,5 @@ class Page:
   def render_entities(self):
     for entity in self.data.entities:
       if hasattr(entity.data, "render"):
-        # TODO: Broken idempotence
         self.data.content = entity.data.render(self.data)
     return self.data.content
