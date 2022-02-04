@@ -4,7 +4,6 @@ from src.dataclasses.content_data import ContentData
 from src.entities.page import Page
 from src.layout import Layout
 from src.logger import log
-from src.post import Post
 
 class Blog():
 
@@ -12,7 +11,7 @@ class Blog():
     log("\nParsing the blog content:")
     self.config = config
     self.layouts = self.load_layouts()
-    # self.posts = self.load_posts()
+    self.posts = self.load_posts()
     self.pages = self.load_pages()
 
   def load_posts(self):
@@ -20,10 +19,15 @@ class Blog():
     posts = []
     posts_dir = self.config.POSTS_DIR
     files = fs.get_files_in_dir(posts_dir, filter_partials=True)
-    for file in files:
-      post = Post.load(os.path.join(posts_dir, file))
-      posts.append(post)
-    return sorted(posts, key=lambda post: post.meta.get("date"),  reverse=True)
+    for filename in files:
+      filename, meta, content = fs.load(os.path.join(posts_dir, filename))
+      data = ContentData(
+        filename=filename,
+        meta=meta,
+        content=content
+      )
+      posts.append(Page(data))
+    return sorted(posts, key=lambda post: post.data.meta.get("date"),  reverse=True)
 
   def load_layouts(self):
       layouts = {}
