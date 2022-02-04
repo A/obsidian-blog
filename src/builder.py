@@ -2,7 +2,6 @@ import os
 import time
 
 from slugify.slugify import slugify
-from src.converters import markdown
 from src import fs
 from src.dataclasses.image_data import ImageData
 from src.logger import log
@@ -16,8 +15,7 @@ class Builder():
     self.blog = Blog()
     self.make_build_dir()
     self.copy_assets()
-    self.render_posts()
-    self.render_pages()
+    self.render_all()
 
   def get_context(self, local_ctx):
     global_ctx = {
@@ -33,6 +31,7 @@ class Builder():
 
   def make_build_dir(self):
     dest_dir = self.blog.config.DEST_DIR
+    log("\n# Prepare build\n")
     log(f"Prepare a build dir: {dest_dir}")
     fs.rm_dir(dest_dir)
     fs.make_dir(dest_dir)
@@ -45,29 +44,30 @@ class Builder():
     dest_dir = self.blog.config.DEST_DIR
     fs.copy_dir(assets_dir, os.path.join(dest_dir, assets_dest_dir))
 
-  def render_posts(self):
-    log("\nRendering posts:")
-    tic = time.perf_counter()
-    for post in self.blog.posts:
-      self.process_images(post)
-      self.render_post(post)
-    toc = time.perf_counter()
-    self.timings["posts"] = toc - tic
 
-  def render_post(self, post):
-    if post.data.meta.get("published") == False:
-      log("- [SKIPPED]:", post.data.meta.get("title"))
-      return
-    dest = os.path.join(self.blog.config.DEST_DIR, post.data.slug)
-    html = markdown.render(post.render_self())
-    layout = self.get_layout(post)
-    context = self.get_context({ "self": post.data, "content": html })
+  def render_all(self):
+    entities = ['pages', 'posts']
+    for entity in entities:
+      log(f"\n# Render {entity}:\n")
+      tic = time.perf_counter()
+      for page in getattr(self.blog, entity):
+        self.process_images(page)
+        self.render(page)
+      toc = time.perf_counter()
+      self.timings[entity] = toc - tic
+
+  def render(self, page):
+    dest_dir = self.blog.config.DEST_DIR
+    dest = os.path.join(dest_dir, page.data.slug)
+    context = self.get_context({ "self": page.data })
+    html = page.render_self(context)
+    layout = self.get_layout(page)
 
     if layout is not None:
-      html = layout.render(context)
+      html = layout.render(context | { "content": html })
 
     fs.write_file(dest, html)
-    log("- [RENDERED]:", post.data.meta.get("title"))
+    log("- [RENDERED]:", page.data.title)
 
   def get_layout(self, node):
     layout_name = node.data.meta.get("layout") or "main"
@@ -94,28 +94,4 @@ class Builder():
       except:
         # FIXME: Should skip abs paths and urls
         print("Something went wrong")
-
-  def render_pages(self):
-    log("\nRender pages:\n")
-    tic = time.perf_counter()
-    for page in self.blog.pages:
-      self.process_images(page)
-      self.render_page(page)
-    toc = time.perf_counter()
-    self.timings["pages"] = toc - tic
-
-  def render_page(self, page):
-    dest_dir = self.blog.config.DEST_DIR
-    dest = os.path.join(dest_dir, page.data.slug)
-    context = self.get_context({ "self": page.data })
-    html = page.render_self(context)
-    layout = self.get_layout(page)
-
-    if layout is not None:
-      html = layout.render(context | { "content": html })
-
-    fs.write_file(dest, html)
-    log("- [RENDERED]:", page.data.title)
-
-
 
