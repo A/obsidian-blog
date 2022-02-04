@@ -17,18 +17,21 @@ class ContentData:
   def title(self):
     if self.meta.get("title"):
       return self.meta.get("title")
-    filename, _ = os.path.splitext(basename(self.filename))
-    if " - " in filename:
-      matches = re.findall(r"-(.*)\.\w+$", self.filename)
-      return matches[0]
-    return filename
+    delimeter = " - "
+    title, _ = os.path.splitext(basename(self.filename))
+    if delimeter in title:
+      *_, title = title.split(delimeter)
+      return title
+    return title
 
   @property
   def slug(self):
-    file, _ = os.path.splitext(self.filename)
-    slug = slugify(os.path.basename(file))
     if self.meta.get("slug"):
       slug = self.meta.get("slug")
+      return f"{slug}.html"
+
+    file, _ = os.path.splitext(self.filename)
+    slug = slugify(os.path.basename(file))
     return f"{slug}.html"
 
   @property

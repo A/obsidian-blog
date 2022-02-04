@@ -17,9 +17,7 @@ class MediawikiImage(Image):
       return []
 
     imgs = []
-
-    content = entity.data.content
-    matches = re.findall(MW_IMG_REGEXP, content)
+    matches = re.findall(MW_IMG_REGEXP, entity.data.content)
 
     for match in matches:
       placeholder = match[0]

@@ -12,11 +12,8 @@ class InlineImage(Image):
     if not isinstance(entity.data, ContentData):
       return []
 
-    data = entity.data
-
     imgs = []
-    parent_content = data.content
-    matches = re.findall(INLINE_IMG_RE, parent_content)
+    matches = re.findall(INLINE_IMG_RE, entity.data.content)
 
     for match in matches:
       placeholder, alt, filename = match
