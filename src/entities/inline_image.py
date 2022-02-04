@@ -1,5 +1,5 @@
 import re
-from src.models.page import PageModel
+from src.entities.page_data import PageData
 
 INLINE_IMG_RE = r'(\!\[(.*)\]\((.*)\))'
 
@@ -11,7 +11,7 @@ class InlineImage:
     self.filename = filename
 
   @staticmethod
-  def get_all(data: PageModel):
+  def get_all(data: PageData):
     # TODO: Skip by entity instance?
     if not hasattr(data, "content"): return []
 
@@ -20,7 +20,7 @@ class InlineImage:
     return list(map(lambda match: InlineImage(*match), matches))
 
   @staticmethod
-  def render_one(data: PageModel, entity: "InlineImage"):
+  def render_one(data: PageData, entity: "InlineImage"):
     if not isinstance(entity, InlineImage): return
     rendered_image = f"[{entity.alt}]({entity.filename})"
     return data.content.replace(entity.placeholder, rendered_image)

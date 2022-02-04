@@ -1,4 +1,4 @@
-from src.models.page import PageModel
+from src.entities.page import Page
 from src.entities.reference_image import ReferenceImage
 
 
@@ -6,7 +6,7 @@ def test_reference_image_parsing():
   placeholder = "![alt][image_id]"
   reference = "[image_id]: http://example.com"
   content = f"{placeholder}\n{reference}"
-  data = PageModel(content=content)
+  data = Page(content=content)
 
   entity = ReferenceImage.get_all(data)[0]
 
@@ -20,7 +20,7 @@ def test_inline_image_rendering():
   placeholder = "![alt][image_id]"
   reference = "![image_id]: http://example.com"
   content = f"{placeholder}\n{reference}"
-  data = PageModel(content=content)
+  data = Page(content=content)
 
   entity = ReferenceImage(
     placeholder=placeholder, 

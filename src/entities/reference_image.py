@@ -1,6 +1,6 @@
 import re
+from src.entities.page_data import PageData
 from src.helpers import normalize_path
-from src.models.page import PageModel
 
 REFERENCE_IMG_RE = r'(\!\[(.*)]\[(.*)\])'
 
@@ -13,7 +13,7 @@ class ReferenceImage:
     self.filename = filename
 
   @staticmethod
-  def get_all(data: PageModel):
+  def get_all(data: PageData):
     """parse all reference image entities from a given page model"""
     if not hasattr(data, "content"): return []
 
@@ -33,7 +33,7 @@ class ReferenceImage:
     return reference_images
   
   @staticmethod
-  def render_one(data: PageModel, entity: "ReferenceImage"):
+  def render_one(data: PageData, entity: "ReferenceImage"):
     if not isinstance(entity, ReferenceImage): return
     rendered_image = f"![{entity.alt}]({entity.filename})"
     return data.content.replace(entity.placeholder, rendered_image)

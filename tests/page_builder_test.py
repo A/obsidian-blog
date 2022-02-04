@@ -1,8 +1,7 @@
-from src.builder.page import Page
-from src.models.page import PageModel
+from src.entities.page import Page, PageData
 
 def test_page_creation():
-  data = PageModel(
+  data = PageData(
     filename = "/test.md",
     meta = { "published": True },
     content = "Hello World",
@@ -11,7 +10,7 @@ def test_page_creation():
   assert(page.data == data)
 
 def test_page_processing():
-  data = PageModel(
+  data = PageData(
     filename = "/test.md",
     meta = { "published": True },
     content = "Hello World ![a](b)",

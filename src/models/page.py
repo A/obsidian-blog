@@ -1,5 +1,5 @@
 class PageModel:
-  def __init__(self, filename = None, meta = {}, content = ""):
+  def __init__(self, filename = None, meta=None, content=""):
     self.filename = filename
     self.meta = meta
     self.content =  content

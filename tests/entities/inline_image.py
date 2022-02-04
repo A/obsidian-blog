@@ -1,9 +1,9 @@
-from src.models.page import PageModel
 from src.entities.inline_image import InlineImage
+from src.entities.page import Page
 
 
 def test_inline_image_parsing():
-  data = PageModel(content="![Alt Title](http://example.com)")
+  data = Page(content="![Alt Title](http://example.com)")
 
   entities = InlineImage.get_all(data)
   entity = entities[0]
@@ -15,7 +15,7 @@ def test_inline_image_parsing():
 
 def test_inline_image_rendering():
   placeholder = "[Link](http://example.com)"
-  data = PageModel(
+  data = Page(
     content = f"text\n{placeholder}"
   )
 
