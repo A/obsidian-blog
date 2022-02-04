@@ -28,6 +28,16 @@ def test_content_data_title():
   data = ContentData(filename="Parent - Children - Child.md")
   assert(data.title == "Child")
 
-  data = ContentData(meta={ "title": "Title"})
+  data = ContentData(meta={ "title": "Title" })
   assert(data.title == "Title")
+
+def test_content_data_is_private():
+  data = ContentData(meta={ "published": True })
+  assert(data.is_private == False)
+
+  data = ContentData(meta={ "published": False })
+  assert(data.is_private == True)
+
+  data = ContentData(meta={})
+  assert(data.is_private == True)
 

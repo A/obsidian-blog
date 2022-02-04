@@ -39,3 +39,10 @@ class ContentData:
   def is_md(self):
     _, ext = os.path.splitext(self.filename)
     return ext == ".md"
+
+  @property
+  def is_private(self):
+    if self.meta.get("published"):
+      return False
+    return True
+
