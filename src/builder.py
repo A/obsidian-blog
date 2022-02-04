@@ -50,6 +50,9 @@ class Builder():
     for entity in entities:
       log(f"\n# Render {entity}:\n")
       tic = time.perf_counter()
+
+      pages = getattr(self.blog, entity)
+      self.timings[f"{entity}_len"] = len(pages)
       for page in getattr(self.blog, entity):
         self.process_images(page)
         self.render(page)
