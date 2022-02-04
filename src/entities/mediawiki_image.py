@@ -32,6 +32,6 @@ class MediawikiImage(Image):
         )
         imgs.append(MediawikiImage(data))
       except:
-        print(f"Image \"{alt}\" not found ")
+        print(f"- [NOT FOUND] Image \"{alt}\" not found ")
 
     return imgs
