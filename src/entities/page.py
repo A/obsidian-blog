@@ -1,8 +1,8 @@
 import itertools
 from src.converters import handlebars, markdown
 from src.dataclasses.content_data import ContentData
-from src.entities.content_entity import ContentEntityInterface
 from src.entities.inline_image import InlineImage
+from src.entities.mediawiki_image import MediawikiImage
 from src.entities.mediawiki_include import MediawikiInclude
 from src.entities.reference_image import ReferenceImage
 from src.tree.node import TreeNode
@@ -15,7 +15,7 @@ class Page:
   notes graph
   """
 
-  Entities = [InlineImage, ReferenceImage, MediawikiInclude]
+  Entities = [InlineImage, ReferenceImage, MediawikiImage, MediawikiInclude]
 
   def __init__(self, data: ContentData):
     self.data = data

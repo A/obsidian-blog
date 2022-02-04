@@ -1,8 +1,6 @@
 import re
 from src.dataclasses.content_data import ContentData
 from src.dataclasses.image_data import ImageData
-from src.entities.content_entity import ContentEntityInterface
-from src.entities.entity import EntityInterface
 from src.entities.image import Image
 from src.helpers import normalize_path
 

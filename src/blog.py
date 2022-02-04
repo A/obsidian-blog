@@ -1,8 +1,7 @@
 import os
-
 from src import config, fs
+from src.dataclasses.content_data import ContentData
 from src.entities.page import Page
-from src.entities.page_data import PageData
 from src.layout import Layout
 from src.logger import log
 from src.post import Post
@@ -41,8 +40,12 @@ class Blog():
     pages_dir = self.config.PAGES_DIR
     files = fs.get_files_in_dir(pages_dir, filter_partials=True)
     for filename in files:
-      data = fs.load(os.path.join(pages_dir, filename))
-      data = PageData(*data)
+      filename, meta, content = fs.load(os.path.join(pages_dir, filename))
+      data = ContentData(
+        filename=filename,
+        meta=meta,
+        content=content
+      )
       pages.append(Page(data))
     return pages
 

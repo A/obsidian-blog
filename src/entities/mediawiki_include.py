@@ -1,6 +1,7 @@
 import os
 import re
 from slugify import slugify
+import yaml
 from src import fs
 from src.dataclasses.content_data import ContentData
 from src.fs import basename, find_one_by_glob

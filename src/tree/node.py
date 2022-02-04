@@ -6,7 +6,6 @@ class TreeNode:
 
   def walk(self, callback):
     callback(self)
-    print("self children", bool(self.children))
     if not self.children: return
     for child in self.children:
       child.walk(callback)

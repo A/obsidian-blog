@@ -26,6 +26,6 @@ def test_inline_image_rendering():
   )
 
   entity = InlineImage(data=image_data)
-  res = entity.render(page)
+  res = entity.render(page.data)
 
   assert(res == "![c](d)")

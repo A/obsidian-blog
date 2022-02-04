@@ -29,6 +29,6 @@ def test_reference_image_rendering():
   )
 
   entity = ReferenceImage(data=image_data)
-  res = entity.render(page)
+  res = entity.render(page.data)
 
   assert(res == f"![new alt](http://new-link.com)\n{reference}")

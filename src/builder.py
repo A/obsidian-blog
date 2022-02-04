@@ -101,7 +101,7 @@ class Builder():
     dest_dir = self.blog.config.DEST_DIR
     dest = os.path.join(dest_dir, page.data.slug)
     context = self.get_context({ "self": page.data })
-    html = page.render(context)
+    html = page.render_self(context)
     layout = self.get_layout(page)
 
     if layout is not None:
