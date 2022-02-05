@@ -60,6 +60,9 @@ class Builder():
         print(f"- {page.data.title}")
         self.preprocess_content(page)
         self.process_images(page)
+        if page.data.is_private:
+          print(f"- [SKIP]: '{page.data.title}' is private, add `published: True` attribute to the frontmetter to publish it")
+          continue
         self.render(page)
 
       toc = time.perf_counter()
