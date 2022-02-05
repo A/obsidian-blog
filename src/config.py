@@ -13,7 +13,4 @@ LAYOUTS_DIR = _env.get("LAYOUTS_DIR") or path.join(SOURCE_DIR, "_layouts")
 ASSETS_DIR = _env.get("ASSETS_DIR") or path.join(SOURCE_DIR, "_assets")
 ASSETS_DEST_DIR = _env.get("ASSETS_DEST_DIR") or "static"
 VERBOSE = _env.get("VERBOSE") or False
-
-MEDIAWIKI_INCLUDE_REGEXP = r'\[\[(.*)\]\]'
-MEDIAWIKI_IMG_REGEXP = r'\!\[\[(.*)\]\]'
 DEFAULT_LAYOUT = "main"

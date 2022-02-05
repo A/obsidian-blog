@@ -1,21 +1,23 @@
 import os
 import time
-
-from slugify.slugify import slugify
 from src import fs
 from src.dataclasses.asset_data import AssetData
+from src.dataclasses.config_data import ConfigData
 from src.logger import log
 from src.blog import Blog
 
 
 class Builder():
 
-  def build(self, timings):
+  def build(self, timings, config: ConfigData):
     self.timings = timings
+    self.config = config
     self.blog = Blog()
     self.make_build_dir()
     self.copy_assets()
     self.render_all()
+
+  def create_config(self):
 
   def get_context(self, local_ctx):
     global_ctx = {

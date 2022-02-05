@@ -1,9 +1,15 @@
 import time
 from src.builder import Builder
+from src.dataclasses.config_data import ConfigData
 
 tic = time.perf_counter()
 timings = {}
-Builder().build(timings)
+
+config = ConfigData()
+Builder().build(
+  timings,
+  config=config
+)
 toc = time.perf_counter()
 
 print("")
