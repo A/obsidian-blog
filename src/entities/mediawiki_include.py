@@ -39,7 +39,7 @@ class MediawikiInclude:
         include = MediawikiInclude(data)
 
         includes.append(include)
-        log(f"- [PARSED]: {placeholder}")
+        print(f"- [PARSED]: Include: {placeholder}")
       except Exception as e:
         print(f"- [NOT FOUND] \"{placeholder}\" {e}")
 

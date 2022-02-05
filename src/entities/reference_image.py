@@ -30,5 +30,6 @@ class ReferenceImage(Image):
         key=key, 
       )
       imgs.append(ReferenceImage(data=data))
+      print(f"- [PARSED]: Image: {filename}")
 
     return imgs

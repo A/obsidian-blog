@@ -31,6 +31,7 @@ class MediawikiImage(Image):
           filename=filename,
         )
         imgs.append(MediawikiImage(data))
+        print(f"- [PARSED]: Image: {placeholder}")
       except:
         print(f"- [NOT FOUND] Image \"{alt}\" not found ")
 

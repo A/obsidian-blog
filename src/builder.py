@@ -13,11 +13,13 @@ class Builder():
     self.timings = timings
     self.config = config
     self.blog = Blog()
+
+    print("\n# Prepare build:")
     self.make_build_dir()
     self.copy_assets()
-    self.render_all()
 
-  def create_config(self):
+    print("")
+    self.render_all()
 
   def get_context(self, local_ctx):
     global_ctx = {
@@ -33,8 +35,7 @@ class Builder():
 
   def make_build_dir(self):
     dest_dir = self.blog.config.DEST_DIR
-    log("\n# Prepare build\n")
-    log(f"Prepare a build dir: {dest_dir}")
+    print(f"- Prepare a build dir: {dest_dir}")
     fs.rm_dir(dest_dir)
     fs.make_dir(dest_dir)
 
@@ -42,7 +43,7 @@ class Builder():
     dest_dir = self.blog.config.DEST_DIR
     assets_dir = self.blog.config.ASSETS_DIR
     assets_dest_dir = self.blog.config.ASSETS_DEST_DIR
-    log(f"Copy assets from {assets_dir} to {dest_dir}/{assets_dest_dir}")
+    print(f"- Copy assets from {assets_dir} to {dest_dir}/{assets_dest_dir}")
     dest_dir = self.blog.config.DEST_DIR
     fs.copy_dir(assets_dir, os.path.join(dest_dir, assets_dest_dir))
 
@@ -50,16 +51,20 @@ class Builder():
   def render_all(self):
     entities = ['pages', 'posts']
     for entity in entities:
-      log(f"\n# Render {entity}:\n")
+      print(f"# Render {entity}:")
       tic = time.perf_counter()
 
       pages = getattr(self.blog, entity)
-      self.timings[f"{entity}_len"] = len(pages)
       for page in getattr(self.blog, entity):
+        print(f"- {page.data.title}")
         self.process_images(page)
         self.render(page)
+
       toc = time.perf_counter()
-      self.timings[entity] = toc - tic
+
+      print("")
+      print(f"{len(pages)} {entity} have been rendered in {toc-tic:0.4f} seconds\n")
+
 
   def render(self, page):
     dest_dir = self.blog.config.DEST_DIR
@@ -72,7 +77,6 @@ class Builder():
       html = layout.render(context | { "content": html })
 
     fs.write_file(dest, html)
-    log("- [RENDERED]:", page.data.title)
 
   def get_layout(self, node):
     layout_name = node.data.meta.get("layout") or "main"
@@ -82,8 +86,10 @@ class Builder():
     for node in page.data.entities:
       entity = node.data
       asset_data = entity.data
+
       if not issubclass(type(asset_data), AssetData):
         continue
+
       try:
         dest_dir = self.blog.config.DEST_DIR
         assets_dest_dir = self.blog.config.ASSETS_DEST_DIR
@@ -95,8 +101,9 @@ class Builder():
 
         fs.copyfile(frm, to)
         asset_data.filename = url
-        log(f"- [COPY ASSET]: {frm} to {to}")
+        print(f"  - [COPY ASSET]: {frm} to {to}")
+
       except:
         # FIXME: Should skip abs paths and urls
-        print("Something went wrong")
+        pass
 

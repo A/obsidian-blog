@@ -8,7 +8,7 @@ from src.logger import log
 class Blog():
 
   def __init__(self):
-    log("\nParsing the blog content:")
+    log("\n# Parsing the blog content:")
     self.config = config
     self.layouts = self.load_layouts()
     self.posts = self.load_posts()
