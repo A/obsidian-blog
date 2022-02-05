@@ -41,3 +41,8 @@ def test_content_data_is_private():
   data = ContentData(meta={})
   assert(data.is_private == True)
 
+def test_content_data_id():
+  data = ContentData(filename="/a/b/c.md")
+  assert(data.id == "a-b-c")
+
+

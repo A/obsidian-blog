@@ -1,4 +1,3 @@
-import re
 import os
 from dataclasses import dataclass, field
 from typing import Optional
@@ -17,8 +16,9 @@ class ContentData:
 
   @property
   def title(self):
-    if self.meta.get("title"):
-      return self.meta.get("title")
+    meta_title = self.meta.get("title")
+    if isinstance(meta_title, str):
+      return meta_title
     title, _ = os.path.splitext(basename(self.filename))
     if TITLE_DELIMETER in title:
       *_, title = title.split(TITLE_DELIMETER)
@@ -27,13 +27,17 @@ class ContentData:
 
   @property
   def slug(self):
-    if self.meta.get("slug"):
-      slug = self.meta.get("slug")
-      return f"{slug}.html"
-
+    meta_slug = self.meta.get("slug")
+    if isinstance(meta_slug, str):
+      return f"{meta_slug}.html"
     file, _ = os.path.splitext(self.filename)
     slug = slugify(os.path.basename(file))
     return f"{slug}.html"
+
+  @property
+  def id(self):
+    filename, _ = os.path.splitext(self.filename)
+    return slugify(filename)
 
   @property
   def is_md(self):
