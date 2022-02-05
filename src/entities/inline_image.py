@@ -1,6 +1,6 @@
 import re
 from src.dataclasses.content_data import ContentData
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.entities.image import Image
 
 INLINE_IMG_RE = r'(\!\[(.*)\]\((.*)\))'
@@ -17,12 +17,12 @@ class InlineImage(Image):
 
     for match in matches:
       placeholder, alt, filename = match
-      image_data = ImageData(
+      asset_data = AssetData(
         placeholder=placeholder,
         alt=alt,
         filename=filename,
       )
-      img = InlineImage(image_data)
+      img = InlineImage(asset_data)
       imgs.append(img)
 
     return imgs

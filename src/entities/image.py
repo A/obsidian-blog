@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 
 @dataclass
 class Image():
   """Basic image class"""
-  data: ImageData
+  data: AssetData
 
   def render(self, data):
     content = data.content

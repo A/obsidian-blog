@@ -1,14 +1,14 @@
 import glob
 import re
 from src.dataclasses.content_data import ContentData
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.entities.image import Image
 
 
 MW_IMG_REGEXP = r'(\!\[\[(.*)\]\])'
 
 class MediawikiImage(Image):
-  def __init__(self, data: ImageData):
+  def __init__(self, data: AssetData):
     self.data = data
 
   @staticmethod
@@ -25,7 +25,7 @@ class MediawikiImage(Image):
 
       try:
         filename, *_ = glob.glob(f"**/{alt}", recursive=True)
-        data = ImageData(
+        data = AssetData(
           placeholder=placeholder,
           alt=alt,
           filename=filename,

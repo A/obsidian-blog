@@ -3,7 +3,7 @@ import time
 
 from slugify.slugify import slugify
 from src import fs
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.logger import log
 from src.blog import Blog
 
@@ -79,21 +79,21 @@ class Builder():
   def process_images(self, page):
     for node in page.data.entities:
       entity = node.data
-      data = entity.data
-      if not issubclass(type(data), ImageData):
+      asset_data = entity.data
+      if not issubclass(type(asset_data), AssetData):
         continue
       try:
         dest_dir = self.blog.config.DEST_DIR
         assets_dest_dir = self.blog.config.ASSETS_DEST_DIR
+        dest_filename = f"{asset_data.id}{asset_data.ext}"
 
-        filename = data.filename
-        file, ext = os.path.splitext(filename)
-        to = f"{dest_dir}/{assets_dest_dir}/{slugify(file)}{ext}"
-        url = f"/{assets_dest_dir}/{slugify(file)}{ext}"
+        frm = asset_data.filename
+        to = f"{dest_dir}/{assets_dest_dir}/dest_filename"
+        url = f"/{assets_dest_dir}/{dest_filename}"
 
-        fs.copyfile(filename, to)
-        data.filename = url
-        log(f"- [COPY ASSET]: {filename} to {to}")
+        fs.copyfile(frm, to)
+        asset_data.filename = url
+        log(f"- [COPY ASSET]: {frm} to {to}")
       except:
         # FIXME: Should skip abs paths and urls
         print("Something went wrong")

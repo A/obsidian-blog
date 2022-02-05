@@ -1,12 +1,12 @@
 import os
 import pytest
 from src import fs
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.entities.mediawiki_image import MediawikiImage
 from tests.helpers import create_page, get_fixture_path
 
 @pytest.mark.parametrize("fixture_name", [("mediawiki_image")])
-def test_mediawiki_image_parsing(snapshot, fixture_name):
+def test_mediawiki_image_parsing(fixture_name):
   cwd = os.getcwd()
   fixture_path = get_fixture_path(fixture_name)
   page_path = f"{fixture_path}/page.md"
@@ -30,13 +30,13 @@ def test_mediawiki_image_rendering():
   placeholder = "![[a]]"
   page = create_page(content=placeholder)
 
-  image_data = ImageData(
+  asset_data = AssetData(
     placeholder=placeholder, 
     alt="c",
     filename="d",
   )
 
-  entity = MediawikiImage(data=image_data)
+  entity = MediawikiImage(data=asset_data)
   res = entity.render(page.data)
 
   assert(res == "![c](d)")

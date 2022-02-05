@@ -38,7 +38,7 @@ class Page:
   def render_self(self, context=None):
     if context == None: context = {}
     content = self.data.content
-    if self.data.is_md:
+    if self.data.ext == ".md":
       content = self.render_entities()
       content = markdown.render(content)
     return handlebars.render_template(content, context)

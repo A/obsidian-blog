@@ -1,4 +1,4 @@
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.entities.reference_image import ReferenceImage
 from tests.helpers import create_page
 
@@ -21,14 +21,14 @@ def test_reference_image_rendering():
   reference = "![image_id]: http://example.com"
   page = create_page(content=f"{placeholder}\n{reference}")
 
-  image_data = ImageData(
+  asset_data = AssetData(
     placeholder=placeholder, 
     alt="new alt",
     filename="http://new-link.com",
     key="image_id"
   )
 
-  entity = ReferenceImage(data=image_data)
+  entity = ReferenceImage(data=asset_data)
   res = entity.render(page.data)
 
   assert(res == f"![new alt](http://new-link.com)\n{reference}")

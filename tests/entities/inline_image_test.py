@@ -1,4 +1,4 @@
-from src.dataclasses.image_data import ImageData
+from src.dataclasses.asset_data import AssetData
 from src.entities.inline_image import InlineImage
 from tests.helpers import create_page
 
@@ -19,13 +19,13 @@ def test_inline_image_rendering():
   placeholder = "![a](b)"
   page = create_page(content=placeholder)
 
-  image_data = ImageData(
+  asset_data = AssetData(
     placeholder=placeholder, 
     alt="c",
     filename="d",
   )
 
-  entity = InlineImage(data=image_data)
+  entity = InlineImage(data=asset_data)
   res = entity.render(page.data)
 
   assert(res == "![c](d)")
