@@ -14,5 +14,5 @@ def test_page_nested(snapshot, fixture_name):
 
   page = create_page(*fs.load(page_path))
 
-  snapshot.assert_match(page.render_self(), f"{fixture_name}.html")
+  snapshot.assert_match(page.render(), f"{fixture_name}.html")
   os.chdir(cwd)

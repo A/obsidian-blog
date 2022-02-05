@@ -21,3 +21,8 @@ class TreeNode:
     for child in self.children: child.flat(visited)
 
     return visited
+
+  def flat_children(self):
+    entities = self.flat()
+    del entities[0]
+    return entities

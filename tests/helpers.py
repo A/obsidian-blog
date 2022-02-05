@@ -11,3 +11,7 @@ def create_page(filename = None, meta = None, content = None):
   content_data = ContentData(filename=filename, meta=meta, content=content)
   return Page(data=content_data)
 
+class DummyInclude:
+  def __init__(self, data):
+    self.data = data
+

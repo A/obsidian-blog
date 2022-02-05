@@ -3,11 +3,12 @@ import time
 from src import fs
 from src.dataclasses.asset_data import AssetData
 from src.dataclasses.config_data import ConfigData
-from src.logger import log
+from src.preprocessors.include_header import IncludeHeaderPreprocessor
 from src.blog import Blog
 
 
 class Builder():
+  preprocessors = [IncludeHeaderPreprocessor]
 
   def build(self, timings, config: ConfigData):
     self.timings = timings
@@ -57,6 +58,7 @@ class Builder():
       pages = getattr(self.blog, entity)
       for page in getattr(self.blog, entity):
         print(f"- {page.data.title}")
+        self.preprocess_content(page)
         self.process_images(page)
         self.render(page)
 
@@ -70,7 +72,7 @@ class Builder():
     dest_dir = self.blog.config.DEST_DIR
     dest = os.path.join(dest_dir, page.data.slug)
     context = self.get_context({ "self": page.data })
-    html = page.render_self(context)
+    html = page.render(context)
     layout = self.get_layout(page)
 
     if layout is not None:
@@ -106,4 +108,10 @@ class Builder():
       except:
         # FIXME: Should skip abs paths and urls
         pass
+
+  def preprocess_content(self, page):
+    for node in page.data.entities:
+      for processor in self.preprocessors:
+        processor.process(node.data)
+
 
