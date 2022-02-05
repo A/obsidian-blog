@@ -1,12 +1,12 @@
 from src.dataclasses.content_data import ContentData
 
 
-def test_content_data_is_md():
+def test_content_data_ext():
   data = ContentData(filename="test.hbs")
-  assert(data.is_md == False)
+  assert(data.ext == ".hbs")
 
   data = ContentData(filename="test.md")
-  assert(data.is_md == True)
+  assert(data.ext == ".md")
 
 def test_content_data_slug():
   data = ContentData(filename="test.hbs")

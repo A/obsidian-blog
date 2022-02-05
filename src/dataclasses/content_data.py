@@ -40,9 +40,9 @@ class ContentData:
     return slugify(filename)
 
   @property
-  def is_md(self):
+  def ext(self):
     _, ext = os.path.splitext(self.filename)
-    return ext == ".md"
+    return ext
 
   @property
   def is_private(self):
