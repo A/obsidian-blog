@@ -2,7 +2,7 @@ import os
 from src.dataclasses.content_data import ContentData
 from src.obsidian.page import Page
 
-fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
+fixtures_path = os.path.join(os.path.dirname(__file__), '__fixtures__')
 
 
 def get_fixture_path(name: str):
