@@ -45,3 +45,19 @@ def test_content_data_is_private():
 def test_content_data_id():
     data = ContentData(filename='/a/b/c.md')
     assert data.id == 'a-b-c'
+
+
+def test_content_data_sorting():
+    arr = [
+        ContentData(
+            meta={
+                'date': '2022-01-01',
+                'title': '1',
+            }
+        ),
+        ContentData(meta={'date': '2022-01-02', 'title': '2'}),
+    ]
+
+    arr_sorted = sorted(arr, reverse=True)
+
+    assert list(map(lambda i: i.title, arr_sorted)) == ['1', '2']

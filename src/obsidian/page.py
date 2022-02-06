@@ -39,10 +39,10 @@ class Page:
             page = Page(content_data)
             pages.append(page)
 
-        return pages
-        # return sorted(
-        #    pages, key=lambda post: post.data.meta.get('date'), reverse=True
-        #)
+        return sorted(pages, reverse=True)
+
+    def __lt__(self, other):
+        return self.data.date < other.data.date
 
     def build_tree(self):
         head = TreeNode(self)
@@ -63,7 +63,10 @@ class Page:
         if self.data.ext == '.md':
             content = self.render_entities()
             content = markdown.render(content)
-        return handlebars.render_template(content, context)
+        try:
+            return handlebars.render_template(content, context)
+        except:
+            return content
 
     def render_entities(self):
         for entity in self.data.entities:

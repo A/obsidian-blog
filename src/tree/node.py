@@ -29,3 +29,7 @@ class TreeNode:
         entities = self.flat()
         del entities[0]
         return entities
+
+    @staticmethod
+    def unwrap(node: 'TreeNode'):
+        return node.data

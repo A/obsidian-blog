@@ -58,3 +58,10 @@ def test_tree_node_recursive_flat():
 
     for (k, node) in enumerate(head.flat()):
         assert node.data == data[k]
+
+
+def test_tree_node_unwrap():
+    node = TreeNode('content')
+    res = TreeNode.unwrap(node)
+
+    assert res == 'content'

@@ -1,10 +1,12 @@
 import os
+from datetime import date, datetime
 from dataclasses import dataclass, field
 from typing import Optional
 from src.fs import basename
 from slugify.slugify import slugify
 
 TITLE_DELIMETER = ' - '
+DEFAULT_DATE = datetime.fromtimestamp(0)
 
 
 @dataclass
@@ -25,6 +27,18 @@ class ContentData:
             *_, title = title.split(TITLE_DELIMETER)
             return title
         return title
+
+    @property
+    def date(self):
+        meta_date = self.meta.get('date')
+
+        if isinstance(meta_date, date):
+            return datetime.strptime(meta_date.strftime('%Y%m%d'), '%Y%m%d')
+
+        return DEFAULT_DATE
+
+    def __lt__(self, other):
+        return self.date < other.date
 
     @property
     def slug(self):
