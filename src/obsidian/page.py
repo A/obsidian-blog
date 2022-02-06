@@ -1,3 +1,5 @@
+import os
+from src import fs
 import itertools
 from src.converters import handlebars, markdown
 from src.dataclasses.content_data import ContentData
@@ -21,6 +23,26 @@ class Page:
         self.data = data
         self.head = self.build_tree()
         self.data.entities = self.head.flat_children()
+
+    @staticmethod
+    def get_all(pages_dir):
+        pages = []
+
+        for file in fs.get_files_in_dir(pages_dir):
+            path = os.path.join(pages_dir, file)
+            filename, meta, content = fs.load(path)
+
+            content_data = ContentData(
+                filename=filename, meta=meta, content=content
+            )
+
+            page = Page(content_data)
+            pages.append(page)
+
+        return pages
+        # return sorted(
+        #    pages, key=lambda post: post.data.meta.get('date'), reverse=True
+        #)
 
     def build_tree(self):
         head = TreeNode(self)

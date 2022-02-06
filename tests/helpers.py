@@ -1,6 +1,6 @@
 import os
 from src.dataclasses.content_data import ContentData
-from src.entities.page import Page
+from src.obsidian.page import Page
 
 fixtures_path = os.path.join(os.path.dirname(__file__), 'fixtures')
 

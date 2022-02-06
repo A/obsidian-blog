@@ -8,10 +8,11 @@ class ConfigData:
     dest_dir: str = '.build'
     source_dir: str = '.blog'
     posts_dir: str = 'Posts'
-    pages_dirs: str = 'Pages'
+    pages_dir: str = 'Pages'
     layouts_dir: str = '.blog/_layouts'
     assets_dir: str = '.blog/_assets'
     assets_dest_dir: str = '.build/static'
+    public_dir: str = '/static'
     quiet: bool = False
     default_layout: str = 'main'
 

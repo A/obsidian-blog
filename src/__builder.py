@@ -10,8 +10,7 @@ from src.blog import Blog
 class Builder:
     preprocessors = [IncludeHeaderPreprocessor]
 
-    def build(self, timings, config: ConfigData):
-        self.timings = timings
+    def build(self, config: ConfigData):
         self.config = config
         self.blog = Blog()
 

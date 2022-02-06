@@ -1,7 +1,7 @@
-from src.config import VERBOSE
+# from src.config import VERBOSE
 
 
 def log(*args):
-    if not VERBOSE:
-        return None
+    # if not VERBOSE:
+    #    return None
     print(*args)

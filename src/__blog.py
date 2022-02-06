@@ -25,9 +25,10 @@ class Blog:
             )
             data = ContentData(filename=filename, meta=meta, content=content)
             posts.append(Page(data))
-        return sorted(
-            posts, key=lambda post: post.data.meta.get('date'), reverse=True
-        )
+
+        # return sorted(
+        #     posts, key=lambda post: post.data.meta.get('date'), reverse=True
+        # )
 
     def load_layouts(self):
         layouts = {}
