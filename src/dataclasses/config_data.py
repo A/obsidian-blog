@@ -13,7 +13,6 @@ class ConfigData:
     assets_dir: str = '.blog/_assets'
     assets_dest_dir: str = '.build/static'
     public_dir: str = '/static'
-    quiet: bool = False
     default_layout: str = 'main'
 
     def __post_init__(self):

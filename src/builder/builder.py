@@ -30,13 +30,9 @@ class Builder:
         fs.make_dir(dest_dir)
 
     def copy_assets(self):
-        dest_dir = self.config.dest_dir
         assets_dir = self.config.assets_dir
-        public_dir = self.config.public_dir
         assets_dest_dir = self.blog.config.assets_dest_dir
-        print(
-            f'- Copy assets from {assets_dir} to {dest_dir}/{assets_dest_dir}'
-        )
+        print(f'- Copy assets from {assets_dir} to {assets_dest_dir}')
         fs.copy_dir(assets_dir, assets_dest_dir)
 
     def render_all(self):

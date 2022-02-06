@@ -5,7 +5,6 @@ import yaml
 from src import fs
 from src.dataclasses.content_data import ContentData
 from src.fs import basename, find_one_by_glob
-from src.logger import log
 
 
 MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
