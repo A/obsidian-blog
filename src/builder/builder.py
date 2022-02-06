@@ -43,13 +43,13 @@ class Builder:
             pages = getattr(self.vault, entity)
             for page in pages:
                 print(f'- {page.data.title}')
-                self.preprocess_content(page)
-                self.process_assets(page)
                 if page.data.is_private:
                     print(
                         f"- [SKIP]: '{page.data.title}' is private, add `published: True` attribute to the frontmetter to publish it"
                     )
                     continue
+                self.preprocess_content(page)
+                self.process_assets(page)
                 self.render(page)
 
             toc = time.perf_counter()
@@ -88,10 +88,8 @@ class Builder:
                 dest_filename = f'{asset_data.id}{asset_data.ext}'
 
                 frm = asset_data.filename
-                to = f'{assets_dest_dir}/dest_filename'
+                to = f'{assets_dest_dir}/{dest_filename}'
                 url = os.path.join(public_dir, dest_filename)
-
-                print('URL', url)
 
                 fs.copyfile(frm, to)
                 asset_data.filename = url
