@@ -6,30 +6,30 @@ from src.fs import normalize_path
 
 REFERENCE_IMG_RE = r'(\!\[(.*)]\[(.*)\])'
 
+
 class ReferenceImage(Image):
+    @staticmethod
+    def get_all(entity):
+        """parse all reference image entities from a given page model"""
+        if not isinstance(entity.data, ContentData):
+            return []
 
-  @staticmethod
-  def get_all(entity):
-    """parse all reference image entities from a given page model"""
-    if not isinstance(entity.data, ContentData):
-      return []
+        imgs = []
+        content = entity.data.content
+        matches = re.findall(REFERENCE_IMG_RE, content)
 
-    imgs = []
-    content = entity.data.content
-    matches = re.findall(REFERENCE_IMG_RE, content)
+        for match in matches:
+            placeholder, alt, key = match
+            link_re = re.compile('\\[' + key + '\\]:\\s(.*)')
+            filename = re.findall(link_re, content)[0]
 
-    for match in matches:
-      placeholder, alt, key = match
-      link_re = re.compile("\\[" + key + "\\]:\\s(.*)")
-      filename = re.findall(link_re, content)[0]
+            data = AssetData(
+                placeholder=placeholder,
+                alt=alt,
+                filename=normalize_path(filename),
+                key=key,
+            )
+            imgs.append(ReferenceImage(data=data))
+            print(f'- [PARSED]: Image: {filename}')
 
-      data = AssetData(
-        placeholder=placeholder,
-        alt=alt,
-        filename=normalize_path(filename),
-        key=key, 
-      )
-      imgs.append(ReferenceImage(data=data))
-      print(f"- [PARSED]: Image: {filename}")
-
-    return imgs
+        return imgs

@@ -12,54 +12,55 @@ MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
 
 
 class MediawikiInclude:
-  def __init__(self, data: ContentData):
-    self.data = data
+    def __init__(self, data: ContentData):
+        self.data = data
 
-  @staticmethod
-  def get_all(entity):
-    if not isinstance(entity.data, ContentData):
-      return []
+    @staticmethod
+    def get_all(entity):
+        if not isinstance(entity.data, ContentData):
+            return []
 
-    includes = []
-    matches = re.findall(MW_INCLUDE_REGEXP, entity.data.content, flags=re.MULTILINE)
-
-    for match in matches:
-      placeholder, filename = match
-      try:
-        filename = find_one_by_glob(f"**/{filename}.md")
-        _, meta, content = fs.load(filename)
-
-        data = ContentData(
-          placeholder=placeholder,
-          filename=filename,
-          meta=meta,
-          content=content
+        includes = []
+        matches = re.findall(
+            MW_INCLUDE_REGEXP, entity.data.content, flags=re.MULTILINE
         )
 
-        include = MediawikiInclude(data)
+        for match in matches:
+            placeholder, filename = match
+            try:
+                filename = find_one_by_glob(f'**/{filename}.md')
+                _, meta, content = fs.load(filename)
 
-        includes.append(include)
-        print(f"- [PARSED]: Include: {placeholder}")
-      except Exception as e:
-        print(f"- [NOT FOUND] \"{placeholder}\" {e}")
+                data = ContentData(
+                    placeholder=placeholder,
+                    filename=filename,
+                    meta=meta,
+                    content=content,
+                )
 
-    return includes
+                include = MediawikiInclude(data)
 
-  @property
-  def title(self) -> str:
-    if self.data.meta.get("title"):
-      return self.data.meta.get("title") or ""
-    filename, _ = os.path.splitext(basename(self.data.filename))
-    if " - " in filename:
-      matches = re.findall(r"-(.*)\.\w+$", self.data.filename)
-      return matches[0]
-    return filename
+                includes.append(include)
+                print(f'- [PARSED]: Include: {placeholder}')
+            except Exception as e:
+                print(f'- [NOT FOUND] "{placeholder}" {e}')
 
-  @property
-  def id(self):
-    return slugify(self.title)
+        return includes
 
+    @property
+    def title(self) -> str:
+        if self.data.meta.get('title'):
+            return self.data.meta.get('title') or ''
+        filename, _ = os.path.splitext(basename(self.data.filename))
+        if ' - ' in filename:
+            matches = re.findall(r'-(.*)\.\w+$', self.data.filename)
+            return matches[0]
+        return filename
 
-  def render(self, data):
-    content = data.content;
-    return content.replace(self.data.placeholder, self.data.content)
+    @property
+    def id(self):
+        return slugify(self.title)
+
+    def render(self, data):
+        content = data.content
+        return content.replace(self.data.placeholder, self.data.content)
