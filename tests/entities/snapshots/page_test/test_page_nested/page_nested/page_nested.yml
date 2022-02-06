@@ -1,0 +1,6 @@
+!!python/object:src.dataclasses.content_data.ContentData
+content: '[[deeper]]'
+entities: []
+filename: include.md
+meta: {}
+placeholder: '[[include]]'

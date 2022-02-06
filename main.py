@@ -1,11 +1,24 @@
 import time
-from src.builder import Builder
+from src.obsidian.vault import ObsidianVault
+from src.blog.blog import Blog
+from src.builder.builder import Builder
+from src.dataclasses.config_data import ConfigData
 
 tic = time.perf_counter()
-timings = {}
-Builder().build(timings)
+
+config = ConfigData()
+vault = ObsidianVault(config=config)
+blog = Blog(config=config)
+
+builder = Builder(
+    config=config,
+    vault=vault,
+    blog=blog
+)
+
+builder.build()
+
 toc = time.perf_counter()
 
-print(f"\nAll posts have been rendered in {timings['posts']:0.4f} seconds")
-print(f"All pages have been rendered in {timings['pages']:0.4f} seconds")
-print(f"The build has been finished in {toc - tic:0.4f} seconds\n")
+print('---\n')
+print(f'The build has been finished in {toc - tic:0.4f} seconds\n')
