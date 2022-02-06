@@ -76,15 +76,13 @@ class Builder:
         return self.blog.layouts[layout_name]
 
     def process_assets(self, page):
-        for node in page.data.entities:
-            entity = node.data
+        for entity in page.data.entities:
             asset_data = entity.data
 
             if not issubclass(type(asset_data), AssetData):
                 continue
 
             try:
-                dest_dir = self.config.dest_dir
                 public_dir = self.config.public_dir
                 assets_dest_dir = self.config.assets_dest_dir
                 dest_filename = f'{asset_data.id}{asset_data.ext}'
@@ -104,9 +102,9 @@ class Builder:
                 pass
 
     def preprocess_content(self, page):
-        for node in page.data.entities:
+        for entity in page.data.entities:
             for processor in self.preprocessors:
-                processor.process(node.data)
+                processor.process(entity)
 
     def get_context(self, local_ctx):
         global_ctx = {

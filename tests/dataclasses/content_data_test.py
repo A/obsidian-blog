@@ -60,4 +60,5 @@ def test_content_data_sorting():
 
     arr_sorted = sorted(arr, reverse=True)
 
+
     assert list(map(lambda i: i.title, arr_sorted)) == ['1', '2']

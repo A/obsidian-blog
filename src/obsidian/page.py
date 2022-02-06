@@ -22,7 +22,9 @@ class Page:
     def __init__(self, data: ContentData):
         self.data = data
         self.head = self.build_tree()
-        self.data.entities = self.head.flat_children()
+        self.data.entities = list(
+            map(TreeNode.unwrap, self.head.flat_children())
+        )
 
     @staticmethod
     def get_all(pages_dir):
@@ -70,11 +72,11 @@ class Page:
 
     def render_entities(self):
         for entity in self.data.entities:
-            if hasattr(entity.data, 'render'):
-                data = entity.data.data
+            if hasattr(entity, 'render'):
+                data = entity.data
                 if hasattr(data, 'is_private') and data.is_private:
                     print(
                         f'  - [SKIP]: {data.placeholder} is private, add `published: True` attribute to the frontmetter to publish it'
                     )
-                self.data.content = entity.data.render(self.data)
+                self.data.content = entity.render(self.data)
         return self.data.content
