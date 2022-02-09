@@ -7,15 +7,16 @@ from watchdog.events import FileSystemEventHandler
 
 class WatcherTask:
     def __init__(self, config: ConfigData) -> None:
+        self.config = config
         ignore_dir = os.path.abspath(config.dest_dir)
         self.start_watcher(ignore_dir=ignore_dir)
 
     @staticmethod
-    async def run(config: ConfigData):
+    def run(config: ConfigData):
         WatcherTask(config)
 
     def callback(self):
-        BuilderTask.run()
+        BuilderTask.run(self.config)
 
     def start_watcher(self, ignore_dir):
         Handler = self.create_handler(ignore_dir, self.callback)
@@ -23,14 +24,15 @@ class WatcherTask:
         self.watcher.run()
 
     def create_handler(self, ignore_dir, callback):
-        
         class Handler(FileSystemEventHandler):
             @staticmethod
             def on_any_event(event):
+                if event.is_directory:
+                    return
                 is_ignored = event.src_path.startswith(ignore_dir)
-                if is_ignored: return
+                if is_ignored:
+                    return
 
-                print(f'File changed: <{event.event_type}> {event.src_path}')
                 callback()
 
         return Handler
