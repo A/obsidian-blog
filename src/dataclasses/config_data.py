@@ -4,6 +4,7 @@ from dotenv.main import dotenv_values
 
 @dataclass
 class ConfigData:
+    drafts: bool = False
     blog_title: str = 'My Blog'
     dest_dir: str = '.build'
     source_dir: str = '.blog'
@@ -24,3 +25,6 @@ class ConfigData:
 
     def load_dotenv(self):
         self.override(dotenv_values('.env'))
+
+
+config = ConfigData()
