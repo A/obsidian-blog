@@ -1,6 +1,6 @@
 import os
 import pytest
-from src import fs
+from src.lib import fs
 from src.obsidian.page import Page
 from tests.helpers import create_page, get_fixture_path
 
@@ -33,6 +33,6 @@ def test_page_get_all():
 
     assert len(pages) == 3
     for page in pages:
-        assert(page.data.content == page.data.filename)
+        assert page.data.content == page.data.filename
 
     os.chdir(cwd)

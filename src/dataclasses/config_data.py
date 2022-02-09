@@ -14,9 +14,7 @@ class ConfigData:
     assets_dest_dir: str = '.build/static'
     public_dir: str = '/static'
     default_layout: str = 'main'
-
-    def __post_init__(self):
-        self.load_dotenv()
+    port: int = 4200
 
     def override(self, config: dict):
         """override config values from a given dict"""

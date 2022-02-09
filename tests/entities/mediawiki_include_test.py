@@ -1,7 +1,7 @@
 import os
 import pytest
 import yaml
-from src import fs
+from src.lib import fs
 from src.dataclasses.content_data import ContentData
 from src.entities.mediawiki_include import MediawikiInclude
 from tests.helpers import create_page, get_fixture_path

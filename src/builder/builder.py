@@ -1,6 +1,6 @@
 import os
 import time
-from src import fs
+from src.lib import fs
 from src.blog.blog import Blog
 from src.dataclasses.asset_data import AssetData
 from src.dataclasses.config_data import ConfigData
@@ -62,12 +62,13 @@ class Builder:
     def render(self, page):
         dest_dir = self.config.dest_dir
         dest = os.path.join(dest_dir, page.data.slug)
-        context = self.get_context({'self': page.data})
-        html = page.render(context)
+        ctx = self.create_context({'self': page.data})
+        html = page.render(ctx)
         layout = self.get_layout(page)
 
         if layout is not None:
-            html = layout.render(context | {'content': html})
+            ctx.update({'content': html})
+            html = layout.render(ctx)
 
         fs.write_file(dest, html)
 
@@ -104,7 +105,10 @@ class Builder:
             for processor in self.preprocessors:
                 processor.process(entity)
 
-    def get_context(self, local_ctx):
+    def create_context(self, local_ctx=None):
+        if local_ctx == None:
+            local_ctx = {}
+
         global_ctx = {
             'config': {
                 'BLOG_TITLE': self.config.blog_title,
@@ -114,4 +118,5 @@ class Builder:
             'pages': self.vault.pages,
             'posts': self.vault.posts,
         }
-        return global_ctx | local_ctx
+        global_ctx.update(local_ctx)
+        return global_ctx

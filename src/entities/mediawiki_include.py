@@ -1,10 +1,8 @@
 import os
 import re
 from slugify import slugify
-import yaml
-from src import fs
 from src.dataclasses.content_data import ContentData
-from src.fs import basename, find_one_by_glob
+from src.lib import fs
 
 
 MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
@@ -27,7 +25,7 @@ class MediawikiInclude:
         for match in matches:
             placeholder, filename = match
             try:
-                filename = find_one_by_glob(f'**/{filename}.md')
+                filename = fs.find_one_by_glob(f'**/{filename}.md')
                 _, meta, content = fs.load(filename)
 
                 data = ContentData(
@@ -50,7 +48,7 @@ class MediawikiInclude:
     def title(self) -> str:
         if self.data.meta.get('title'):
             return self.data.meta.get('title') or ''
-        filename, _ = os.path.splitext(basename(self.data.filename))
+        filename, _ = os.path.splitext(fs.basename(self.data.filename))
         if ' - ' in filename:
             matches = re.findall(r'-(.*)\.\w+$', self.data.filename)
             return matches[0]
