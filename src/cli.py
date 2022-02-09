@@ -1,4 +1,5 @@
 import asyncio
+from threading import Thread
 from docopt import docopt
 from src.config import config
 from src.tasks.builder import BuilderTask
@@ -21,8 +22,6 @@ Options:
   -d --drafts                   Render draft pages and posts
 
   --title=<string>              Blog title [default: My Blog]
-  --posts_dir=<directory>       Posts directory to parse [default: Posts]
-  --pages_dir=<directory>       Pages directory to parse [default: Pages]
 
   --version             Show version.
 """
@@ -37,8 +36,6 @@ def cli():
         {
             'port': int(args['--port']),
             'blog_title': args['--title'],
-            'posts_dir': args['--posts_dir'],
-            'pages_dir': args['--pages_dir'],
             'drafts': args['--drafts'],
         }
     )
@@ -47,7 +44,9 @@ def cli():
     BuilderTask.run(config)
 
     if serve:
-        asyncio.run(ServerTask.run(config))
+        t = Thread(target=ServerTask.run, args=(config,))
+        t.start()
 
     if watch:
-        asyncio.run(WatcherTask.run(config))
+        t = Thread(target=WatcherTask.run, args=(config,))
+        t.start()

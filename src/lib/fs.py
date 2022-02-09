@@ -20,7 +20,10 @@ def rm_dir(directory: str):
 
 def make_dir(directory: str):
     """creates a directory"""
-    os.mkdir(directory)
+    try:
+        os.mkdir(directory)
+    except:
+        pass
 
 
 def copy_dir(source: str, dest: str):
