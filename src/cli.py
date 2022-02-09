@@ -1,6 +1,6 @@
 import asyncio
 from docopt import docopt
-from src.dataclasses.config_data import ConfigData
+from src.config import config
 from src.tasks.builder import BuilderTask
 from src.tasks.server import ServerTask
 from src.tasks.watcher import WatcherTask
@@ -11,13 +11,14 @@ doc = """obsidian-blog
 Static site generator for obsidian.md notes.
 
 Usage:
-  obsidian-blog [-w] [-s] [--port <number>] [--title <string>] [--posts_dir <directory>] [--pages_dir <directory>]
+  obsidian-blog [-d] [-w] [-s] [--port <number>] [--title <string>] [--posts_dir <directory>] [--pages_dir <directory>]
 
 Options:
   -h --help                     Show this screen.
   -w --watch                    Enable watcher
   -s --serve                    Enable web-server
   -p --port=<number>            Web-server port [default: 4200]
+  -d --drafts                   Render draft pages and posts
 
   --title=<string>              Blog title [default: My Blog]
   --posts_dir=<directory>       Posts directory to parse [default: Posts]
@@ -32,13 +33,13 @@ def cli():
     serve = args['--serve']
     watch = args['--watch']
 
-    config = ConfigData()
     config.override(
         {
             'port': int(args['--port']),
             'blog_title': args['--title'],
             'posts_dir': args['--posts_dir'],
             'pages_dir': args['--pages_dir'],
+            'drafts': args['--drafts'],
         }
     )
     config.load_dotenv()

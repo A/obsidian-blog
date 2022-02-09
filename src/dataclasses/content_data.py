@@ -2,6 +2,7 @@ import os
 from datetime import date, datetime
 from dataclasses import dataclass, field
 from typing import Optional
+from src.config import config
 from src.lib.fs import basename
 from slugify.slugify import slugify
 
@@ -61,6 +62,8 @@ class ContentData:
 
     @property
     def is_private(self):
+        if config.drafts and self.meta.get('draft'):
+            return False
         if self.meta.get('published'):
             return False
         return True
