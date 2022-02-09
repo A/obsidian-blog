@@ -10,8 +10,24 @@ notes, that's I believe based on the [original zettelkasten benefit][zettelkaste
 ### Usage
 
 ```
-cd <your-obsidian-vault>
 obsidian-blog
+
+Static site generator for obsidian.md notes.
+
+Usage:
+  obsidian-blog [-w] [-s] [--port <number>] [--title <string>] [--posts_dir <directory>] [--pages_dir <directory>]
+
+Options:
+  -h --help                     Show this screen.
+  -w --watch                    Enable watcher
+  -s --serve                    Enable web-server
+  -p --port=<number>            Web-server port [default: 4200]
+
+  --title=<string>              Blog title [default: My Blog]
+  --posts_dir=<directory>       Posts directory to parse [default: Posts]
+  --pages_dir=<directory>       Pages directory to parse [default: Pages]
+
+  --version             Show version
 ```
 
 ### Example

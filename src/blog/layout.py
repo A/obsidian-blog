@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import os
-from src import fs
+from src.lib import fs
 from src.converters import handlebars
 
 

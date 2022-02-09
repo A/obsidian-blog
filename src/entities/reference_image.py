@@ -2,7 +2,7 @@ import re
 from src.dataclasses.content_data import ContentData
 from src.dataclasses.asset_data import AssetData
 from src.entities.image import Image
-from src.fs import normalize_path
+from src.lib.fs import normalize_path
 
 REFERENCE_IMG_RE = r'(\!\[(.*)]\[(.*)\])'
 

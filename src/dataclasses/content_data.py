@@ -2,7 +2,7 @@ import os
 from datetime import date, datetime
 from dataclasses import dataclass, field
 from typing import Optional
-from src.fs import basename
+from src.lib.fs import basename
 from slugify.slugify import slugify
 
 TITLE_DELIMETER = ' - '

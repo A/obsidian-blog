@@ -19,6 +19,7 @@ def test_config_data_dotenv():
     os.chdir(fixture_path)
 
     config = ConfigData()
+    config.load_dotenv()
 
     assert config.blog_title == 'Dotenv'
     assert config.default_layout == 'dotenv'

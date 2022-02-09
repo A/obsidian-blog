@@ -1,6 +1,6 @@
 import os
 import pytest
-from src import fs
+from src.lib import fs
 from src.dataclasses.asset_data import AssetData
 from src.entities.mediawiki_image import MediawikiImage
 from tests.helpers import create_page, get_fixture_path

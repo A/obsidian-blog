@@ -1,5 +1,4 @@
 import os
-from src import fs
 import itertools
 from src.converters import handlebars, markdown
 from src.dataclasses.content_data import ContentData
@@ -7,6 +6,7 @@ from src.entities.inline_image import InlineImage
 from src.entities.mediawiki_image import MediawikiImage
 from src.entities.mediawiki_include import MediawikiInclude
 from src.entities.reference_image import ReferenceImage
+from src.lib import fs
 from src.tree.node import TreeNode
 
 
