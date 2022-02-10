@@ -5,6 +5,7 @@ from src.dataclasses.content_data import ContentData
 from src.entities.inline_image import InlineImage
 from src.entities.mediawiki_image import MediawikiImage
 from src.entities.mediawiki_include import MediawikiInclude
+from src.entities.mediawiki_link import MediawikiIncludeLink
 from src.entities.reference_image import ReferenceImage
 from src.lib import fs
 from src.tree.node import TreeNode
@@ -17,7 +18,13 @@ class Page:
     notes graph
     """
 
-    Entities = [InlineImage, ReferenceImage, MediawikiImage, MediawikiInclude]
+    Entities = [
+        InlineImage,
+        ReferenceImage,
+        MediawikiImage,
+        MediawikiInclude,
+        MediawikiIncludeLink,
+    ]
 
     def __init__(self, data: ContentData):
         self.data = data
@@ -75,8 +82,11 @@ class Page:
             if hasattr(entity, 'render'):
                 data = entity.data
                 if hasattr(data, 'is_private') and data.is_private:
-                    print(
-                        f'  - [SKIP]: {data.placeholder} is private, add `published: True` attribute to the frontmetter to publish it'
-                    )
+                    if data.content != '':
+                        print(data.content)
+                        print(
+                            f'  - [SKIP]: {data.placeholder} is private, add `published: True` attribute to the frontmetter to publish it'
+                        )
+                        continue
                 self.data.content = entity.render(self.data)
         return self.data.content

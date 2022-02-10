@@ -43,10 +43,14 @@ def cli():
 
     BuilderTask.run(config)
 
+    threads = []
     if serve:
         t = Thread(target=ServerTask.run, args=(config,))
-        t.start()
+        threads.append(t)
 
     if watch:
         t = Thread(target=WatcherTask.run, args=(config,))
+        threads.append(t)
+
+    for t in threads:
         t.start()
