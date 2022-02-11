@@ -5,7 +5,7 @@ from src.dataclasses.content_data import ContentData
 from src.lib import fs
 
 
-MW_INCLUDE_REGEXP = r'^(\[\[(.*)\]\])$'
+MW_INCLUDE_REGEXP = r'^(\[\[([\s\w\d_\-&|]*)\]\])$'
 
 
 class MediawikiInclude:

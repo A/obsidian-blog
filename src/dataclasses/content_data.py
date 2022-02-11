@@ -77,7 +77,12 @@ class ContentData:
     def _placeholder_title(self):
         if not self.placeholder:
             return None
-        [title] = re.findall(r'\[\[([\d\s\w\-|]*)\]\]', self.placeholder or '')
+
+        print(self.placeholder)
+
+        [title] = re.findall(
+            r'\[\[([\d\s\w\-&|]*)\]\]', self.placeholder or ''
+        )
         if not '|' in title:
             return None
 
