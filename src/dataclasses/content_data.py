@@ -1,6 +1,7 @@
 import os
 from datetime import date, datetime
 from dataclasses import dataclass, field
+import re
 from typing import Optional
 from src.config import config
 from src.lib.fs import basename
@@ -20,6 +21,10 @@ class ContentData:
 
     @property
     def title(self):
+        # If it was explicitly redefined, return it
+        if self._placeholder_title is not None:
+            return self._placeholder_title
+
         meta_title = self.meta.get('title')
         if isinstance(meta_title, str):
             return meta_title
@@ -67,3 +72,19 @@ class ContentData:
         if self.meta.get('published'):
             return False
         return True
+
+    @property
+    def _placeholder_title(self):
+        if not self.placeholder:
+            return None
+
+        print(self.placeholder)
+
+        [title] = re.findall(
+            r'\[\[([\d\s\w\-&|]*)\]\]', self.placeholder or ''
+        )
+        if not '|' in title:
+            return None
+
+        _, title = title.split('|')
+        return title.strip()

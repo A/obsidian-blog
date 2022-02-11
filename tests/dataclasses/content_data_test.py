@@ -60,5 +60,16 @@ def test_content_data_sorting():
 
     arr_sorted = sorted(arr, reverse=True)
 
-
     assert list(map(lambda i: i.title, arr_sorted)) == ['1', '2']
+
+
+def test_content_data_placeholder_title():
+    data = ContentData(
+        placeholder='[[Prometheus | Prometheus]], meta={ "title": "Zeus" }'
+    )
+    assert data.title == 'Prometheus'
+
+    data = ContentData(
+        placeholder='[[Prometheus | Epimetheus]], meta={ "title": "Zeus" }'
+    )
+    assert data.title == 'Epimetheus'

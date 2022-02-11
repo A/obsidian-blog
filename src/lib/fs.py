@@ -67,8 +67,12 @@ def find_one_by_glob(g):
 
 
 def load(filename):
-    f = frontmatter.load(filename)
-    return [filename, f.metadata, f.content]
+    try:
+        f = frontmatter.load(filename)
+        return [filename, f.metadata, f.content]
+    except Exception as error:
+        print(f'[ERROR] There is an error loading {filename}: {error}')
+        exit(1)
 
 
 def normalize_path(path: str):

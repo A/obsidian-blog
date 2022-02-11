@@ -42,3 +42,19 @@ def test_mediawiki_image_rendering():
     res = entity.render(page.data)
 
     assert res == '![c](d)'
+
+
+def test_mediawiki_image_rendering_2():
+    placeholder = '![[a]]'
+    page = create_page(content=f'Text {placeholder}')
+
+    asset_data = AssetData(
+        placeholder=placeholder,
+        alt='c',
+        filename='d',
+    )
+
+    entity = MediawikiImage(data=asset_data)
+    res = entity.render(page.data)
+
+    assert res == 'Text ![c](d)'

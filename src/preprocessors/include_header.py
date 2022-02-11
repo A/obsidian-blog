@@ -8,6 +8,9 @@ class IncludeHeaderPreprocessor:
         if not isinstance(data, ContentData):
             return
 
+        if data.content == '':
+            return
+
         header = f'<h2 id="{data.id}">{data.title}</h2>'
         data.content = f'{header}\n{data.content}'
 
