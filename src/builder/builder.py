@@ -7,6 +7,7 @@ from src.dataclasses.config_data import ConfigData
 from src.obsidian.vault import ObsidianVault
 from src.preprocessors.include_header import IncludeHeaderPreprocessor
 from src.preprocessors.further_reading import FurtherReadingLinksPreprocessor
+from src.preprocessors.note_delimeters import NoteDelimeterPreprocessor
 
 
 class Builder:
@@ -15,6 +16,7 @@ class Builder:
     preprocessors = [
         IncludeHeaderPreprocessor,
         FurtherReadingLinksPreprocessor,
+        NoteDelimeterPreprocessor,
     ]
 
     def __init__(self, config: ConfigData, blog: Blog, vault: ObsidianVault):
