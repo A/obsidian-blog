@@ -103,7 +103,7 @@ Just text me in [telegram][tg] or file an issue. I'd be happy to know if you wan
 
 ### Alternatives
 
-- [Obsidian Export] - cli to render obsidian notes into markdown written in Rust
+- [Obsidian Export][obsidian-export] - cli to render obsidian notes into markdown written in Rust
 
 [moc]: https://www.youtube.com/watch?v=7GqQKCT0PZ4
 [zettelkasten]: https://en.wikipedia.org/wiki/Niklas_Luhmann#Note-taking_system_(Zettelkasten)
