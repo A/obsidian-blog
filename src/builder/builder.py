@@ -6,12 +6,16 @@ from src.dataclasses.asset_data import AssetData
 from src.dataclasses.config_data import ConfigData
 from src.obsidian.vault import ObsidianVault
 from src.preprocessors.include_header import IncludeHeaderPreprocessor
+from src.preprocessors.further_reading import FurtherReadingLinksPreprocessor
 
 
 class Builder:
     """Handles build process"""
 
-    preprocessors = [IncludeHeaderPreprocessor]
+    preprocessors = [
+        IncludeHeaderPreprocessor,
+        FurtherReadingLinksPreprocessor,
+    ]
 
     def __init__(self, config: ConfigData, blog: Blog, vault: ObsidianVault):
         self.config = config

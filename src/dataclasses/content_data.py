@@ -78,8 +78,6 @@ class ContentData:
         if not self.placeholder:
             return None
 
-        print(self.placeholder)
-
         [title] = re.findall(
             r'\[\[([\d\s\w\-&|]*)\]\]', self.placeholder or ''
         )
