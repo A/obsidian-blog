@@ -11,7 +11,13 @@ class IncludeHeaderPreprocessor:
         if data.content == '':
             return
 
-        header = f'<h2 id="{data.id}">{data.title}</h2>'
+        header = f"""\
+
+<h2 id="{data.id}" class="subheader">
+    <a href="#{data.id}">{data.title}</a>
+</h2>
+
+"""
         data.content = f'{header}\n{data.content}'
 
         print(f'  - [PREPROCESS] Rendered header for "{data.title}"')
