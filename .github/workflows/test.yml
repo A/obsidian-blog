@@ -3,7 +3,8 @@ name: Test
 on:
   push:
     branches:
-      - "*"
+      - '*'
+      - '!master'
 
 env:
   PYTHON_VERSION: 3.9.9
