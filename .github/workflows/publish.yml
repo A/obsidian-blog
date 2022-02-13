@@ -1,0 +1,33 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - "master"
+
+env:
+  PYTHON_VERSION: 3.10
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: install poetry
+        run: pip3 install poetry
+
+      - name: install deps
+        run: poetry install
+
+      - name: test
+        run: PYTHONPATH=. poetry run pytest --cache-clear
+
+      - name: publish
+        run: |
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN}}
+          poetry build
+          poetry publish
