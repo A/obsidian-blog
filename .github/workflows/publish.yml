@@ -6,10 +6,10 @@ on:
       - "master"
 
 env:
-  PYTHON_VERSION: 3.10
+  PYTHON_VERSION: 3.10.2
 
 jobs:
-  test:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
