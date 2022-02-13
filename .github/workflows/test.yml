@@ -8,17 +8,24 @@ on:
 env:
   PYTHON_VERSION: 3.9.9
 
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.7', '3.8', '3.9', '3.10']
+
+    name: Python ${{ matrix.python-version }} test
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: ${{ matrix.python-version }}
 
       - name: install poetry
-        run: pip3 install poetry
+        run: pip install poetry
 
       - name: install deps
         run: poetry install
