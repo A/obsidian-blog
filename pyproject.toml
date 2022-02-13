@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "obsidian-blog"
+version = "0.1.1"
+description = "Feature rich static site generator for obsidian.md"
+authors = ["'Anton Shuvalov' <anton@shuvalov.info>"]
+license = "Commons Clause"
+packages = [
+    { include = "src" }
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pybars4 = "^0.9.13"
+docopt = "^0.6.2"
+Markdown = "^3.3.6"
+markdown-link-attr-modifier = "^0.2.0"
+python-dotenv = "^0.19.2"
+python-frontmatter = "^1.0.0"
+python-slugify = "^5.0.2"
+watchdog = "^2.1.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0.1"
+pytest-snapshot = "^0.8.1"
+pytest-cov = "^3.0.0"
+
+[tool.poetry.scripts]
+obsidian-blog = "src.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
