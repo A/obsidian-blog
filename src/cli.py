@@ -27,7 +27,7 @@ Options:
 """
 
 
-def cli():
+def main():
     args = docopt(doc, version='0.0.0')
     serve = args['--serve']
     watch = args['--watch']
@@ -54,3 +54,7 @@ def cli():
 
     for t in threads:
         t.start()
+
+
+if __name__ == '__main__':
+    main()

@@ -17,8 +17,11 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: install dependencies
-        run: pip3 install -r requirements.txt
+      - name: install poetry
+        run: pip3 install poetry
+
+      - name: install deps
+        run: poetry install
 
       - name: test
-        run: make test_ci
+        run: PYTHONPATH=. poetry run pytest --cov=src

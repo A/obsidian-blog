@@ -21,6 +21,12 @@ notes, that's I believe based on the [original zettelkasten benefit][zettelkaste
 - Render notes as links, in case they're included in the middle of the paragraph and have `link` frontmatter attribute.
 - Supports filename delimeters: `Topic - Category - Note` becomes just `Note`
 
+### Installation
+
+```
+pip install obsidian-blog
+```
+
 ### Usage
 
 ```
