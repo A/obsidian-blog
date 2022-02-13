@@ -117,10 +117,7 @@ class Builder:
             local_ctx = {}
 
         global_ctx = {
-            'config': {
-                'BLOG_TITLE': self.config.blog_title,
-                'ASSETS_PATH': self.config.public_dir,
-            },
+            'config': self.config,
             'layouts': self.blog.layouts,
             'pages': self.vault.pages,
             'posts': self.vault.posts,
