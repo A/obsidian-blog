@@ -1,3 +1,7 @@
+0.1.3
+===
+- add config to the handlebars context
+
 0.1.2
 ===
 
