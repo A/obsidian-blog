@@ -2,20 +2,18 @@
 
 **DISCLAIMER: Still work-in-progress, so API definitely will change. To use it you'd better to have some programming experience**
 
-Experiments around static site generation for obsidian markdown. 
-
 The idea is to create a simple blog generated from obsidian [Map Of Content][moc]
-notes, that's I believe based on the [original zettelkasten benefit][zettelkasten].
+notes [original zettelkasten benefit][zettelkasten].
 
 ### Features
 
-- Yet another static site generator for obsidian
+- Yet another static site generator for obsidian.
 - Built to use with git, github pages and action.
 - Uses handlebars template engine
-- Supports `--watch` and `--server` modes for local writing
+- Supports `--watch` and `--serve` modes for local writing
 - Recursively parses [[includes]] and has cycles detection
 - Automatically copies included local images into the build
-- Supports `--draft` mode to work unpublished files locally
+- Supports `--drafts` mode to work unpublished files locally
 - Privacy. Notes can be published only with explicit `published: True` annotation.
 - Fluent title detection from [[note | alt title]], frontmatter `title` attribute, or a filename.
 - Render notes as links, in case they're included in the middle of the paragraph and have `link` frontmatter attribute.
@@ -30,24 +28,24 @@ pip install obsidian-blog
 ### Usage
 
 ```
+$ obsidian-blog -h
 obsidian-blog
 
 Static site generator for obsidian.md notes.
 
 Usage:
-  obsidian-blog [-w] [-s] [--port <number>] [--title <string>] [--posts_dir <directory>] [--pages_dir <directory>]
+  obsidian-blog [-d] [-w] [-s] [--port <number>] [--title <string>] [--posts_dir <directory>] [--pages_dir <directory>]
 
 Options:
   -h --help                     Show this screen.
   -w --watch                    Enable watcher
   -s --serve                    Enable web-server
   -p --port=<number>            Web-server port [default: 4200]
+  -d --drafts                   Render draft pages and posts
 
   --title=<string>              Blog title [default: My Blog]
-  --posts_dir=<directory>       Posts directory to parse [default: Posts]
-  --pages_dir=<directory>       Pages directory to parse [default: Pages]
 
-  --version             Show version
+  --version             Show version.
 ```
 
 ### Example
