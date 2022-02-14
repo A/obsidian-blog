@@ -13,7 +13,7 @@ def test_include_header_preprocessor(snapshot):
     )
 
     entity = DummyInclude(content_data)
-    IncludeHeaderPreprocessor.process(entity)
+    IncludeHeaderPreprocessor.process_entity(entity)
 
     entity.data.content
 
