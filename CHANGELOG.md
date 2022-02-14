@@ -1,3 +1,9 @@
+0.1.4
+===
+- Refactor preprocessors to add page processing support
+- Add preflight check validation
+- Implement --version to use pyproject.toml
+
 0.1.3
 ===
 - add config to the handlebars context

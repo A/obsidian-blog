@@ -3,6 +3,7 @@ from threading import Thread
 from docopt import docopt
 from src.config import config
 from src.tasks.builder import BuilderTask
+from src.tasks.preflight_check import PreflightCheckTask
 from src.tasks.server import ServerTask
 from src.tasks.watcher import WatcherTask
 
@@ -43,19 +44,23 @@ def main():
     )
     config.load_dotenv()
 
-    BuilderTask.run(config)
+    try:
+        PreflightCheckTask.run(config)
+        BuilderTask.run(config)
 
-    threads = []
-    if serve:
-        t = Thread(target=ServerTask.run, args=(config,))
-        threads.append(t)
+        threads = []
+        if serve:
+            t = Thread(target=ServerTask.run, args=(config,))
+            threads.append(t)
 
-    if watch:
-        t = Thread(target=WatcherTask.run, args=(config,))
-        threads.append(t)
+        if watch:
+            t = Thread(target=WatcherTask.run, args=(config,))
+            threads.append(t)
 
-    for t in threads:
-        t.start()
+        for t in threads:
+            t.start()
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
