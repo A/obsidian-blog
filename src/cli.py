@@ -1,4 +1,4 @@
-import asyncio
+import pkg_resources
 from threading import Thread
 from docopt import docopt
 from src.config import config
@@ -26,9 +26,11 @@ Options:
   --version             Show version.
 """
 
+version = pkg_resources.get_distribution('obsidian-blog').version
+
 
 def main():
-    args = docopt(doc, version='0.0.0')
+    args = docopt(doc, version=version)
     serve = args['--serve']
     watch = args['--watch']
 

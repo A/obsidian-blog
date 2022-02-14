@@ -3,7 +3,7 @@ from src.dataclasses.content_data import ContentData
 
 class NoteDelimeterPreprocessor:
     @staticmethod
-    def process(entity):
+    def process_entity(entity):
         data = entity.data
         if not isinstance(data, ContentData):
             return

@@ -2,11 +2,15 @@ from src.dataclasses.content_data import ContentData
 
 # TODO: Fetch link titles?
 class FurtherReadingLinksPreprocessor:
-    @staticmethod
-    def process(entity):
+    @classmethod
+    def process_page(cls, page):
+        cls.process_entity(page)
+
+    @classmethod
+    def process_entity(cls, entity):
         data: ContentData = entity.data
 
-        if not FurtherReadingLinksPreprocessor.is_supported_content(data):
+        if not cls.is_supported_content(data):
             return
 
         links = data.meta.get('links', None)
@@ -34,8 +38,8 @@ class FurtherReadingLinksPreprocessor:
             f'  - [PREPROCESS] Rendered further reading section for "{data.title}"'
         )
 
-    @staticmethod
-    def is_supported_content(data: ContentData):
+    @classmethod
+    def is_supported_content(cls, data: ContentData):
         if not isinstance(data, ContentData):
             return False
 

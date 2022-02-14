@@ -108,9 +108,18 @@ class Builder:
                 pass
 
     def preprocess_content(self, page):
+        for processor in self.preprocessors:
+            if hasattr(processor, 'process_page') and callable(
+                getattr(processor, 'process_page')
+            ):
+                processor.process_page(page)
+
         for entity in page.data.entities:
             for processor in self.preprocessors:
-                processor.process(entity)
+                if hasattr(processor, 'process_entity') and callable(
+                    getattr(processor, 'process_entity')
+                ):
+                    processor.process_entity(entity)
 
     def create_context(self, local_ctx=None):
         if local_ctx == None:
