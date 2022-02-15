@@ -1,5 +1,3 @@
-import yaml
-
 from src.dataclasses.content_data import ContentData
 from src.preprocessors.include_header import IncludeHeaderPreprocessor
 from tests.helpers import DummyInclude
