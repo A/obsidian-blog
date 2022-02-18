@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "obsidian-blog"
-version = "0.1.5"
+version = "0.1.6"
 description = "Feature rich static site generator for obsidian.md"
 authors = ["'Anton Shuvalov' <anton@shuvalov.info>"]
 license = "Commons Clause"
