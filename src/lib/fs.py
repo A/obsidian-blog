@@ -76,6 +76,7 @@ def load(filename):
 
 
 def normalize_path(path: str):
+    print('Deprecated!')
     if path[0] == '/':
         return os.path.realpath(path)
     return path
