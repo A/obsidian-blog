@@ -8,7 +8,7 @@ class PreflightCheckTask:
         directories = (
             config.pages_dir,
             config.posts_dir,
-            config.dest_dir,
+            config.blog_dir,
             config.layouts_dir,
             config.assets_dir,
         )
