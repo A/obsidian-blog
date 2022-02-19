@@ -1,4 +1,13 @@
-0.1.4
+0.1.6
+===
+- fix fast fix lol
+
+
+0.1.5 [broken]
+===
+- Fix broken preflight check
+
+0.1.4 [broken]
 ===
 - Refactor preprocessors to add page processing support
 - Add preflight check validation
