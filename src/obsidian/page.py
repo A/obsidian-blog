@@ -3,7 +3,6 @@ import itertools
 from src.converters import handlebars, markdown
 from src.dataclasses.content_data import ContentData
 from src.entities.inline_image import InlineImage
-# from src.entities.mediawiki_image import MediawikiImage
 from src.entities.obsidian_embed import ObsidianEmbed
 from src.entities.obsidian_link import ObsidianLink
 from src.entities.reference_image import ReferenceImage

@@ -9,7 +9,7 @@ def get_fixture_path(name: str):
     return os.path.join(fixtures_path, name)
 
 
-def create_page(filename=None, meta=None, content=None):
+def create_page(filename='page.md', meta=None, content=None):
     content_data = ContentData(filename=filename, meta=meta, content=content)
     return Page(data=content_data)
 

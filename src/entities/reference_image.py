@@ -1,6 +1,5 @@
 import re
 from src.dataclasses.content_data import ContentData
-from src.dataclasses.asset_data import AssetData
 from src.entities.image import Image
 from src.lib.fs import normalize_path
 
@@ -23,11 +22,9 @@ class ReferenceImage(Image):
             link_re = re.compile('\\[' + key + '\\]:\\s(.*)')
             filename = re.findall(link_re, content)[0]
 
-            data = AssetData(
+            data = ContentData(
                 placeholder=placeholder,
-                alt=alt,
                 filename=normalize_path(filename),
-                key=key,
             )
             imgs.append(ReferenceImage(data=data))
             print(f'- [PARSED]: Image: {filename}')

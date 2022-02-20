@@ -1,9 +1,9 @@
 import os
 import time
+import validators
 from src.dataclasses.content_data import ContentData
 from src.lib import fs
 from src.blog.blog import Blog
-from src.dataclasses.asset_data import AssetData
 from src.dataclasses.config_data import ConfigData
 from src.obsidian.vault import ObsidianVault
 from src.preprocessors.include_header import IncludeHeaderPreprocessor
@@ -91,7 +91,10 @@ class Builder:
             if not issubclass(type(content_data), ContentData):
                 continue
 
-            if content_data.ext is '.md':
+            if content_data.ext == '.md':
+                continue
+
+            if validators.url(content_data.filename):
                 continue
 
             try:

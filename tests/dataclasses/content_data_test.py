@@ -63,7 +63,8 @@ def test_content_data_sorting():
     assert list(map(lambda i: i.title, arr_sorted)) == ['1', '2']
 
 
-def test_content_data_placeholder_title():
+# TODO: It's handled by marko
+def xtest_content_data_placeholder_title():
     data = ContentData(
         placeholder='[[Prometheus | Prometheus]], meta={ "title": "Zeus" }'
     )
