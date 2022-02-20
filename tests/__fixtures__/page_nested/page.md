@@ -2,4 +2,4 @@
 published: True
 ---
 
-[[include]]
+![[include]]

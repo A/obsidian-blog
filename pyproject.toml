@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "obsidian-blog"
-version = "0.1.6"
+version = "0.2.0"
 description = "Feature rich static site generator for obsidian.md"
 authors = ["'Anton Shuvalov' <anton@shuvalov.info>"]
 license = "Commons Clause"
@@ -19,6 +19,8 @@ python-dotenv = "^0.19.2"
 python-frontmatter = "^1.0.0"
 python-slugify = "^5.0.2"
 watchdog = "^2.1.6"
+marko = "^1.2.0"
+validators = "^0.18.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"

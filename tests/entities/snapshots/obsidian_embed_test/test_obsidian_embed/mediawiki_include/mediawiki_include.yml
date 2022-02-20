@@ -1,0 +1,15 @@
+!!python/object:src.dataclasses.content_data.ContentData
+content: include content
+entities: []
+filename: include.md
+match:
+  children:
+  - children: include
+    element: raw_text
+    escape: true
+  element: obsidian_embed
+  placeholder: '![[include]]'
+  target: include
+  title: null
+meta: {}
+placeholder: '![[include]]'

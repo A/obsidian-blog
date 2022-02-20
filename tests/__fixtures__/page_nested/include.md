@@ -2,4 +2,6 @@
 published: True
 ---
 
-[[deeper]]
+![[deeper]]
+
+![[image.png]]

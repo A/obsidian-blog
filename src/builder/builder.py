@@ -1,8 +1,9 @@
 import os
 import time
+import validators
+from src.dataclasses.content_data import ContentData
 from src.lib import fs
 from src.blog.blog import Blog
-from src.dataclasses.asset_data import AssetData
 from src.dataclasses.config_data import ConfigData
 from src.obsidian.vault import ObsidianVault
 from src.preprocessors.include_header import IncludeHeaderPreprocessor
@@ -85,22 +86,28 @@ class Builder:
 
     def process_assets(self, page):
         for entity in page.data.entities:
-            asset_data = entity.data
+            content_data = entity.data
 
-            if not issubclass(type(asset_data), AssetData):
+            if not issubclass(type(content_data), ContentData):
+                continue
+
+            if content_data.ext == '.md':
+                continue
+
+            if validators.url(content_data.filename):
                 continue
 
             try:
                 public_dir = self.config.public_dir
                 assets_dest_dir = self.config.assets_dest_dir
-                dest_filename = f'{asset_data.id}{asset_data.ext}'
+                dest_filename = f'{content_data.id}{content_data.ext}'
 
-                frm = asset_data.filename
+                frm = content_data.filename
                 to = f'{assets_dest_dir}/{dest_filename}'
                 url = os.path.join(public_dir, dest_filename)
 
                 fs.copyfile(frm, to)
-                asset_data.filename = url
+                content_data.filename = url
                 print(f'  - [COPY ASSET]: {frm} to {to}')
 
             except:

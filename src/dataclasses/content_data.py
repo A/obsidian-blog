@@ -14,16 +14,17 @@ DEFAULT_DATE = datetime.fromtimestamp(0)
 @dataclass
 class ContentData:
     filename: str = ''
+    placeholder: Optional[str] = None
     meta: dict = field(default_factory=dict)
     content: str = ''
-    placeholder: Optional[str] = None
     entities: list = field(default_factory=list)
+    match: dict = field(default_factory=dict)
 
     @property
     def title(self):
         # If it was explicitly redefined, return it
-        if self._placeholder_title is not None:
-            return self._placeholder_title
+        if 'title' in self.match and self.match['title'] is not None:
+            return self.match['title']
 
         meta_title = self.meta.get('title')
         if isinstance(meta_title, str):
@@ -62,6 +63,7 @@ class ContentData:
 
     @property
     def ext(self):
+        print(self.filename)
         _, ext = os.path.splitext(self.filename)
         return ext
 

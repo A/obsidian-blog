@@ -1,0 +1,7 @@
+'<p>Some text with a <a href="https://example.com/link" referrerpolicy="no-referrer"
+  rel="noopener noreferrer" target="_blank" title="link">link</a>.</p>
+
+  <p><a href="https://example.com/link" referrerpolicy="no-referrer" rel="noopener
+  noreferrer" target="_blank" title="link">link</a> can be in the begining of the
+  string, or may have a specific <a href="https://example.com/local_name" referrerpolicy="no-referrer"
+  rel="noopener noreferrer" target="_blank" title="name">name</a></p>'

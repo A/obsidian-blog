@@ -1,4 +1,4 @@
-from src.dataclasses.asset_data import AssetData
+from src.dataclasses.content_data import ContentData
 from src.entities.reference_image import ReferenceImage
 from tests.helpers import create_page
 
@@ -11,24 +11,20 @@ def test_reference_image_parsing():
     entity = ReferenceImage.get_all(page)[0]
 
     assert entity.data.placeholder == placeholder
-    assert entity.data.alt == 'alt'
-    assert entity.data.key == 'image_id'
     assert entity.data.filename == 'http://example.com'
 
 
 def test_reference_image_rendering():
     placeholder = '![alt][image_id]'
-    reference = '![image_id]: http://example.com'
+    reference = '![image_id]: image.png'
     page = create_page(content=f'{placeholder}\n{reference}')
 
-    asset_data = AssetData(
+    content_data = ContentData(
         placeholder=placeholder,
-        alt='new alt',
-        filename='http://new-link.com',
-        key='image_id',
+        filename='new-image.png',
     )
 
-    entity = ReferenceImage(data=asset_data)
+    entity = ReferenceImage(data=content_data)
     res = entity.render(page.data)
 
-    assert res == f'![new alt](http://new-link.com)\n{reference}'
+    assert res == f'![new-image](new-image.png)\n{reference}'
