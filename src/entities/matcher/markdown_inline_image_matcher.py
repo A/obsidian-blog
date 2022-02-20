@@ -5,8 +5,8 @@ from .abstract_matcher import AbstractMatcher
 from .match import Match
 
 
-class MarkdownInlineImagesMatcher(AbstractMatcher):
-    matcher_id = 'MARKDOWN_INLINE_IMAGE'
+class MarkdownInlineImageMatcher(AbstractMatcher):
+    matcher_id = 'OBSIDIAN_BLOG/MARKDOWN/INLINE_IMAGE/Mather'
 
     @classmethod
     def match(cls, content: str):

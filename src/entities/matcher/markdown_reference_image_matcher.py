@@ -4,8 +4,8 @@ from src.entities.matcher.abstract_matcher import AbstractMatcher
 from src.entities.matcher.match import Match
 
 
-class MarkdownReferenceImagesMatcher(AbstractMatcher):
-    matcher_id = 'MARKDOWN_REFERENCE_IMAGE'
+class MarkdownReferenceImageMatcher(AbstractMatcher):
+    matcher_id = 'OBSIDIAN_BLOG/MARKDOWN/REFERENCE_IMAGE/MATCHER'
 
     @classmethod
     def match(cls, content):

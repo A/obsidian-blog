@@ -1,40 +1,48 @@
 import os
 import re
-from src.dataclasses.content_data import ContentData
-from src.lib import fs
+from .match import Match
 
 
-class ObsidianLinkMatcher:
-    matcher_id = 'OBSIDIAN_LINK_MATCHER'
+class ObsidianMatcher:
+    matcher_id = 'OBSIDIAN_BLOG/OBSIDIAN/MATCHER'
 
     @classmethod
     def match(cls, content):
-        # TODO: move body into subregex
-        REGEXP = r'(\[\[([\s\w\d_\-&|]*)\]\])'
+        REGEXP = r'((?:!)?\[\[([\s\w\d_\-&|\.]*)\]\])'
 
         matches = []
         re_matches = re.findall(REGEXP, content, flags=re.MULTILINE)
 
         for re_match in re_matches:
-            placeholder, title = re_match
-            try:
-                filename = fs.find_one_by_glob(f'**/{title}.md')
-                _, ext = os.path.splitext(title)
+            placeholder, _inner = re_match
 
-                if not ext:
-                    ext = '.md'
+            title = None
+            url = None
+            ext = None
+            is_embed = placeholder.startswith('!')
+            
+            res = _inner.split('|')
 
-                re_match = Match(
-                    matcher_id=cls.matcher_id,
-                    placeholder=placeholder,
-                    url=cls.normalize_path(url),
-                    title=title,
-                    ext=ext,
-                )
 
-                matches.append(include)
-                print(f'- [PARSED]: Include: {placeholder}')
-            except Exception as e:
-                print(f'- [NOT FOUND] "{placeholder}" {e}')
+            if len(res) >= 1:
+                url = res[0].strip()
+
+            if len(res) >= 2:
+                title = res[1].strip()
+
+
+            if url:
+                _, ext = os.path.splitext(url)
+
+            match = Match(
+                matcher_id=cls.matcher_id,
+                is_embed=is_embed,
+                placeholder=placeholder,
+                url=url,
+                title=title,
+                ext=ext or None,
+            )
+
+            matches.append(match)
 
         return matches

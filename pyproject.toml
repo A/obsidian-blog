@@ -19,6 +19,8 @@ python-dotenv = "^0.19.2"
 python-frontmatter = "^1.0.0"
 python-slugify = "^5.0.2"
 watchdog = "^2.1.6"
+mistletoe = "^0.8.2"
+marko = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.0.1"

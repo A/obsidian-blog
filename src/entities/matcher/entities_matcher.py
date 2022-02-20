@@ -1,6 +1,6 @@
 from enum import Enum
 
-from .markdown_inline_images_matcher import MarkdownInlineImagesMatcher
+from .markdown_inline_images_matcher import MarkdownInlineImageMatcher
 
 
 class Target(Enum):
@@ -17,7 +17,7 @@ class Category(Enum):
 
 class EntitiesMatcher:
     matchers = [
-        MarkdownInlineImagesMatcher,
+        MarkdownInlineImageMatcher,
     ]
 
     @classmethod
