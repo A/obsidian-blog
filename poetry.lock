@@ -100,6 +100,19 @@ python-versions = ">=3.6"
 markdown = ">=3"
 
 [[package]]
+name = "marko"
+version = "1.2.0"
+description = "A markdown parser with high extensibility."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+benchmark = ["commonmark (>=0.9,<1.0)", "markdown (>=3.3,<4.0)", "markdown-it-py (>=2.0,<3.0)", "mistune (>=2.0,<3.0)", "mistletoe (>=0.7,<1.0)"]
+codehilite = ["pygments"]
+toc = ["python-slugify"]
+
+[[package]]
 name = "packaging"
 version = "21.3"
 description = "Core utilities for Python packages"
@@ -297,7 +310,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "029333515754c994e12f242b002d6a6437ca5441bebefb5a017e55fdad40cfdc"
+content-hash = "4b584bcd19995d077ad8bf3b8f69c019872a72635d9ccab8065eb07c7b403760"
 
 [metadata.files]
 atomicwrites = [
@@ -373,6 +386,10 @@ markdown = [
 markdown-link-attr-modifier = [
     {file = "markdown_link_attr_modifier-0.2.0-py3-none-any.whl", hash = "sha256:01b07d7a466ff7c721f97d66b08ec60a54e8d46c287695b649507ae57a42ff4b"},
     {file = "markdown_link_attr_modifier-0.2.0.tar.gz", hash = "sha256:94eacc4b7cfda9b5c883fb8c9f218b0602889c64d12977b31994d10b7b720a59"},
+]
+marko = [
+    {file = "marko-1.2.0-py3-none-any.whl", hash = "sha256:aa9fd81b02f64ab192404cbae5dfe812e337d3d04cefff8800a079c9dc9e5d28"},
+    {file = "marko-1.2.0.tar.gz", hash = "sha256:0befa554da3d14b7a38ac7473ffde60f1916fd1d0aaf67181ae70bfe00fdba18"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},

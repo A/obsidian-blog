@@ -1,5 +1,4 @@
 import os
-import re
 from slugify import slugify
 from src.dataclasses.content_data import ContentData
 from src.entities.parser import get_all_of_types, markdownFabric

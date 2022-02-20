@@ -1,5 +1,6 @@
 import os
 from slugify import slugify
+from src.dataclasses.asset_data import AssetData
 from src.dataclasses.content_data import ContentData
 from src.entities.parser import get_all_of_types, markdownFabric
 from marko.ast_renderer import ASTRenderer
@@ -38,7 +39,7 @@ class ObsidianEmbed:
         if not isinstance(entity.data, ContentData):
             return []
 
-        includes = []
+        entities = []
         matches = cls.get_matches(entity.data.content)
 
         for match in matches:
@@ -56,34 +57,40 @@ class ObsidianEmbed:
 
             try:
                 path = fs.find_one_by_glob(f'**/{filename}')
-                _, meta, content = fs.load(path)
+                _, ext = os.path.splitext(filename)
 
-                data = ContentData(
-                    placeholder=placeholder,
-                    filename=path,
-                    meta=meta,
-                    content=content,
-                    match=match,
-                )
+                if ext == '.md':
+                    _, meta, content = fs.load(path)
 
-                include = ObsidianEmbed(data)
+                    embed = ContentData(
+                        placeholder=placeholder,
+                        filename=path,
+                        meta=meta,
+                        content=content,
+                        match=match,
+                    )
+                    entity = ObsidianEmbed(embed)
+                    entities.append(entity)
 
-                includes.append(include)
+                else:
+                    embed = ContentData(
+                        placeholder=placeholder,
+                        filename=path,
+                        content='',
+                        match=match,
+                    )
+                    entity = ObsidianEmbed(embed)
+                    entities.append(entity)
+
                 print(f'- [PARSED]: Include: {placeholder}')
             except Exception as e:
                 print(f'- [NOT FOUND] "{placeholder}" {e}')
 
-        return includes
+        return entities
 
     @property
     def title(self) -> str:
-        if self.data.meta.get('title'):
-            return self.data.meta.get('title') or ''
-        filename, _ = os.path.splitext(fs.basename(self.data.filename))
-        if ' - ' in filename:
-            matches = re.findall(r'-(.*)\.\w+$', self.data.filename)
-            return matches[0]
-        return filename
+        return self.data.title
 
     @property
     def id(self):
