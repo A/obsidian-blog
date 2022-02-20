@@ -14,9 +14,9 @@ DEFAULT_DATE = datetime.fromtimestamp(0)
 @dataclass
 class ContentData:
     filename: str = ''
+    placeholder: str = None
     meta: dict = field(default_factory=dict)
     content: str = ''
-    placeholder: Optional[str] = None
     entities: list = field(default_factory=list)
     match: Optional[dict] = None
 
