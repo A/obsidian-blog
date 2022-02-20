@@ -2,7 +2,6 @@ import os
 from slugify import slugify
 from src.dataclasses.content_data import ContentData
 from src.entities.parser import get_all_of_types, markdownFabric, traverse
-from marko.ast_renderer import ASTRenderer
 from src.lib import fs
 
 
@@ -12,8 +11,8 @@ class MediawikiInclude:
 
     @staticmethod
     def get_matches(content):
-        markdown = markdownFabric(renderer=ASTRenderer)
-        ast = markdown(content)
+        markdown = markdownFabric()
+        ast = markdown.parse(content)
         return get_all_of_types(['obsidian_embed'], ast)
 
     @classmethod
@@ -24,12 +23,13 @@ class MediawikiInclude:
         includes = []
         matches = cls.get_matches(entity.data.content)
 
-        for match in matches:
-            placeholder = match['placeholder']
-            target = match['target']
-# 
+        for m in matches:
+            title, target = m
+            print(title, target)
+
+            placeholder, filename = match
             try:
-                filename = fs.find_one_by_glob(f'**/{target}.md')
+                filename = fs.find_one_by_glob(f'**/{filename}.md')
                 _, meta, content = fs.load(filename)
 
                 data = ContentData(
@@ -37,7 +37,6 @@ class MediawikiInclude:
                     filename=filename,
                     meta=meta,
                     content=content,
-                    match=match
                 )
 
                 include = MediawikiInclude(data)

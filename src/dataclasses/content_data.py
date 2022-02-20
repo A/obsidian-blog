@@ -18,6 +18,7 @@ class ContentData:
     content: str = ''
     placeholder: Optional[str] = None
     entities: list = field(default_factory=list)
+    match: Optional[dict] = None
 
     @property
     def title(self):
