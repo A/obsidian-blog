@@ -1,4 +1,4 @@
-## Obsidian SSG Blog
+## Obsidian SSG Blog [![PyPI](https://img.shields.io/pypi/v/obsidian-blog)](https://pypi.org/project/obsidian-blog "PyPI")
 
 **DISCLAIMER: Still work-in-progress, so API definitely will change. To use it you'd better to have some programming experience**
 
