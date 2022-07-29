@@ -27,9 +27,9 @@ class Layout:
     def get_all(layouts_dir):
         layouts = {}
 
+        print(layouts_dir)
         for file in fs.get_files_in_dir(layouts_dir):
-            path = os.path.join(layouts_dir, file)
-            layout = Layout(path)
+            layout = Layout(file)
             layouts[layout.name] = layout
 
         return layouts
