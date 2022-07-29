@@ -9,7 +9,7 @@ from shutil import copyfile
 def change_ext(ext: str, file_path: str):
     """Changes extension in path"""
     pre, _ = os.path.splitext(file_path)
-    return pre + '.' + ext
+    return pre + "." + ext
 
 
 def rm_dir(directory: str):
@@ -32,16 +32,16 @@ def copy_dir(source: str, dest: str):
 
 
 def get_files_in_dir(dir: str, filter_partials=False):
-    """returns files from given dir with optional partials filtering"""
-    file_names = [
-        f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))
-    ]
-
-    if filter_partials:
-        file_names = filter(
-            lambda f: not f.startswith('_', 0, -1),
-            file_names,
-        )
+    """recursively returns files from given dir with optional partials filtering"""
+    file_names = []
+    for root, dirs, files in os.walk(dir):
+        dirs[:] = [f for f in dirs if not f.startswith(".")]
+        if filter_partials:
+            files = filter(
+                lambda f: not f.startswith("_", 0, -1),
+                files,
+            )
+        file_names.extend(os.path.join(root, f) for f in files)
 
     return file_names
 
@@ -57,7 +57,7 @@ def copy_file(src: str, dest: str):
 
 def write_file(dest, content):
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    with open(dest, 'a') as f:
+    with open(dest, "a") as f:
         print(content, file=f)
 
 
@@ -71,11 +71,11 @@ def load(filename):
         f = frontmatter.load(filename)
         return [filename, f.metadata, f.content]
     except Exception as error:
-        print(f'[ERROR] There is an error loading {filename}: {error}')
-        exit(1)
+        print(f"[ERROR] There is an error loading {filename}: {error}")
+        raise
 
 
 def normalize_path(path: str):
-    if path[0] == '/':
+    if path[0] == "/":
         return os.path.realpath(path)
     return path
