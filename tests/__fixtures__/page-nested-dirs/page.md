@@ -1,0 +1,4 @@
+---
+published: True
+---
+[[subnote]]
