@@ -2,7 +2,7 @@ from src.tree.node import TreeNode
 
 
 def test_tree_node():
-    data = 'head node'
+    data = "head node"
     head = TreeNode(data)
     assert head.data == data
 
@@ -61,7 +61,7 @@ def test_tree_node_recursive_flat():
 
 
 def test_tree_node_unwrap():
-    node = TreeNode('content')
+    node = TreeNode("content")
     res = TreeNode.unwrap(node)
 
-    assert res == 'content'
+    assert res == "content"

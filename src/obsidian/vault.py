@@ -5,7 +5,7 @@ from src.obsidian.page import Page
 class ObsidianVault:
     """ObsidianVault handles posts and pages look up"""
 
-    page_types = ['pages', 'posts']
+    page_types = ["pages", "posts"]
 
     def __init__(self, config: ConfigData):
         self.config = config

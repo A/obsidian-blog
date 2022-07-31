@@ -8,11 +8,11 @@ class NoteDelimeterPreprocessor:
         if not isinstance(data, ContentData):
             return
 
-        if data.content == '':
+        if data.content == "":
             return
 
-        delimeter = '---'
+        delimeter = "---"
 
-        data.content = f'{data.content}\n\n{delimeter}\n'
+        data.content = f"{data.content}\n\n{delimeter}\n"
 
         print(f'  - [PREPROCESS] Rendered delimeter for "{data.title}"')

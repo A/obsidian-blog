@@ -31,5 +31,5 @@ class TreeNode:
         return entities
 
     @staticmethod
-    def unwrap(node: 'TreeNode'):
+    def unwrap(node: "TreeNode"):
         return node.data

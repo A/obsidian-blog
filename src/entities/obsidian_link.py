@@ -22,11 +22,11 @@ class ObsidianLink:
     def get_matches(content):
         markdown = markdownFabric(renderer=ASTRenderer)
         ast = markdown(content)
-        return get_all_of_types(['obsidian_link'], ast)
+        return get_all_of_types(["obsidian_link"], ast)
 
     def render(self, data):
         content = data.content
-        not_found = self.data.meta.get('not_found')
+        not_found = self.data.meta.get("not_found")
 
         if not_found:
             return content.replace(self.data.placeholder, self.title)
@@ -43,8 +43,8 @@ class ObsidianLink:
         matches = cls.get_matches(entity.data.content)
 
         for match in matches:
-            placeholder = match['placeholder']
-            target = match['target']
+            placeholder = match["placeholder"]
+            target = match["target"]
 
             # TODO: Duplication
             filename = target
@@ -53,23 +53,21 @@ class ObsidianLink:
             if ext:
                 filename = target
             else:
-                filename = f'{target}.md'
+                filename = f"{target}.md"
 
             try:
                 _, ext = os.path.splitext(filename)
 
-                if ext != '.md':
+                if ext != ".md":
                     continue
 
-                filename = fs.find_one_by_glob(f'**/{filename}')
+                filename = fs.find_one_by_glob(f"**/{filename}")
                 _, meta, _ = fs.load(filename)
 
-                url = meta.get('link')
+                url = meta.get("link")
                 if not url:
-                    meta['not_found'] = True
-                    print(
-                        f'- [LINK NOT FOUND] Link is not defined for {placeholder}'
-                    )
+                    meta["not_found"] = True
+                    print(f"- [LINK NOT FOUND] Link is not defined for {placeholder}")
 
                 data = ContentData(
                     placeholder=placeholder,
@@ -81,7 +79,7 @@ class ObsidianLink:
                 include = cls(data)
                 includes.append(include)
 
-                print(f'- [PARSED]: Link: {placeholder}, {url}')
+                print(f"- [PARSED]: Link: {placeholder}, {url}")
             except Exception as e:
                 print(f'- [LINK NOT FOUND] "{placeholder}" {e}')
 

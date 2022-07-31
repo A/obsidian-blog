@@ -3,7 +3,7 @@ from src.dataclasses.content_data import ContentData
 from src.entities.image import Image
 from src.lib.fs import normalize_path
 
-REFERENCE_IMG_RE = r'(\!\[(.*)]\[(.*)\])'
+REFERENCE_IMG_RE = r"(\!\[(.*)]\[(.*)\])"
 
 
 class ReferenceImage(Image):
@@ -19,7 +19,7 @@ class ReferenceImage(Image):
 
         for match in matches:
             placeholder, alt, key = match
-            link_re = re.compile('\\[' + key + '\\]:\\s(.*)')
+            link_re = re.compile("\\[" + key + "\\]:\\s(.*)")
             filename = re.findall(link_re, content)[0]
 
             data = ContentData(
@@ -27,6 +27,6 @@ class ReferenceImage(Image):
                 filename=normalize_path(filename),
             )
             imgs.append(ReferenceImage(data=data))
-            print(f'- [PARSED]: Image: {filename}')
+            print(f"- [PARSED]: Image: {filename}")
 
         return imgs

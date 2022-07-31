@@ -27,19 +27,19 @@ Options:
   --version             Show version.
 """
 
-version = pkg_resources.get_distribution('obsidian-blog').version
+version = pkg_resources.get_distribution("obsidian-blog").version
 
 
 def main():
     args = docopt(doc, version=version)
-    serve = args['--serve']
-    watch = args['--watch']
+    serve = args["--serve"]
+    watch = args["--watch"]
 
     config.override(
         {
-            'port': int(args['--port']),
-            'blog_title': args['--title'],
-            'drafts': args['--drafts'],
+            "port": int(args["--port"]),
+            "blog_title": args["--title"],
+            "drafts": args["--drafts"],
         }
     )
     config.load_dotenv()
@@ -63,5 +63,5 @@ def main():
         print(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

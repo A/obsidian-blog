@@ -8,7 +8,7 @@ class IncludeHeaderPreprocessor:
         if not isinstance(data, ContentData):
             return
 
-        if data.content == '':
+        if data.content == "":
             return
 
         header = f"""\
@@ -18,6 +18,6 @@ class IncludeHeaderPreprocessor:
 </h2>
 
 """
-        data.content = f'{header}\n{data.content}'
+        data.content = f"{header}\n{data.content}"
 
         print(f'  - [PREPROCESS] Rendered header for "{data.title}"')
