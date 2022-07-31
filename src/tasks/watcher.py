@@ -20,7 +20,7 @@ class WatcherTask:
 
     def start_watcher(self, ignore_dir):
         Handler = self.create_handler(ignore_dir, self.callback)
-        self.watcher = Watcher(Handler, path='.')
+        self.watcher = Watcher(Handler, path=".")
         self.watcher.run()
 
     def create_handler(self, ignore_dir, callback):

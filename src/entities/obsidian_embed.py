@@ -14,9 +14,9 @@ class ObsidianEmbed:
     def render(self, data):
         _, ext = os.path.splitext(self.data.filename)
 
-        if ext in ['.png', '.jpg', '.gif']:
+        if ext in [".png", ".jpg", ".gif"]:
             return self.render_image(data)
-        if ext in ['.md']:
+        if ext in [".md"]:
             return self.render_markdown(data)
 
     def render_markdown(self, data: ContentData):
@@ -25,14 +25,14 @@ class ObsidianEmbed:
 
     def render_image(self, data: ContentData):
         content = data.content
-        template = f'![{self.title}]({self.data.filename})'
+        template = f"![{self.title}]({self.data.filename})"
         return content.replace(self.data.placeholder, template)
 
     @staticmethod
     def get_matches(content):
         markdown = markdownFabric(renderer=ASTRenderer)
         ast = markdown(content)
-        return get_all_of_types(['obsidian_embed'], ast)
+        return get_all_of_types(["obsidian_embed"], ast)
 
     @classmethod
     def get_all(cls, entity):
@@ -43,8 +43,8 @@ class ObsidianEmbed:
         matches = cls.get_matches(entity.data.content)
 
         for match in matches:
-            placeholder = match['placeholder']
-            target = match['target']
+            placeholder = match["placeholder"]
+            target = match["target"]
 
             # TODO: Duplication
             filename = target
@@ -53,13 +53,13 @@ class ObsidianEmbed:
             if ext:
                 filename = target
             else:
-                filename = f'{target}.md'
+                filename = f"{target}.md"
 
             try:
-                path = fs.find_one_by_glob(f'**/{filename}')
+                path = fs.find_one_by_glob(f"**/{filename}")
                 _, ext = os.path.splitext(filename)
 
-                if ext == '.md':
+                if ext == ".md":
                     _, meta, content = fs.load(path)
 
                     embed = ContentData(
@@ -76,13 +76,13 @@ class ObsidianEmbed:
                     embed = ContentData(
                         placeholder=placeholder,
                         filename=path,
-                        content='',
+                        content="",
                         match=match,
                     )
                     entity = ObsidianEmbed(embed)
                     entities.append(entity)
 
-                print(f'- [PARSED]: Include: {placeholder}')
+                print(f"- [PARSED]: Include: {placeholder}")
             except Exception as e:
                 print(f'- [NOT FOUND] "{placeholder}" {e}')
 

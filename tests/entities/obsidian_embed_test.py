@@ -7,11 +7,11 @@ from src.entities.obsidian_embed import ObsidianEmbed
 from tests.helpers import create_page, get_fixture_path
 
 
-@pytest.mark.parametrize('fixture_name', [('mediawiki_include')])
+@pytest.mark.parametrize("fixture_name", [("mediawiki_include")])
 def test_obsidian_embed(snapshot, fixture_name):
     cwd = os.getcwd()
     fixture_path = get_fixture_path(fixture_name)
-    page_path = f'{fixture_path}/page.md'
+    page_path = f"{fixture_path}/page.md"
     os.chdir(fixture_path)
 
     filename, meta, content = fs.load(page_path)
@@ -20,36 +20,36 @@ def test_obsidian_embed(snapshot, fixture_name):
     assert len(entities) == 1
 
     entity = entities[0]
-    snapshot.assert_match(yaml.dump(entity.data), f'{fixture_name}.yml')
+    snapshot.assert_match(yaml.dump(entity.data), f"{fixture_name}.yml")
     os.chdir(cwd)
 
 
 def test_obsidian_embed_markdown_rendering():
-    placeholder = '![[include]]'
+    placeholder = "![[include]]"
     page = create_page(content=placeholder)
 
     content_data = ContentData(
-        filename='include.md',
+        filename="include.md",
         placeholder=placeholder,
-        content='abc',
+        content="abc",
     )
     entity = ObsidianEmbed(data=content_data)
 
     res = entity.render(page.data)
 
-    assert res == 'abc'
+    assert res == "abc"
 
 
 def test_obsidian_embed_image_rendering():
-    placeholder = '![[include.png]]'
+    placeholder = "![[include.png]]"
     page = create_page(content=placeholder)
 
     content_data = ContentData(
-        filename='include.png',
+        filename="include.png",
         placeholder=placeholder,
     )
     entity = ObsidianEmbed(data=content_data)
 
     res = entity.render(page.data)
 
-    assert res == '![include](include.png)'
+    assert res == "![include](include.png)"

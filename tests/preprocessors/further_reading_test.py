@@ -5,15 +5,15 @@ from tests.helpers import DummyInclude
 
 def test_further_reading_preprocessor(snapshot):
     content_data = ContentData(
-        filename='a.md',
+        filename="a.md",
         meta={
-            'links': [
-                {'name': 'name.a', 'url': 'url.a'},
-                {'name': 'name.b', 'url': 'url.b'},
-                {'name': 'name.c', 'url': 'url.c'},
+            "links": [
+                {"name": "name.a", "url": "url.a"},
+                {"name": "name.b", "url": "url.b"},
+                {"name": "name.c", "url": "url.c"},
             ]
         },
-        content='content',
+        content="content",
     )
     entity = DummyInclude(content_data)
 
@@ -21,14 +21,14 @@ def test_further_reading_preprocessor(snapshot):
 
     entity.data.content
 
-    snapshot.assert_match(content_data.content, f'further_reading_test.html')
+    snapshot.assert_match(content_data.content, f"further_reading_test.html")
 
 
 def test_further_reading_preprocessor_no_links(snapshot):
     content_data = ContentData(
-        filename='a.md',
+        filename="a.md",
         meta={},
-        content='content',
+        content="content",
     )
     entity = DummyInclude(content_data)
 
@@ -36,22 +36,20 @@ def test_further_reading_preprocessor_no_links(snapshot):
 
     entity.data.content
 
-    snapshot.assert_match(
-        content_data.content, f'further_reading_no_links_test.html'
-    )
+    snapshot.assert_match(content_data.content, f"further_reading_no_links_test.html")
 
 
 def test_further_reading_preprocessor_empty_content(snapshot):
     content_data = ContentData(
-        filename='a.md',
+        filename="a.md",
         meta={
-            'links': [
-                {'name': 'name.a', 'url': 'url.a'},
-                {'name': 'name.b', 'url': 'url.b'},
-                {'name': 'name.c', 'url': 'url.c'},
+            "links": [
+                {"name": "name.a", "url": "url.a"},
+                {"name": "name.b", "url": "url.b"},
+                {"name": "name.c", "url": "url.c"},
             ]
         },
-        content='',
+        content="",
     )
     entity = DummyInclude(content_data)
 
@@ -61,5 +59,5 @@ def test_further_reading_preprocessor_empty_content(snapshot):
 
     # Shoudn't render anything
     snapshot.assert_match(
-        content_data.content, f'further_reading_empty_content_test.html'
+        content_data.content, f"further_reading_empty_content_test.html"
     )

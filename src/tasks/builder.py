@@ -22,6 +22,6 @@ class BuilderTask:
         builder.build()
         toc = time.perf_counter()
 
-        print('---\n')
-        print(f'The build has been finished in {toc - tic:0.4f} seconds\n')
+        print("---\n")
+        print(f"The build has been finished in {toc - tic:0.4f} seconds\n")
         lock = False

@@ -2,15 +2,15 @@ from markdown import Markdown
 
 md_parser = Markdown(
     extensions=[
-        'fenced_code',
-        'markdown_link_attr_modifier',
-        'attr_list',
+        "fenced_code",
+        "markdown_link_attr_modifier",
+        "attr_list",
     ],
     extension_configs={
-        'markdown_link_attr_modifier': {
-            'new_tab': 'on',
-            'no_referrer': 'external_only',
-            'auto_title': 'on',
+        "markdown_link_attr_modifier": {
+            "new_tab": "on",
+            "no_referrer": "external_only",
+            "auto_title": "on",
         },
     },
 )

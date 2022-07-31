@@ -8,9 +8,9 @@ from slugify.slugify import slugify
 class AssetData:
     """Basic image class"""
 
-    filename: str = ''
-    placeholder: str = ''
-    alt: str = ''
+    filename: str = ""
+    placeholder: str = ""
+    alt: str = ""
     key: Optional[str] = None
 
     @property

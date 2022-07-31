@@ -2,7 +2,7 @@ from marko import inline, Markdown
 
 
 class ObsidianLink(inline.InlineElement):
-    pattern = r'\[\[\s*(.+?)\s*(?:\|\s*(.+?)\s*)?]\]'
+    pattern = r"\[\[\s*(.+?)\s*(?:\|\s*(.+?)\s*)?]\]"
     parse_children = True
 
     def __init__(self, match):
@@ -12,7 +12,7 @@ class ObsidianLink(inline.InlineElement):
 
 
 class ObsidianEmbed(inline.InlineElement):
-    pattern = r'\!\[\[\s*(.+?)\s*(?:\|\s*(.+?)\s*)?]\]'
+    pattern = r"\!\[\[\s*(.+?)\s*(?:\|\s*(.+?)\s*)?]\]"
     parse_children = True
 
     def __init__(self, match):
@@ -24,13 +24,15 @@ class ObsidianEmbed(inline.InlineElement):
 class Obsidian:
     elements = [ObsidianEmbed, ObsidianLink]
 
+
 def markdownFabric(*args, **kwargs):
     markdown = Markdown(*args, **kwargs)
     markdown.use(Obsidian)
     return markdown
 
+
 def traverse(head, cb):
-    key = 'children'
+    key = "children"
 
     if not head:
         return
@@ -41,12 +43,13 @@ def traverse(head, cb):
         for child in head.get(key):
             traverse(child, cb)
 
-def get_all_of_types(element_types, ast): 
+
+def get_all_of_types(element_types, ast):
     nodes = []
     traverse(ast, lambda n: nodes.append(n))
     return list(
         filter(
-            lambda n: n.get('element') in element_types,
+            lambda n: n.get("element") in element_types,
             nodes,
         )
     )

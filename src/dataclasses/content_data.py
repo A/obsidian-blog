@@ -7,26 +7,26 @@ from src.config import config
 from src.lib.fs import basename
 from slugify.slugify import slugify
 
-TITLE_DELIMETER = ' - '
+TITLE_DELIMETER = " - "
 DEFAULT_DATE = datetime.fromtimestamp(0)
 
 
 @dataclass
 class ContentData:
-    filename: str = ''
+    filename: str = ""
     placeholder: Optional[str] = None
     meta: dict = field(default_factory=dict)
-    content: str = ''
+    content: str = ""
     entities: list = field(default_factory=list)
     match: dict = field(default_factory=dict)
 
     @property
     def title(self):
         # If it was explicitly redefined, return it
-        if 'title' in self.match and self.match['title'] is not None:
-            return self.match['title']
+        if "title" in self.match and self.match["title"] is not None:
+            return self.match["title"]
 
-        meta_title = self.meta.get('title')
+        meta_title = self.meta.get("title")
         if isinstance(meta_title, str):
             return meta_title
         title, _ = os.path.splitext(basename(self.filename))
@@ -37,10 +37,10 @@ class ContentData:
 
     @property
     def date(self):
-        meta_date = self.meta.get('date')
+        meta_date = self.meta.get("date")
 
         if isinstance(meta_date, date):
-            return datetime.strptime(meta_date.strftime('%Y%m%d'), '%Y%m%d')
+            return datetime.strptime(meta_date.strftime("%Y%m%d"), "%Y%m%d")
 
         return DEFAULT_DATE
 
@@ -49,12 +49,12 @@ class ContentData:
 
     @property
     def slug(self):
-        meta_slug = self.meta.get('slug')
+        meta_slug = self.meta.get("slug")
         if isinstance(meta_slug, str):
-            return f'{meta_slug}.html'
+            return f"{meta_slug}.html"
         file, _ = os.path.splitext(self.filename)
         slug = slugify(os.path.basename(file))
-        return f'{slug}.html'
+        return f"{slug}.html"
 
     @property
     def id(self):
@@ -69,9 +69,9 @@ class ContentData:
 
     @property
     def is_private(self):
-        if config.drafts and self.meta.get('draft'):
+        if config.drafts and self.meta.get("draft"):
             return False
-        if self.meta.get('published'):
+        if self.meta.get("published"):
             return False
         return True
 
@@ -80,11 +80,9 @@ class ContentData:
         if not self.placeholder:
             return None
 
-        [title] = re.findall(
-            r'\[\[([\d\s\w\-&|]*)\]\]', self.placeholder or ''
-        )
-        if not '|' in title:
+        [title] = re.findall(r"\[\[([\d\s\w\-&|]*)\]\]", self.placeholder or "")
+        if not "|" in title:
             return None
 
-        _, title = title.split('|')
+        _, title = title.split("|")
         return title.strip()

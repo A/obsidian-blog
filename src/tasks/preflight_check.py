@@ -20,5 +20,5 @@ class PreflightCheckTask:
         if not os.path.isdir(directory):
 
             raise Exception(
-                f'Directory {directory} not found. Are you in a properly configured vault?'
+                f"Directory {directory} not found. Are you in a properly configured vault?"
             )

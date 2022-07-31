@@ -9,10 +9,8 @@ class HTTPServer:
         self.start()
 
     def start(self):
-        with socketserver.TCPServer(
-            ('', self.port), self.create_handler()
-        ) as httpd:
-            print(f'Start server at {self.port} port')
+        with socketserver.TCPServer(("", self.port), self.create_handler()) as httpd:
+            print(f"Start server at {self.port} port")
             httpd.serve_forever()
 
     def create_handler(self):
@@ -22,7 +20,7 @@ class HTTPServer:
             )
 
         return type(
-            f'HandlerFrom<{self.directory}>',
+            f"HandlerFrom<{self.directory}>",
             (http.server.SimpleHTTPRequestHandler,),
-            {'__init__': _init, 'directory': self.directory},
+            {"__init__": _init, "directory": self.directory},
         )
