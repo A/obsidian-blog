@@ -28,8 +28,7 @@ class Layout:
         layouts = {}
 
         for file in fs.get_files_in_dir(layouts_dir):
-            path = os.path.join(layouts_dir, file)
-            layout = Layout(path)
+            layout = Layout(file)
             layouts[layout.name] = layout
 
         return layouts

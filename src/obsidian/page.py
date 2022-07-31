@@ -27,21 +27,19 @@ class Page:
     def __init__(self, data: ContentData):
         self.data = data
         self.head = self.build_tree()
-        self.data.entities = list(
-            map(TreeNode.unwrap, self.head.flat_children())
-        )
+        self.data.entities = list(map(TreeNode.unwrap, self.head.flat_children()))
 
     @staticmethod
     def get_all(pages_dir):
         pages = []
 
-        for file in fs.get_files_in_dir(pages_dir):
-            path = os.path.join(pages_dir, file)
-            filename, meta, content = fs.load(path)
+        for file in fs.get_files_in_dir(pages_dir, filter_partials=True):
+            try:
+                filename, meta, content = fs.load(file)
+            except UnicodeDecodeError as e:
+                continue
 
-            content_data = ContentData(
-                filename=filename, meta=meta, content=content
-            )
+            content_data = ContentData(filename=filename, meta=meta, content=content)
 
             page = Page(content_data)
             pages.append(page)
@@ -67,7 +65,7 @@ class Page:
         if context == None:
             context = {}
         content = self.data.content
-        if self.data.ext == '.md':
+        if self.data.ext == ".md":
             content = self.render_entities()
             content = markdown.render(content)
         try:
@@ -77,13 +75,13 @@ class Page:
 
     def render_entities(self):
         for entity in self.data.entities:
-            if hasattr(entity, 'render'):
+            if hasattr(entity, "render"):
                 data = entity.data
-                if hasattr(data, 'is_private') and data.is_private:
-                    if data.content != '':
+                if hasattr(data, "is_private") and data.is_private:
+                    if data.content != "":
                         print(data.content)
                         print(
-                            f'  - [SKIP]: {data.placeholder} is private, add `published: True` attribute to the frontmetter to publish it'
+                            f"  - [SKIP]: {data.placeholder} is private, add `published: True` attribute to the frontmetter to publish it"
                         )
                         continue
                 self.data.content = entity.render(self.data)
