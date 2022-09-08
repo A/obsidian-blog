@@ -53,8 +53,15 @@ class ContentData:
         if isinstance(meta_slug, str):
             return f"{meta_slug}.html"
         file, _ = os.path.splitext(self.filename)
-        slug = slugify(os.path.basename(file))
-        return f"{slug}.html"
+
+        # If file doesn't have any explicitly specified extension, like in `file.xml.hbs`,
+        # append `.html`
+        if '.' not in file:
+            slug = slugify(os.path.basename(file))
+            return f"{slug}.html"
+
+        # Else use the rest of the filename as the slug
+        return os.path.basename(file)
 
     @property
     def id(self):

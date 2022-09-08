@@ -110,7 +110,7 @@ class Builder:
                 content_data.filename = url
                 print(f"  - [COPY ASSET]: {frm} to {to}")
 
-            except:
+            except Exception:
                 # FIXME: Should skip abs paths and urls
                 pass
 
@@ -129,7 +129,7 @@ class Builder:
                     processor.process_entity(entity)
 
     def create_context(self, local_ctx=None):
-        if local_ctx == None:
+        if local_ctx is None:
             local_ctx = {}
 
         global_ctx = {

@@ -1,4 +1,3 @@
-import os
 import itertools
 from src.converters import handlebars, markdown
 from src.dataclasses.content_data import ContentData
@@ -36,7 +35,7 @@ class Page:
         for file in fs.get_files_in_dir(pages_dir, filter_partials=True):
             try:
                 filename, meta, content = fs.load(file)
-            except UnicodeDecodeError as e:
+            except UnicodeDecodeError:
                 continue
 
             content_data = ContentData(filename=filename, meta=meta, content=content)
@@ -70,7 +69,8 @@ class Page:
             content = markdown.render(content)
         try:
             return handlebars.render_template(content, context)
-        except:
+        except Exception as e:
+            print(f"RENDER_ERROR: {e}")
             return content
 
     def render_entities(self):
