@@ -5,6 +5,10 @@ def test_content_data_ext():
     data = ContentData(filename="test.hbs")
     assert data.ext == ".hbs"
 
+    data = ContentData(filename="test.xml.hbs")
+    assert data.ext == ".hbs"
+
+
     data = ContentData(filename="test.md")
     assert data.ext == ".md"
 
@@ -12,6 +16,9 @@ def test_content_data_ext():
 def test_content_data_slug():
     data = ContentData(filename="test.hbs")
     assert data.slug == "test.html"
+
+    data = ContentData(filename="dir/test.xml.hbs")
+    assert data.slug == "test.xml"
 
     data = ContentData(filename="test.hbs", meta={"slug": "abc"})
     assert data.slug == "abc.html"

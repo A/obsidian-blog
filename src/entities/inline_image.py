@@ -1,6 +1,5 @@
 import re
 from src.dataclasses.content_data import ContentData
-from src.dataclasses.asset_data import AssetData
 from src.entities.image import Image
 
 INLINE_IMG_RE = r"(\!\[(.*?)\]\((.*?)\))"

@@ -1,6 +1,5 @@
 import os
 from slugify import slugify
-from src.dataclasses.asset_data import AssetData
 from src.dataclasses.content_data import ContentData
 from src.entities.parser import get_all_of_types, markdownFabric
 from marko.ast_renderer import ASTRenderer

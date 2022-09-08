@@ -18,7 +18,7 @@ class ReferenceImage(Image):
         matches = re.findall(REFERENCE_IMG_RE, content)
 
         for match in matches:
-            placeholder, alt, key = match
+            placeholder, _, key = match
             link_re = re.compile("\\[" + key + "\\]:\\s(.*)")
             filename = re.findall(link_re, content)[0]
 

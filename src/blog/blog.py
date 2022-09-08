@@ -1,4 +1,3 @@
-from src.lib import fs
 from src.blog.layout import Layout
 from src.dataclasses.config_data import ConfigData
 

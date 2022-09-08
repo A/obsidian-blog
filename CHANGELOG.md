@@ -1,24 +1,28 @@
-0.1.6
-===
+# Changelog
+
+## 0.2.2
+
+- Add support for custom file extensions. Now `rss.xml.hbs` is rendered as `rss.xml`.
+
+## 0.1.6
+
 - fix fast fix lol
 
+## 0.1.5 [broken]
 
-0.1.5 [broken]
-===
 - Fix broken preflight check
 
-0.1.4 [broken]
-===
+## 0.1.4 [broken]
+
 - Refactor preprocessors to add page processing support
 - Add preflight check validation
 - Implement --version to use pyproject.toml
 
-0.1.3
-===
+## 0.1.3
+
 - add config to the handlebars context
 
-0.1.2
-===
+## 0.1.2
 
 - Add poetry for build and deploy
 - Add publish action on commit to master
