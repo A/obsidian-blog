@@ -101,10 +101,6 @@ Assets are divided into 2 types:
 
 So far I'm using github actions to deploy my stuff to [my blog][my-blog].
 
-### Feedback and things
-
-Just text me in [telegram][tg] or file an issue. I'd be happy to know if you want to use it.
-
 ### Alternatives
 
 - [Obsidian Export][obsidian-export] - cli to render obsidian notes into markdown written in Rust
@@ -113,5 +109,4 @@ Just text me in [telegram][tg] or file an issue. I'd be happy to know if you wan
 [zettelkasten]: https://en.wikipedia.org/wiki/Niklas_Luhmann#Note-taking_system_(Zettelkasten)
 [my-blog]: https://anto.sh
 [obsidian-blog-theme]: https://github.com/A/obsidian-blog-theme/
-[tg]: https://t.me/a_shuvalov
 [obsidian-export]: https://crates.io/crates/obsidian-export
